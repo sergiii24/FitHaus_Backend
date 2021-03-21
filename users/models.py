@@ -1,4 +1,8 @@
 from django.db import models
+from datetime import datetime
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters.html import HtmlFormatter
+from pygments import highlight
 
 
 # Create your models here.
@@ -9,19 +13,19 @@ class User(models.Model):
     mail = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
     gender = models.CharField(max_length=200)
-    birthdate = models.DateField
+    birthdate = models.DateField()
     #DADES ESPORTIVES
-    activitiesdone = models.IntegerField
+    activitiesdone = models.IntegerField(default = 0)
     #archivements =
-    points = models.IntegerField
-    level = models.IntegerField
+    points = models.IntegerField(default=0)
+    level = models.IntegerField(default=0)
     objective = models.CharField(max_length=200)
-    #interestCategories = #?????
+    #interestcategories = #?????
     #DADES FISIQUES
-    weight = models.IntegerField
-    height = models.IntegerField
-    imc = models.IntegerField
-    igc = models.IntegerField
+    weight = models.IntegerField()
+    height = models.IntegerField()
+    imc = models.IntegerField()
+    igc = models.IntegerField()
     #historical????????
 
     def __str__(self):
