@@ -1,31 +1,33 @@
 from django.db import models
-from datetime import datetime
-from pygments.lexers import get_lexer_by_name
-from pygments.formatters.html import HtmlFormatter
-from pygments import highlight
-
 
 # Create your models here.
 class User(models.Model):
     #DADES PERSONALS
     id = models.IntegerField
-    name = models.CharField(max_length=200)
-    mail = models.CharField(max_length=200)
+    username = models.CharField(max_length=200, unique=True)
+    firstname = models.CharField(max_length=200)
+    lastname = models.CharField(max_length=200)
+    email = models.CharField(max_length=200, unique=True)
     password = models.CharField(max_length=200)
-    gender = models.CharField(max_length=200)
+    POSIBLE_GENDERS = [
+        ('M', 'Male'),
+        ('W', 'Women'),
+        ('X', 'Undefined')
+    ]
+    gender = models.CharField(max_length=200, choices=POSIBLE_GENDERS)
     birthdate = models.DateField()
     #DADES ESPORTIVES
-    activitiesdone = models.IntegerField(default = 0)
-    #archivements =
+    activitiesdone = models.IntegerField(default=0)
+    achivements = models.CharField(max_length=200)
     points = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
     objective = models.CharField(max_length=200)
-    #interestcategories = #?????
+    interestcategories = models.CharField(max_length=200)
     #DADES FISIQUES
-    weight = models.IntegerField()
-    height = models.IntegerField()
-    imc = models.IntegerField()
-    igc = models.IntegerField()
+    weight = models.IntegerField(default=0)
+    height = models.IntegerField(default=0)
+    imc = models.IntegerField(default=0)
+    igc = models.IntegerField(default=0)
     #historical????????
 
     def __str__(self):
