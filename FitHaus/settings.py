@@ -25,7 +25,7 @@ SECRET_KEY = 'u7q86=41#02s*r2r%&*&^&7uq9a)+#3h!6@z$)(gev++36mwno'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.137']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'users',
 
+    'sslserver',
     'django_nose'
 ]
 
