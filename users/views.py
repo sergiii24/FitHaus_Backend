@@ -20,6 +20,7 @@ def api_root(request):
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
+        print("ABANS DEL IF")
         if serializer.is_valid():
             post(serializer.get_attribute('email'))
             serializer.save()
@@ -37,7 +38,7 @@ def login(request):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
     except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 def post(m):

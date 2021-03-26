@@ -1,29 +1,11 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  description: "Servidor de l'aplicació FitHaus de l'assignatura PES. Aquí podràs trobar operacions per gestionar usuaris del sistema."
   version: "1.0.0"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
+  title: "SERVIDOR FITHAUS"
   contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
-tags:
-- name: "pet"
-  description: "Everything about your Pets"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
-- name: "store"
-  description: "Access to Petstore orders"
-- name: "user"
-  description: "Operations about user"
-  externalDocs:
-    description: "Find out more about our store"
-    url: "http://swagger.io"
+    email: "fithaus2021@gmail.com"
+host: "127.0.0.1:8000"
 schemes:
 - "https"
 - "http"
@@ -32,69 +14,120 @@ paths:
     post:
       tags:
       - "user"
-      summary: "Create user"
-      description: "This can only be done by the logged in user."
+      summary: "Crear usuari"
+      description: "Crear un usuari a la BD, es produeix quan aquest es registra per primer cop"
       operationId: "createUser"
       produces:
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User_creation"
+        - name: "username"
+          in: "query"
+          type: "string"
+          maxLength: 200
+        - name: "firstName"
+          in: "query"
+          type: "string"
+          maxLength: 200
+        - name: "lastName"
+          in: "query"
+          type: "string"
+          maxLength: 200
+        - name: "email"
+          in: "query"
+          type: "string"
+          maxLength: 200
+          format: "email"
+        - name: "password"
+          in: "query"
+          type: "string"
+          maxLength: 200
+          format: "password"
+        - name: "gender"
+          in: "query"
+          type: "string"
+          enum: [ M, W, X ]
+        - name: "birthdate"
+          in: "query"
+          type: "string"
+          maxLength: 200
+          format: "date"
+        - name: "activitiesdone"
+          in: "query"
+          type: "integer"
+          default: 0
+        - name: "achievements"
+          in: "query"
+          type: "string"
+          maxLength: 200
+        - name: "points"
+          in: "query"
+          type: "integer"
+          default: 0
+        - name: "level"
+          in: "query"
+          type: "integer"
+          default: 0
+        - name: "objective"
+          in: "query"
+          type: "string"
+          maxLength: 200
+        - name: "interestcategories"
+          in: "query"
+          type: "string"
+          maxLength: 200
+        - name: "weight"
+          in: "query"
+          type: "integer"
+          default: 0
+        - name: "height"
+          in: "query"
+          type: "integer"
+          default: 0
+        - name: "imc"
+          in: "query"
+          type: "integer"
+          default: 0
+        - name: "igc"
+          in: "query"
+          type: "integer"
+          default: 0
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            type: "string"
-          headers:
-            id_user:
-              type: "integer"
-              format: "int32"
-              description: "id user"
+          description: "Operació exitosa"
         "400":
-          description: "something went wrong"
+          description: "Usuari ja existeix"
 
   /user/login:
     get:
       tags:
       - "user"
-      summary: "Logs user into the system"
-      description: ""
+      summary: "Loggejar usuari"
+      description: "Loggeja un usuari <b>existent</b> al sistema"
       operationId: "loginUser"
       produces:
       - "application/json"
       parameters:
       - name: "email"
         in: "query"
-        description: "The user name for login"
+        description: "Email de l'usuari"
         required: true
         type: "string"
       - name: "password"
         in: "query"
-        description: "The password for login in clear text"
+        description: "Contrasenya de l'usuari"
         required: true
         type: "string"
       responses:
         "200":
-          description: "successful operation"
-          headers:
-            id_user:
-              type: "integer"
-              format: "int32"
-              description: "id user"
+          description: "Operació exitosa"
         "400":
-          description: "Invalid password supplied"
-        "404":
-          description: "User not exists"
+          description: "Credencials incorrectes"
 
   /user/{id}:
     get:
       tags:
       - "user"
-      summary: "Get user by id"
+      summary: "Obtenir informació de l'usuari"
       description: ""
       operationId: "getUserById"
       produces:
@@ -102,94 +135,96 @@ paths:
       parameters:
       - name: "id"
         in: "path"
+        description: "Id de l'usuari"
         required: true
         type: "string"
       responses:
         "200":
-          description: "successful operation"
+          description: "Operació exitosa"
           schema:
             $ref: "#/definitions/User"
         "400":
-          description: "Invalid id supplied"
-        "404":
-          description: "User not found"
-    put:
-      tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        "400":
-          description: "Invalid user id supplied"
-        "404":
-          description: "User not found"
-    delete:
-      tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
-      responses:
-        "400":
-          description: "Invalid user id supplied"
-        "404":
-          description: "User not found"
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+          description: "Alguna cosa no ha anat bé..."
+
+ #   put:
+ #     tags:
+ #     - "user"
+ #     summary: "Updated user"
+ #     description: "This can only be done by the logged in user."
+ #     operationId: "updateUser"
+ #     produces:
+ #     - "application/json"
+ #     parameters:
+ #     - name: "id"
+ #       in: "path"
+ #       description: "name that need to be updated"
+ #       required: true
+ #       type: "string"
+ #     - in: "body"
+ #       name: "body"
+ #       description: "Updated user object"
+ #       required: true
+ #       schema:
+ #         $ref: "#/definitions/User"
+ #     responses:
+ #       "400":
+ #         description: "Invalid user id supplied"
+ #       "404":
+ #         description: "User not found"
+ #   delete:
+ #     tags:
+ #     - "user"
+ #     summary: "Delete user"
+ #     description: "This can only be done by the logged in user."
+ #     operationId: "deleteUser"
+ #     produces:
+ #     - "application/json"
+ #     parameters:
+ #     - name: "id"
+ #       in: "path"
+ #       description: "The name that needs to be deleted"
+ #       required: true
+ #       type: "string"
+ #     responses:
+ #       "400":
+ #         description: "Invalid user id supplied"
+ #       "404":
+ #         description: "User not found"
+
+#securityDefinitions:
+ # petstore_auth:
+ #   type: "oauth2"
+ #   authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+ #   flow: "implicit"
+ #   scopes:
+ #     write:pets: "modify pets in your account"
+ #    read:pets: "read your pets"
+ # api_key:
+ #   type: "apiKey"
+ #   name: "api_key"
+ #   in: "header"
+
 definitions:
-  User_creation:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-      gender:
-        type: "string"
-      birthdate:
-        type: "string"
+  #User_creation:
+  #  type: "object"
+  #  properties:
+  #    id:
+  #      type: "integer"
+  #      format: "int64"
+  #    username:
+  #      type: "string"
+  #    firstName:
+  #      type: "string"
+  #    lastName:
+  #      type: "string"
+  #    email:
+  #      type: "string"
+  #    password:
+  #      type: "string"
+  #    gender:
+  #      type: "string"
+  #    birthdate:
+  #      type: "string"
   User:
     type: "object"
     properties:
@@ -198,47 +233,59 @@ definitions:
         format: "int64"
       username:
         type: "string"
+        maxLength: 200
       firstName:
         type: "string"
+        maxLength: 200
       lastName:
         type: "string"
+        maxLength: 200
       email:
         type: "string"
       password:
         type: "string"
       gender:
         type: "string"
+        enum: [M, W, X]
       birthdate:
         type: "string"
       activitiesdone:
         type: "integer"
-      points:
-        type: "integer"
+        default: 0
       achievements:
         type: "string"
+        maxLength: 200
+      points:
+        type: "integer"
+        default: 0
       level:
         type: "integer"
-      objectives:
+        default: 0
+      objective:
         type: "string"
+        maxLength: 200
       interestcategories:
         type: "string"
+        maxLength: 200
       weight:
         type: "integer"
+        default: 0
       height:
         type: "integer"
+        default: 0
       imc:
         type: "integer"
+        default: 0
       igc:
         type: "integer"
-      historic:
-        type: "integer"
-  ApiResponse:
-    type: "object"
-    properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
-        type: "string"
-      message:
-        type: "string"
+        default: 0
+  #ApiResponse:
+  #  type: "object"
+  #  properties:
+  #    code:
+  #      type: "integer"
+  #      format: "int32"
+  #    type:
+  #      type: "string"
+  #    message:
+  #      type: "string"

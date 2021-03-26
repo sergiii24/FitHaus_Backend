@@ -96,9 +96,9 @@ class UserRegistrationAPIViewTestCase(APITestCase):
 
         user_data_2 = {
             "username": "testuser",
-            "firstname": "testfirstname",
-            "lastname": "testlastname",
-            "email": "test@testuser.com",
+            "firstname": "testfirstname2",
+            "lastname": "testlastname2",
+            "email": "test2@testuser.com",
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
