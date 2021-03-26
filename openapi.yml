@@ -242,13 +242,19 @@ definitions:
         maxLength: 200
       email:
         type: "string"
+        maxLength: 200
+        format: "email"
       password:
         type: "string"
+        maxLength: 200
+        format: "password"
       gender:
         type: "string"
         enum: [M, W, X]
       birthdate:
         type: "string"
+        maxLength: 200
+        format: "date"
       activitiesdone:
         type: "integer"
         default: 0

@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
-from django.core.mail import EmailMessage
+import smtplib
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -42,7 +42,24 @@ def login(request):
 
 
 def post(m):
-    email = EmailMessage('Confirmed Account', 'Your account is confirmed :)', to=[m])
-    if email.send():
-        return Response(status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    print("HOLA")
+    gmail_user = 'fithaus2021@gmail.com'
+    gmail_password = 'ijgu ymik qeio zwew'
+    sent_from = gmail_user
+    to = [m]
+    subject = 'OMG Super Important Message'
+    body = "Hey, what's up?\n\n- You"
+
+    email_text = "Registre completat, enhorabona maquina!"
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(gmail_user, gmail_password)
+        server.sendmail(sent_from, to, email_text)
+        server.close()
+
+        print("Email sent!")
+    except Exception as e:
+        print("{}".format(e))
+    return Response(status=status.HTTP_200_OK)
