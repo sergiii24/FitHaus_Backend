@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.admindocs',
     'users',
+    'activities',
 
     'sslserver',
     'django_nose'
