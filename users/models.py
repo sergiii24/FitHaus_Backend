@@ -9,6 +9,10 @@ class User(models.Model):
     lastname = models.CharField(max_length=200)
     email = models.CharField(max_length=200, unique=True)
     password = models.CharField(max_length=200)
+    #check has lower and uppercase letter
+    #any(char.isupper() for char in password) and any(char.islower() for char in password)
+    # check has at least 1 number and at least 1 not alphanumeric char
+    #any(char.isnumeric() for char in password) and any(not char.isalpha() for char in password)
     POSIBLE_GENDERS = [
         ('M', 'Male'),
         ('W', 'Women'),

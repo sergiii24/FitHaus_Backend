@@ -3,7 +3,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
+from users.serializers import ModifyUserSerializer
 import smtplib
+
+global server
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,12 +23,32 @@ def api_root(request):
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
-        print("ABANS DEL IF")
         if serializer.is_valid():
-            post(serializer.get_attribute('email'))
+            postea(serializer.get_attribute('email'))
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def api_root(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+class DualSerializerViewSet(viewsets.ModelViewSet):
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.ListaGruppi
+        if self.action == 'retrieve':
+            return serializers.DettaglioGruppi
+        return serializers.Default  # I dont' know what you want for create/destroy/update.
 
 
 @api_view(['GET'])
@@ -41,8 +64,7 @@ def login(request):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-def post(m):
-    print("HOLA")
+def postea(m):
     gmail_user = 'fithaus2021@gmail.com'
     gmail_password = 'ijgu ymik qeio zwew'
     sent_from = gmail_user
@@ -50,11 +72,10 @@ def post(m):
     subject = 'OMG Super Important Message'
     body = "Hey, what's up?\n\n- You"
 
-    email_text = "Registre completat, enhorabona maquina!"
+    email_text = "Registre completat, enhorabona!"
 
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 587)
         server.login(gmail_user, gmail_password)
         server.sendmail(sent_from, to, email_text)
         server.close()
