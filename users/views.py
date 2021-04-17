@@ -3,7 +3,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
-from users.serializers import ModifyUserSerializer
 import smtplib
 
 global server
@@ -40,15 +39,6 @@ def api_root(request, username):
     if request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_200_OK)
-
-
-class DualSerializerViewSet(viewsets.ModelViewSet):
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return serializers.ListaGruppi
-        if self.action == 'retrieve':
-            return serializers.DettaglioGruppi
-        return serializers.Default  # I dont' know what you want for create/destroy/update.
 
 
 @api_view(['GET'])

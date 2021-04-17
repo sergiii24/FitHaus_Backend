@@ -1,40 +1,41 @@
+from django.core.validators import MinLengthValidator
 from django.db import models
+from .validators import correct_pwd
+
 
 # Create your models here.
 class User(models.Model):
-    #DADES PERSONALS
+    # DADES PERSONALS
     id = models.IntegerField
-    username = models.CharField(max_length=200, unique=True)
+    username = models.CharField(validators=[MinLengthValidator(4)], max_length=200, unique=True)
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
-    email = models.CharField(max_length=200, unique=True)
-    password = models.CharField(max_length=200)
-    #check has lower and uppercase letter
-    #any(char.isupper() for char in password) and any(char.islower() for char in password)
-    # check has at least 1 number and at least 1 not alphanumeric char
-    #any(char.isnumeric() for char in password) and any(not char.isalpha() for char in password)
+    email = models.EmailField(max_length=200, unique=True)
+    password = models.CharField(validators=[MinLengthValidator(8), correct_pwd], max_length=200)
+
     POSIBLE_GENDERS = [
         ('M', 'Male'),
         ('W', 'Women'),
         ('X', 'Undefined')
     ]
-    gender = models.CharField(max_length=200, choices=POSIBLE_GENDERS)
+    gender = models.CharField(max_length=1, choices=POSIBLE_GENDERS)
     birthdate = models.DateField()
-    #DADES ESPORTIVES
+    # DADES ESPORTIVES
     activitiesdone = models.IntegerField(default=0)
     achivements = models.CharField(max_length=200)
     points = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
     objective = models.CharField(max_length=200)
     interestcategories = models.CharField(max_length=200)
-    #DADES FISIQUES
-    weight = models.IntegerField(default=0)
-    height = models.IntegerField(default=0)
+    # DADES FISIQUES
+    weight = models.FloatField(default=0)
+    height = models.FloatField(default=0)
     imc = models.IntegerField(default=0)
     igc = models.IntegerField(default=0)
-    #historical????????
+
+    # historical????????
+
 
     def __str__(self):
-        return self.name
-
+        return self.username
 
