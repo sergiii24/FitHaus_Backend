@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
@@ -20,7 +20,7 @@ def login(request):
     try:
         user = User.objects.get(email=m)
         if user.password == pwd:
-             return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
     except User.DoesNotExist:
         return Response(status=status.HTTP_401_UNAUTHORIZED)

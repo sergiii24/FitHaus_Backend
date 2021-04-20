@@ -32,10 +32,11 @@ class User(models.Model):
     height = models.FloatField(default=0)
     imc = models.IntegerField(default=0)
     igc = models.IntegerField(default=0)
+    updated = models.DateTimeField(auto_now=True) #DATA DARRERA MODIFICACIO
 
     # historical????????
 
 
     def __str__(self):
-        return self.username
+        return self.id
 

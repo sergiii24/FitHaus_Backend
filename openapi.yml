@@ -235,25 +235,25 @@ paths:
           description: "Operació exitosa"
         "400":
           description: "Usuari no trobat"
- #   delete:
- #     tags:
- #     - "user"
- #     summary: "Delete user"
- #     description: "This can only be done by the logged in user."
- #     operationId: "deleteUser"
- #     produces:
- #     - "application/json"
- #     parameters:
- #     - name: "id"
- #       in: "path"
- #       description: "The name that needs to be deleted"
- #       required: true
- #       type: "string"
- #     responses:
- #       "400":
- #         description: "Invalid user id supplied"
- #       "404":
- #         description: "User not found"
+    delete:
+     tags:
+     - "user"
+     summary: "Eliminar usuari"
+     description: ""
+     operationId: "deleteUser"
+     produces:
+     - "application/json"
+     parameters:
+     - name: "id"
+       in: "path"
+       description: "Id de l'usuari a eliminar"
+       required: true
+       type: "string"
+     responses:
+       "200":
+         description: "Operació exitosa"
+       "404":
+         description: "User not found"
 
 #securityDefinitions:
  # petstore_auth:
