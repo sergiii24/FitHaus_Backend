@@ -1,6 +1,5 @@
 from django.db import models
 from activities.models import Activity
-import django.db.models.deletion
 
 
 class Category(models.Model):
