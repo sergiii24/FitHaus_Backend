@@ -2,6 +2,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from .validators import correct_pwd
 from computed_property import ComputedFloatField
+from django.core.validators import MinValueValidator
 import datetime
 
 
@@ -27,27 +28,27 @@ class User(models.Model):
     achivements = models.CharField(max_length=200)
     points = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
-    objective = models.CharField(max_length=200)
-    interestcategories = models.CharField(max_length=200)
+    #objective =
+    #interestcategories =
     # DADES FISIQUES
-    weight = models.FloatField(default=0)
-    height = models.FloatField(default=0)
+    weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
+    height = models.FloatField(default=0, validators=[MinValueValidator(1)])
     imc = ComputedFloatField(compute_from='calc_imc')
     igc = ComputedFloatField(compute_from='calc_igc')
-    # 1,2 x (IMC) + 0,23 x (Nuestra edad) – 10,8 x (sexo) – 5,4
-    updated = models.DateTimeField(auto_now=True)  # DATA DARRERA MODIFICACIO
+    # DATA DARRERA MODIFICACIO PERFIL
+    updated = models.DateTimeField(auto_now=True)
 
     # historical????????
 
     @property
     def calc_imc(self):
-        imc = self.weight / (self.height * self.height)
+        imc = self.weight / ((self.height / 100) * (self.height / 100))
         return imc
 
     def calc_igc(self):
         edat = datetime.date.today().year - self.birthdate.year
-        sexe = (self.gender == 'M')
-        igc = 1.2 * (self.imc) + 0.23 * (edat) - 10.8 * (sexe) - 5.4
+        sexe = ('M' == self.gender)
+        igc = 1.2 * self.imc + 0.23 * edat - 10.8 * sexe - 5.4
         return igc
 
     def __str__(self):
