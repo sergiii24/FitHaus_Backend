@@ -23,4 +23,6 @@ urlpatterns = [
     path('', include('categories.urls')),
     path('', include('exercises.urls')),
     path('', include('classes.urls')),
+    path('', include('objectives.urls')),
+    path('', include('routines.urls')),
 ]

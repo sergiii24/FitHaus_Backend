@@ -12,10 +12,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name='Objective',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.CharField(choices=[('S', 'Strength'), ('C', 'Cardio'), ('Y', 'Yoga'), ('E', 'Stretching'), ('R', 'Rehabilitation'), ('P', 'Pilates')], default='S', max_length=30)),
+                ('objective', models.CharField(choices=[('S', 'Salut'), ('F', 'Força'), ('P', 'Perdua'), ('F', 'Flexibilitat'), ('RS', 'Resistencia'), ('RC', 'Recuperacio'), ('A', 'Agilitat')], max_length=100)),
             ],
         ),
     ]

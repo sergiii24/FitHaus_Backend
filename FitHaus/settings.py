@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'categories',
     'exercises',
     'classes',
+    'objectives',
+    'routines',
 
     'sslserver',
     'django_nose',

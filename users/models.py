@@ -3,6 +3,8 @@ from django.db import models
 from .validators import correct_pwd
 from computed_property import ComputedFloatField
 from django.core.validators import MinValueValidator
+from objectives.models import Objective
+from categories.models import Category
 import datetime
 
 
@@ -28,8 +30,8 @@ class User(models.Model):
     achivements = models.CharField(max_length=200)
     points = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
-    #objective =
-    #interestcategories =
+    objectives = models.ManyToManyField(Objective)
+    categories = models.ManyToManyField(Category)
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
@@ -45,6 +47,7 @@ class User(models.Model):
         imc = self.weight / ((self.height / 100) * (self.height / 100))
         return imc
 
+    @property
     def calc_igc(self):
         edat = datetime.date.today().year - self.birthdate.year
         sexe = ('M' == self.gender)
@@ -53,3 +56,11 @@ class User(models.Model):
 
     def __str__(self):
         return self.id
+
+    @property
+    def Nobjectives(self):
+        return models.Count(self.objectives)
+
+    @property
+    def Ncategories(self):
+        return models.Count(self.categories)
