@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'users',
     'activities',
+    'categories',
 
     'sslserver',
-    'django_nose'
+    'django_nose',
+    'multiselectfield',
 ]
 
 REST_FRAMEWORK = {
