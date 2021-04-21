@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -25,24 +25,9 @@ class Activity(models.Model):
         ('H', 'Hard')
     ]
     difficulty = models.CharField(max_length=30, choices=POSIBLE_DIFFICULTY)
-    length = models.IntegerField()
+    length = models.IntegerField(validators=[MinValueValidator(1)])
 
     # pre = models.ImageField(upload_to='albums/images/')
 
     def __str__(self):
         return self.name
-
-
-
-
-class Class(Activity):
-    # video = models.CharField(max_length=2)
-    trainer = models.CharField(max_length=30)
-    POSIBLE_WORKAREA = [
-        ('UB', 'Upper Body'),
-        ('LB', 'Lower Body'),
-        ('FB', 'Full Body'),
-        ('C', 'Core')
-    ]
-    workarea = models.CharField(choices=POSIBLE_WORKAREA, max_length=200, default='FB')
-

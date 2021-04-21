@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('activities.urls')),
     path('', include('categories.urls')),
     path('', include('exercises.urls')),
+    path('', include('classes.urls')),
 ]
