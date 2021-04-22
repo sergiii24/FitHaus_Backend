@@ -1,7 +1,10 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+
 from categories.models import Category
 from exercises.models import Exercise
 from classes.models import Classes
+
 
 # Create your models here.
 
@@ -18,6 +21,10 @@ class Routine(models.Model):
     categories = models.ManyToManyField(Category)
     exercises = models.ManyToManyField(Exercise)
     classes = models.ManyToManyField(Classes)
+
+    def clean(self):
+        if self.exercises.exists() & self.classes.exists():
+            raise ValidationError("ERROR")
 
     def __str__(self):
         return self.name

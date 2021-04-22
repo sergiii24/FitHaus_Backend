@@ -3,7 +3,7 @@ from activities.models import Activity
 
 
 class Classes(models.Model):
-    activity = models.OneToOneField(Activity, primary_key=True, on_delete=models.CASCADE, related_name='class2activity')
+    activity = models.OneToOneField(Activity, on_delete=models.CASCADE, related_name='class2activity')
     #video = models.FileField('/videos/')
     trainer = models.CharField(max_length=30)
     POSIBLE_WORKAREA = [

@@ -58,9 +58,9 @@ class User(models.Model):
         return self.id
 
     @property
-    def Nobjectives(self):
+    def n_objectives(self):
         return models.Count(self.objectives)
 
     @property
-    def Ncategories(self):
+    def n_categories(self):
         return models.Count(self.categories)
