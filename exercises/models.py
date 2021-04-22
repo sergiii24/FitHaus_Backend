@@ -5,7 +5,9 @@ from activities.models import Activity
 # Create your models here.
 class Exercise(models.Model):
     activity = models.OneToOneField(Activity, on_delete=models.CASCADE, related_name='exercise2activity')
-    #video = models.FileField
+    muscleimage = models.ImageField(upload_to='exercise_images', default=None)
+    videotutorial = models.FileField(upload_to='exercise_videos', default=None)
+    videoexercise = models.FileField(upload_to='exercise_videos', default=None)
     POSIBLE_MUSCLE = [
         ('Bi', 'Biceps'),
         ('Tr', 'Triceps'),

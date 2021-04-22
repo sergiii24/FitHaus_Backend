@@ -4,7 +4,7 @@ from activities.models import Activity
 
 class Classes(models.Model):
     activity = models.OneToOneField(Activity, on_delete=models.CASCADE, related_name='class2activity')
-    #video = models.FileField('/videos/')
+    videoclass = models.FileField(upload_to='class_videos', default=None)
     trainer = models.CharField(max_length=30)
     POSIBLE_WORKAREA = [
         ('UB', 'Upper Body'),

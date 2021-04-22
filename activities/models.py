@@ -1,11 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from categories.models import Category
-from django.core.files.storage import FileSystemStorage
 
-
-fs = FileSystemStorage(location='/images')
-
+# Create your models here.
 
 class Activity(models.Model):
     id = models.IntegerField
@@ -31,8 +28,7 @@ class Activity(models.Model):
     difficulty = models.CharField(max_length=30, choices=POSIBLE_DIFFICULTY)
     length = models.IntegerField(validators=[MinValueValidator(1)])
     categories = models.ManyToManyField(Category)
-
-    pre = models.ImageField(storage=fs)
+    pre = models.ImageField(upload_to='activities_images')
 
     def __str__(self):
         return self.name
