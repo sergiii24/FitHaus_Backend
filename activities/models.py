@@ -1,8 +1,11 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from categories.models import Category
+from django.core.files.storage import FileSystemStorage
 
-# Create your models here.
+
+fs = FileSystemStorage(location='/images')
+
 
 class Activity(models.Model):
     id = models.IntegerField
@@ -29,7 +32,7 @@ class Activity(models.Model):
     length = models.IntegerField(validators=[MinValueValidator(1)])
     categories = models.ManyToManyField(Category)
 
-    # pre = models.ImageField(upload_to='albums/images/')
+    pre = models.ImageField(storage=fs)
 
     def __str__(self):
         return self.name
