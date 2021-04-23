@@ -11,3 +11,6 @@ class Category(models.Model):
         ('P', 'Pilates')
     ]
     category = models.CharField(choices=POSIBLE_CATEGORY, max_length=30, default='S', unique=True)
+
+    def __str__(self):
+        return self.category

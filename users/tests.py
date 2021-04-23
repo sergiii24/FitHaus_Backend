@@ -2,71 +2,73 @@
 
 import json
 
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.test import APITestCase
+from users.models import User
+from rest_framework import status
 
 
 # TESTOS DE CREACIO/REGISTRE
 class UserRegistrationAPIViewTestCase(APITestCase):
-    url = reverse("users:list")
-
     def test_invalid_password(self):
         """
         Test to verify that a post call with invalid passwords
         """
-        user_data = {
-            "username": "testuser",
-            "firstname": "testfirstname",
-            "lastname": "testlastname",
-            "email": "test@testuser.com",
-            "password": "dedede",
-            "gender": "K",  # DATA NO VALIDA (HAURIA DE SER M,F O X)
-            "birthdate": "03-23-1990",  # DATA NO VALIDA (FORMAT CORRECTE: yyyy-mm-dd)
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
-        }
-        response = self.client.post(self.url, user_data)
-        self.assertEqual(400, response.status_code)
+        url = reverse("users-list")
+        user_data = {"id": "1",
+                     "username": "testuser",
+                     "firstname": "testfirstname",
+                     "lastname": "testlastname",
+                     "email": "test@testuser.com",
+                     "password": "dedede",
+                     "gender": "K",  # DATA NO VALIDA (HAURIA DE SER M,F O X)
+                     "birthdate": "03-23-1990",  # DATA NO VALIDA (FORMAT CORRECTE: yyyy-mm-dd)
+                     "activitiesdone": "1",
+                     "achivements": "1",
+                     "points": "1",
+                     "level": "1",
+                     "objective": "1",
+                     "interestcategories": "1",
+                     "weight": "1",
+                     "height": "1",
+                     "imc": "1",
+                     "igc": "1"}
+        response = self.client.post(url, user_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_invalid_email(self):
         """
         Test to verify that a post call with invalid email
         """
+        url = reverse("users-list")
         user_data = {
             "username": "testuser",
             "firstname": "testfirstname",
             "lastname": "testlastname",
-            "email": "testusermail", #SHOULD HAVE A CORRECT MAIL FORMAT
+            "email": "testusermail",  # SHOULD HAVE A CORRECT MAIL FORMAT
             "password": "C1d#dedede",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data)
+        response = self.client.post(url, user_data)
         self.assertEqual(400, response.status_code)
 
     def test_user_registration(self):
         """
         Test to verify that a post call with user valid data
         """
+        url = reverse("users-list")
         user_data = {
             "username": "testuser",
             "firstname": "testfirstname",
@@ -75,18 +77,18 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "password": "C1d#dedede",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data)
+        response = self.client.post(url, user_data)
         self.assertEqual(201, response.status_code)
         self.assertTrue("token" in json.loads(response.content))
 
@@ -94,6 +96,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
         """
         Test to verify that a post call with already exists username
         """
+        url = reverse("users-list")
         user_data_1 = {
             "username": "testuser",
             "firstname": "testfirstname",
@@ -102,18 +105,18 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data_1)
+        response = self.client.post(url, user_data_1)
         self.assertEqual(201, response.status_code)
 
         user_data_2 = {
@@ -124,24 +127,25 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data_2)
+        response = self.client.post(url, user_data_2)
         self.assertEqual(400, response.status_code)
 
     def test_unique_mail_validation(self):
         """
         Test to verify that a post call with already exists username
         """
+        url = reverse("users-list")
         user_data_1 = {
             "username": "testuser",
             "firstname": "testfirstname",
@@ -150,18 +154,18 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data_1)
+        response = self.client.post(url, user_data_1)
         self.assertEqual(201, response.status_code)
 
         user_data_2 = {
@@ -172,30 +176,30 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data_2)
+        response = self.client.post(url, user_data_2)
         self.assertEqual(400, response.status_code)
 
 
 # TESTOS DE MODIFICACIO
 class UserModificationAPIViewTestCase(APITestCase):
-    url = reverse("users:list")
 
     def test_correct_changes(self):
         """
         Test to verify that a patch call changing different fields work
         """
-        user_data_1 = { #ORIGINAL DATA
+        url = reverse("users-list")
+        user_data_1 = {  # ORIGINAL DATA
             "username": "testuser",
             "firstname": "testfirstname",
             "lastname": "testlastname",
@@ -203,18 +207,18 @@ class UserModificationAPIViewTestCase(APITestCase):
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
-            "points": "0",
-            "level": "0",
-            "objective": "0",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
-            "imc": "0",
-            "igc": "0"
+            "activitiesdone": "1",
+            "achivements": "1",
+            "points": "1",
+            "level": "1",
+            "objective": "1",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
+            "imc": "1",
+            "igc": "1"
         }
-        response = self.client.post(self.url, user_data_1)
+        response = self.client.post(url, user_data_1)
         self.assertEqual(201, response.status_code)
 
         user_data_2 = {
@@ -225,26 +229,23 @@ class UserModificationAPIViewTestCase(APITestCase):
             "password": "123123",
             "gender": "M",
             "birthdate": "1990-03-23",
-            "activitiesdone": "0",
-            "achivements": "0",
+            "activitiesdone": "1",
+            "achivements": "1",
             "points": "4",
-            "level": "0",
+            "level": "1",
             "objective": "4",
-            "interestcategories": "0",
-            "weight": "0",
-            "height": "0",
+            "interestcategories": "1",
+            "weight": "1",
+            "height": "1",
             "imc": "60",
             "igc": "5"
         }
-        response = self.client.patch(self.url, user_data_2)
+        response = self.client.patch(url, user_data_2)
         self.assertEqual(201, response.status_code)
-
-
 
 
 # TESTOS DE LOG IN
 class UserLoginAPIViewTestCase(APITestCase):
-    url = reverse("users:login")
 
     def setUp(self):
         self.email = "john@snow.com"
@@ -252,21 +253,20 @@ class UserLoginAPIViewTestCase(APITestCase):
         self.user = User.objects.create_user(self.email, self.password)
 
     def test_authentication_without_password(self):
-        response = self.client.post(self.url, {"email": "snowman@mail.test"})
+        url = reverse("users-list")
+        response = self.client.post(url, {"email": "snowman@mail.test"})
         self.assertEqual(400, response.status_code)
 
     def test_authentication_with_wrong_password(self):
-        response = self.client.post(self.url, {"email": self.email, "password": "I_know"})
+        url = reverse("users-list")
+        response = self.client.post(url, {"email": self.email, "password": "I_know"})
         self.assertEqual(400, response.status_code)
 
     def test_authentication_with_valid_data(self):
-        response = self.client.post(self.url, {"email": self.email, "password": self.password})
+        url = reverse("users-list")
+        response = self.client.post(url, {"email": self.email, "password": self.password})
         self.assertEqual(200, response.status_code)
         self.assertTrue("auth_token" in json.loads(response.content))
-
-
-
-
 
 # ELS TESTOS SEGÜENTS NO SON NECESSARIS PER AQUEST SPRINT
 # class UserTokenAPIViewTestCase(APITestCase):
