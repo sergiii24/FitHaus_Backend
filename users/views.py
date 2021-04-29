@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
+from django.http import JsonResponse
 import smtplib
 
 global server
@@ -46,3 +47,11 @@ def postea(m):
     except Exception as e:
         print("{}".format(e))
     return Response(status=status.HTTP_200_OK)
+
+
+def stats(request, id):
+    try:
+        user = User.objects.get(id=id)
+        return JsonResponse(user.estadisticas, safe=False)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

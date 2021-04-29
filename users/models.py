@@ -54,5 +54,14 @@ class User(models.Model):
         igc = 1.2 * self.imc + 0.23 * edat - 10.8 * sexe - 5.4
         return igc
 
+    @property
+    def estadisticas(self):
+        ad = self.activitiesdone
+        ach = self.achivements
+        p = self.points
+        l = self.level
+        stats = [ad, ach, p, l]
+        return stats
+
     def __str__(self):
         return self.id
