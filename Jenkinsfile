@@ -3,14 +3,14 @@ pipeline {
  stages {
     stage('Build Environment') {
         steps{
-            sh 'pip install -r requirements.txt'
+            sh 'pip install -r requirements-dev.txt'
         }
     }
 
     stage('Static code metrics') {
         steps {
             echo "Style check"
-            sh ''' pylint -d C0301 main.py transform.py '''
+            sh ''' pylint -d C0301 server '''
             echo "Code Coverage"
             sh ''' coverage run -m unittest discover '''
             sh ''' python -m coverage xml -o reports/coverage.xml '''
