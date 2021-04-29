@@ -9,7 +9,7 @@ router.register(r'users', views.UserViewSet)
 urlpatterns = [
     path('users/login/', views.login),
     path('users/<int:id>/stats/', views.stats),
-    path('users/ranking/', views.ranking),
+    path('ranking/', views.UserRankingViewSet.as_view({'get':'list'})),
     path('', include(router.urls))
 ]
 # The API URLs are now determined automatically by the router.
