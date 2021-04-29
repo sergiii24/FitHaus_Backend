@@ -55,3 +55,11 @@ def stats(request, id):
         return JsonResponse(user.estadisticas, safe=False)
     except User.DoesNotExist:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+def ranking(request):
+    try:
+        users = User.objects.order_by('points').get()
+        return JsonResponse(users, safe=False)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
