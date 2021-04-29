@@ -26,14 +26,3 @@ class Routine(models.Model):
     def __str__(self):
         return self.name
 
-
-def is_correct(sender, action, **kwargs):
-    if action == "pre_add":
-        instance = kwargs.pop('instance', None)
-        instance.name = "JJJ"
-        if instance.exercises.exists() & instance.classes.exists():
-            raise ValidationError("ERROR")
-        instance.save()
-
-
-m2m_changed.connect(is_correct, sender=[Routine.exercises.through, Routine.classes.through])

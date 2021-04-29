@@ -56,11 +56,3 @@ class User(models.Model):
 
     def __str__(self):
         return self.id
-
-    @property
-    def n_objectives(self):
-        return models.Count(self.objectives)
-
-    @property
-    def n_categories(self):
-        return models.Count(self.categories)

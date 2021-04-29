@@ -1,10 +1,13 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+
 from activities.models import Activity
 
 
 # Create your models here.
-class Exercise(models.Model):
-    activity = models.OneToOneField(Activity, on_delete=models.CASCADE, related_name='exercise2activity')
+
+
+class Exercise(Activity):
     muscleimage = models.ImageField(upload_to='exercise_images', default=None)
     videotutorial = models.FileField(upload_to='exercise_videos', default=None)
     videoexercise = models.FileField(upload_to='exercise_videos', default=None)
@@ -22,3 +25,7 @@ class Exercise(models.Model):
         ('Co', 'Core')
     ]
     muscle = models.CharField(choices=POSIBLE_MUSCLE, max_length=200, default='Bi')
+
+
+
+
