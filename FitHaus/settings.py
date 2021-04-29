@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'u7q86=41#02s*r2r%&*&^&7uq9a)+#3h!6@z$)(gev++36mwno'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.248']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'changeme',
-        'HOST': 'localhost',
+        'HOST': 'db_postgres',
         'PORT': '5432',
     }
 }
@@ -136,6 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/code/static/'
 
 #Mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
