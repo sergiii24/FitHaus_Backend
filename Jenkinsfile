@@ -10,7 +10,7 @@ pipeline {
     stage('Static code metrics') {
         steps {
             echo "Style check"
-            sh ''' pylint -d C0301 server '''
+            sh ''' pylint -d C0301 activities '''
             echo "Code Coverage"
             sh ''' coverage run -m unittest discover '''
             sh ''' python -m coverage xml -o reports/coverage.xml '''
