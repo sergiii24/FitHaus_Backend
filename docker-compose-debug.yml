@@ -4,26 +4,15 @@ services:
   app:
     build:
       context: ..
+    ports:
+      - "8000:8000"
     volumes:
-      - static_data:/code
+      - ./app:/app
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
     environment:
-      - ALLOWED_HOSTS=*
-    networks:
-      - fithaus
+      - DEBUG=1
     depends_on:
       - postgres
-
-  proxy:
-    build:
-      context: proxy
-    volumes:
-      - static_data:/code/static
-    ports:
-      - "8080:8080"
-    networks:
-      - fithaus
-    depends_on:
-      - app
 
   postgres:
     image: postgres
@@ -33,16 +22,10 @@ services:
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
-    networks:
-    - fithaus
     ports:
       - "5432:5432"
     restart: unless-stopped
 
 volumes:
-  static_data:
+  app:
   postgres:
-
-networks:
-  fithaus:
-    driver: bridge

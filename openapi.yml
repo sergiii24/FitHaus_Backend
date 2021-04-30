@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Servidor de l'aplicació FitHaus de l'assignatura PES. Aquí podràs trobar operacions per gestionar usuaris del sistema."
+  description: "Servidor de l'aplicació fithaus de l'assignatura PES. Aquí podràs trobar operacions per gestionar usuaris del sistema."
   version: "1.0.0"
   title: "SERVIDOR FITHAUS"
   contact:
