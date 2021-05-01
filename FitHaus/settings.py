@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'classes',
     'objectives',
     'routines',
+    'PredefinedRoutine',
+    'CustomRoutine',
     'django_filters',
 
     'sslserver',

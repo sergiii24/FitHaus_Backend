@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
+from users.serializers import UserRankingSerializer
 from django.http import JsonResponse
 import smtplib
 
@@ -56,10 +57,7 @@ def stats(request, id):
     except User.DoesNotExist:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-def ranking(request):
-    try:
-        users = User.objects.order_by('points').get()
-        return JsonResponse(users, safe=False)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class UserRankingViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.order_by('-points')
+    serializer_class = UserRankingSerializer

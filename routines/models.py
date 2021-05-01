@@ -1,10 +1,7 @@
-from django.core.exceptions import ValidationError
 from django.db import models
-
 from categories.models import Category
 from exercises.models import Exercise
 from classes.models import Classes
-from django.db.models.signals import m2m_changed
 
 
 # Create your models here.
@@ -25,4 +22,7 @@ class Routine(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        abstract = True
 
