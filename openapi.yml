@@ -492,60 +492,110 @@ paths:
         "400":
           description: "Alguna cosa no ha anat bé..."
 
-  /routines:
+  /customroutines:
     post:
       tags:
-        - "routine"
-      summary: "Crear rutina"
-      description: "Crear un rutina a la BD"
-      operationId: "createRoutine"
+        - "custom routine"
+      summary: "Crear rutina personalitzada"
+      description: "Crear un rutina personalitzada a la BD, hereta del model routines"
+      operationId: "createCustomRoutine"
       produces:
         - "application/json"
       parameters:
-        - name: "name"
+        - name: "public"
           in: "query"
-          type: "string"
-        - name: "description"
-          in: "query"
-          type: "string"
-        - name: "time"
-          in: "query"
-          type: "string"
-          enum: [ P,R,F ]
-        - name: "categories"
-          in: "query"
-          type: "string"
-        - name: "exercises"
-          in: "query"
-          type: "string"
-        - name: "classes"
+          type: "boolean"
+        - name: "user"
           in: "query"
           type: "string"
       responses:
         "200":
           description: "Operació exitosa"
         "400":
-          description: "Rutina ja existeix"
-  /routines/{id}:
+          description: "Rutina personalitzada ja existeix"
+  /customroutines/{id}:
     get:
       tags:
-        - "routine"
-      summary: "Obtenir informació de la rutina"
+        - "custom routine"
+      summary: "Obtenir informació de la rutina personalitzada"
       description: ""
-      operationId: "getRoutineById"
+      operationId: "getCustomRoutineById"
       produces:
         - "application/json"
       parameters:
         - name: "id"
           in: "path"
-          description: "Id de la rutina"
+          description: "Id de la rutina personalitzada"
           required: true
           type: "string"
       responses:
         "200":
           description: "Operació exitosa"
           schema:
-            $ref: "#/definitions/Routine"
+            $ref: "#/definitions/CustomRoutine"
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+
+  /predefinedroutines:
+    post:
+      tags:
+        - "predefined routine"
+      summary: "Crear rutina predefinida"
+      description: "Crear un rutina predefinida a la BD, hereta del model routines"
+      operationId: "createCustomRoutine"
+      produces:
+        - "application/json"
+      parameters:
+      - name: "age"
+        in: "query"
+        type: "string"
+        enum: [ K,T,A,E ]
+      - name: "level"
+        in: "query"
+        type: "string"
+        enum: [ P,I,A ]
+      - name: "equipment"
+        in: "query"
+        type: "string"
+        enum: [ W,HM,K,D,B,RB,RL,FR ]
+      - name: "objective"
+        in: "query"
+        type: "string"
+      - name: "impact"
+        in: "query"
+        type: "string"
+        enum: [ L,M,H ]
+      - name: "image"
+        in: "query"
+        type: "string"
+      - name: "user"
+        in: "query"
+        type: "integer"
+      responses:
+        "200":
+          description: "Operació exitosa"
+        "400":
+          description: "Rutina predefinida ja existeix"
+  /predefinedroutines/{id}:
+    get:
+      tags:
+        - "predefined routine"
+      summary: "Obtenir informació de la rutina predefinida"
+      description: ""
+      operationId: "getPredefinedRoutineById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id de la rutina predefinida"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          schema:
+            $ref: "#/definitions/PredefinedRoutine"
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -564,26 +614,6 @@ paths:
  #   in: "header"
 
 definitions:
-  #User_creation:
-  #  type: "object"
-  #  properties:
-  #    id:
-  #      type: "integer"
-  #      format: "int64"
-  #    username:
-  #      type: "string"
-  #    firstName:
-  #      type: "string"
-  #    lastName:
-  #      type: "string"
-  #    email:
-  #      type: "string"
-  #    password:
-  #      type: "string"
-  #    gender:
-  #      type: "string"
-  #    birthdate:
-  #      type: "string"
   User:
     type: "object"
     properties:
@@ -736,6 +766,42 @@ definitions:
         type: "object"
       classes:
         type: "object"
+
+  CustomRoutine:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      public:
+        type: "boolean"
+      user:
+        type: "integer"
+
+  PredefinedRoutine:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      age:
+        type: "string"
+        enum: [ K,T,A,E ]
+      level:
+        type: "string"
+        enum: [ P,I,A ]
+      equipment:
+        type: "string"
+        enum: [ W,HM,K,D,B,RB,RL,FR ]
+      objective:
+        type: "object"
+      impact:
+        type: "string"
+        enum: [ L,M,H ]
+      image:
+        type: "string"
+      users:
+        type: "integer"
 
 
 
