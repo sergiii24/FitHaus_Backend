@@ -261,6 +261,8 @@ paths:
       summary: "Crear activitat"
       description: "Crear una activitat a la BD"
       operationId: "createActivity"
+      consumes:
+        - "multipart/form-data"
       produces:
         - "application/json"
       parameters:
@@ -284,9 +286,15 @@ paths:
           in: "query"
           type: "string"
           enum: [ E,M,H ]
+        - name: "length"
+          in: "query"
+          type: "integer"
         - name: "categories"
           in: "query"
           type: "string"
+        - name: "pre"
+          in: "formData"
+          type: "file"
       responses:
         "200":
           description: "Operació exitosa"
@@ -364,9 +372,14 @@ paths:
       summary: "Crear classe"
       description: "Crear una classe a la BD"
       operationId: "createClass"
+      consumes:
+        - "multipart/form-data"
       produces:
         - "application/json"
       parameters:
+        - name: "videoclass"
+          in: "formData"
+          type: "file"
         - name: "activity"
           in: "query"
           type: "string"
@@ -412,9 +425,20 @@ paths:
       summary: "Crear exercici"
       description: "Crear un exercici a la BD"
       operationId: "createExercise"
+      consumes:
+        - "multipart/form-data"
       produces:
         - "application/json"
       parameters:
+        - name: "muscleimage"
+          in: "formData"
+          type: "file"
+        - name: "videotutorial"
+          in: "formData"
+          type: "file"
+        - name: "videoexercise"
+          in: "formData"
+          type: "file"
         - name: "activity"
           in: "query"
           type: "string"
