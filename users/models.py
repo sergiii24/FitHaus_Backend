@@ -64,4 +64,4 @@ class User(models.Model):
         return stats
 
     def __str__(self):
-        return self.id
+        return self.username
