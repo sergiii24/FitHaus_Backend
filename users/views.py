@@ -2,9 +2,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from users.models import User
 from users.serializers import UserSerializer
 from users.serializers import UserRankingSerializer
+from users.serializers import UserStatsSerializer
 from django.http import JsonResponse
 import smtplib
 
