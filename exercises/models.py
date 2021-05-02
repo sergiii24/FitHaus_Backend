@@ -21,7 +21,7 @@ class Exercise(Activity):
         ('Gl', 'Gluteus'),
         ('Fe', 'Femoral'),
         ('Qu', 'Quadriceps'),
-        ('Cm', 'Calf Muscle'),
+        ('Ca', 'Calf'),
         ('Co', 'Core')
     ]
     muscle = models.CharField(choices=POSIBLE_MUSCLE, max_length=200, default='Bi')

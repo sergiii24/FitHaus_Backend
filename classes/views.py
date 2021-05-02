@@ -10,4 +10,4 @@ class ClassViewSet(viewsets.ModelViewSet):
     queryset = Classes.objects.all()
     serializer_class = ClassSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['trainer', 'workarea']
+    filterset_fields = ['name', 'type', 'age', 'difficulty', 'workarea', 'categories']

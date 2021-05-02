@@ -10,4 +10,4 @@ class ExercisesViewSet(viewsets.ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['muscle']
+    filterset_fields = ['name', 'type', 'age', 'difficulty', 'muscle', 'categories']
