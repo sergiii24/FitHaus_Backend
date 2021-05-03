@@ -51,7 +51,16 @@ class User(models.Model):
     def calc_igc(self):
         edat = datetime.date.today().year - self.birthdate.year
         sexe = ('M' == self.gender)
-        igc = 1.2 * self.imc + 0.23 * edat - 10.8 * sexe - 5.4
+        if edat < 16:
+            if sexe:
+                igc = 1.51 * self.imc - 0.7 * edat - 3.6 + 1.4
+            else:
+                igc = 1.51 * self.imc - 0.7 * edat + 1.4
+        else:
+            if sexe:
+                igc = 1.39 * self.imc + 0.16 * edat - 10.34 - 9
+            else:
+                igc = 1.39 * self.imc + 0.16 * edat - 9
         return igc
 
     @property
