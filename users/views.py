@@ -6,7 +6,6 @@ from users.models import User
 from users.serializers import UserSerializer
 from users.serializers import UserStatsSerializer
 from users.serializers import UserRankingSerializer
-from django.http import JsonResponse
 import smtplib
 global server
 

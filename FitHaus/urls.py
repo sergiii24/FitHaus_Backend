@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('exercises.urls'), name='exercises'),
     path('', include('classes.urls'), name='classes'),
     path('', include('objectives.urls'), name='objectives'),
-    #path('', include('routines.urls'), name='routines'),
+    path('', include('trainings.urls'), name='trainings'),
     path('', include('PredefinedRoutine.urls'), name='predefinedroutines'),
     path('', include('CustomRoutine.urls'), name='customroutines'),
 ]

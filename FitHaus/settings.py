@@ -52,8 +52,9 @@ INSTALLED_APPS = [
     'routines',
     'PredefinedRoutine',
     'CustomRoutine',
-    'django_filters',
+    'trainings',
 
+    'django_filters',
     'sslserver',
     'django_nose',
     'multiselectfield',

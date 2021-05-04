@@ -97,7 +97,7 @@ paths:
         "400":
           description: "Usuari ja existeix"
 
-  /user/login:
+  /users/login:
     get:
       tags:
       - "user"
@@ -253,75 +253,6 @@ paths:
          description: "Operació exitosa"
        "404":
          description: "User not found"
-
-  /activities:
-    post:
-      tags:
-        - "activity"
-      summary: "Crear activitat"
-      description: "Crear una activitat a la BD"
-      operationId: "createActivity"
-      consumes:
-        - "multipart/form-data"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "type"
-          in: "query"
-          type: "string"
-          enum: [ E,C ]
-        - name: "name"
-          in: "query"
-          type: "string"
-          maxLength: 30
-        - name: "description"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "age"
-          in: "query"
-          type: "string"
-          enum: [ K,T,A,E ]
-        - name: "difficulty"
-          in: "query"
-          type: "string"
-          enum: [ E,M,H ]
-        - name: "length"
-          in: "query"
-          type: "integer"
-        - name: "categories"
-          in: "query"
-          type: "string"
-        - name: "pre"
-          in: "formData"
-          type: "file"
-      responses:
-        "200":
-          description: "Operació exitosa"
-        "400":
-          description: "Activitat ja existeix"
-  /activities/{id}:
-    get:
-      tags:
-        - "activity"
-      summary: "Obtenir informació de l'activitat"
-      description: ""
-      operationId: "getActById"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "id"
-          in: "path"
-          description: "Id de l'activitat"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/Activity"
-        "400":
-          description: "Alguna cosa no ha anat bé..."
 
   /categories:
     post:
