@@ -3,6 +3,8 @@ from django.db import models
 from objectives.models import Objective
 from routines.models import Routine
 from users.models import User
+
+
 # Create your models here.
 
 
@@ -41,3 +43,28 @@ class PredefinedRoutine(Routine):
     image = models.ImageField(upload_to='predef_routines_images', default=None)
     users = models.ManyToManyField(User)
 
+    def clean(self, *args, **kwargs):
+        for e in PredefinedRoutine.objects.all():
+            exers = e.exercises
+            routinecats = e.categories
+            edat = e.age
+            for exercise in exers:
+                if exercise.age != edat:
+                    raise Exception("Model not valid: edats no coincideixen")
+                exercats = exercise.categories
+                for cateogry in routinecats:
+                    if cateogry not in exercats:
+                        raise Exception("Model not valid: categories no coincideixen")
+            cls = e.classes
+            for clase in cls:
+                if clase.age != edat:
+                    raise Exception("Model not valid: edats no coincideixen")
+                clasecat = clase.categories
+                for cateogry in routinecats:
+                    if cateogry not in clasecat:
+                        raise Exception("Model not valid: categories no coincideixen")
+        super(PredefinedRoutine, self).clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(PredefinedRoutine, self).save(*args, **kwargs)

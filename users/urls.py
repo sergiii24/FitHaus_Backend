@@ -8,7 +8,7 @@ router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     path('users/login/', views.login),
-    path('users/<int:id>/stats/', views.stats),
+    path('users/stats/', views.stats),
     path('ranking/', views.UserRankingViewSet.as_view({'get':'list'})),
     path('', include(router.urls))
 ]

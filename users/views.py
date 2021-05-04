@@ -2,14 +2,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from users.models import User
 from users.serializers import UserSerializer
-from users.serializers import UserRankingSerializer
 from users.serializers import UserStatsSerializer
+from users.serializers import UserRankingSerializer
 from django.http import JsonResponse
 import smtplib
-
 global server
 
 
@@ -51,11 +49,13 @@ def postea(m):
         print("{}".format(e))
     return Response(status=status.HTTP_200_OK)
 
-
-def stats(request, id):
+@api_view(['GET'])
+def stats(request):
+    id = request.GET['id']
     try:
         user = User.objects.get(id=id)
-        return JsonResponse(user.estadisticas, safe=False)
+        serializer = UserStatsSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 

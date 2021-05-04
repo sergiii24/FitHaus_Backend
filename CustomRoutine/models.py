@@ -8,4 +8,3 @@ from users.models import User
 class CustomRoutine(Routine):
     public = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
-
