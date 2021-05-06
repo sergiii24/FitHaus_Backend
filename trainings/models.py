@@ -10,13 +10,15 @@ class Training(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     customroutine = models.ForeignKey(CustomRoutine, on_delete=models.CASCADE, null=True)
     predefinedroutine = models.ForeignKey(PredefinedRoutine, on_delete=models.CASCADE, null=True)
-    dayhour = models.DateTimeField()
-    hInici = models.IntegerField()
-    hFi = models.IntegerField()
+    dayhour = models.DateField()
+    hInici = models.TimeField()
+    hFi = models.TimeField()
     totalTime = ComputedIntegerField(compute_from='calc_hours')
     done = models.BooleanField()
     shared = models.BooleanField()
 
     @property
     def calc_hours(self):
-        return self.hFi - self.hInici
+        horaIni = self.hInici.hour
+        horaFi = self.hFi.hour
+        return horaIni - horaFi

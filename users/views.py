@@ -7,6 +7,7 @@ from users.serializers import UserSerializer
 from users.serializers import UserStatsSerializer
 from users.serializers import UserRankingSerializer
 import smtplib
+
 global server
 
 
@@ -47,6 +48,7 @@ def postea(m):
     except Exception as e:
         print("{}".format(e))
     return Response(status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def stats(request):
