@@ -10,7 +10,7 @@ class Training(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     customroutine = models.ForeignKey(CustomRoutine, on_delete=models.CASCADE, null=True)
     predefinedroutine = models.ForeignKey(PredefinedRoutine, on_delete=models.CASCADE, null=True)
-    dayhour = models.DateField()
+    date = models.DateField()
     hInici = models.TimeField()
     hFi = models.TimeField()
     totalTime = ComputedIntegerField(compute_from='calc_hours')
