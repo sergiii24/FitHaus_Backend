@@ -11,3 +11,4 @@ class TrainingViewSet(viewsets.ModelViewSet):
     serializer_class = TrainingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user']
+
