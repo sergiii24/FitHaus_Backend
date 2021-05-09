@@ -28,6 +28,7 @@ urlpatterns = [
     #path('', include('routines.urls'), name='routines'),
     path('', include('PredefinedRoutine.urls'), name='predefinedroutines'),
     path('', include('CustomRoutine.urls'), name='customroutines'),
+    path('', include('programs.urls'), name='programs'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
