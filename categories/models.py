@@ -10,7 +10,7 @@ class Category(models.Model):
         ('R', 'Rehabilitation'),
         ('P', 'Pilates')
     ]
-    category = models.CharField(choices=POSIBLE_CATEGORY, max_length=30, default='S', unique=True)
+    category = models.CharField(choices=POSIBLE_CATEGORY, max_length=30, primary_key=True)
 
     def __str__(self):
         return self.category

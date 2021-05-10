@@ -10,7 +10,7 @@ schemes:
 - "https"
 - "http"
 paths:
-  /user:
+  /users:
     post:
       tags:
       - "user"
@@ -97,7 +97,43 @@ paths:
         "400":
           description: "Usuari ja existeix"
 
-  /user/login:
+  /users/stats:
+    get:
+      tags:
+      - "user"
+      summary: "Estadistiques d'un usuari"
+      description: "Consultar les estadistiques d'un usuari"
+      operationId: "UserStats"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "Id de l'usuari"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+        "400":
+          description: "Credencials incorrectes"
+
+  /ranking:
+    get:
+      tags:
+        - "user"
+      summary: "Ranking usuaris"
+      description: "Consultar el ranking dels usuaris"
+      operationId: "UserRanking"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Operació exitosa"
+        "400":
+          description: "Credencials incorrectes"
+
+  /users/login:
     get:
       tags:
       - "user"
@@ -253,75 +289,6 @@ paths:
          description: "Operació exitosa"
        "404":
          description: "User not found"
-
-  /activities:
-    post:
-      tags:
-        - "activity"
-      summary: "Crear activitat"
-      description: "Crear una activitat a la BD"
-      operationId: "createActivity"
-      consumes:
-        - "multipart/form-data"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "type"
-          in: "query"
-          type: "string"
-          enum: [ E,C ]
-        - name: "name"
-          in: "query"
-          type: "string"
-          maxLength: 30
-        - name: "description"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "age"
-          in: "query"
-          type: "string"
-          enum: [ K,T,A,E ]
-        - name: "difficulty"
-          in: "query"
-          type: "string"
-          enum: [ E,M,H ]
-        - name: "length"
-          in: "query"
-          type: "integer"
-        - name: "categories"
-          in: "query"
-          type: "string"
-        - name: "pre"
-          in: "formData"
-          type: "file"
-      responses:
-        "200":
-          description: "Operació exitosa"
-        "400":
-          description: "Activitat ja existeix"
-  /activities/{id}:
-    get:
-      tags:
-        - "activity"
-      summary: "Obtenir informació de l'activitat"
-      description: ""
-      operationId: "getActById"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "id"
-          in: "path"
-          description: "Id de l'activitat"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/Activity"
-        "400":
-          description: "Alguna cosa no ha anat bé..."
 
   /categories:
     post:
@@ -623,6 +590,67 @@ paths:
         "400":
           description: "Alguna cosa no ha anat bé..."
 
+  /trainings:
+    post:
+      tags:
+        - "training"
+      summary: "Crear entrenament"
+      description: "Crear un entrenament a la BD, associat a un usuari"
+      operationId: "createTraining"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "user"
+          in: "query"
+          type: "string"
+        - name: "customroutine"
+          in: "query"
+          type: "string"
+        - name: "predefinedroutine"
+          in: "query"
+          type: "string"
+        - name: "date"
+          in: "query"
+          type: "string"
+        - name: "hInici"
+          in: "query"
+          type: "string"
+        - name: "hFi"
+          in: "query"
+          type: "string"
+        - name: "done"
+          in: "query"
+          type: "boolean"
+        - name: "shared"
+          in: "query"
+          type: "boolean"
+      responses:
+        "200":
+          description: "Operació exitosa"
+        "400":
+          description: "Rutina predefinida ja existeix"
+    get:
+      tags:
+        - "training"
+      summary: "Obtenir entrenament d'un usuari"
+      description: ""
+      operationId: "getTrainingByUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "path"
+          description: "Nom de l'usuari"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          schema:
+            $ref: "#/definitions/Training"
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+
 
 #securityDefinitions:
  # petstore_auth:
@@ -827,6 +855,25 @@ definitions:
       users:
         type: "integer"
 
+  Training:
+    type: "object"
+    properties:
+      user:
+        type: "string"
+      customroutine:
+        type: "string"
+      predefinedroutine:
+        type: "string"
+      date:
+        type: "string"
+      hInici:
+        type: "string"
+      hFi:
+        type: "string"
+      done:
+        type: "boolean"
+      shared:
+        type: "boolean"
 
 
   #ApiResponse:
