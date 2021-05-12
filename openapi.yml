@@ -624,6 +624,63 @@ paths:
           description: "Alguna cosa no ha anat bé..."
 
 
+  /programs:
+    post:
+      tags:
+        - "programs"
+      summary: "Crear programa"
+      description: "Crear un programa a la BD"
+      operationId: "createProram"
+      produces:
+        - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        type: "string"
+      - name: "description"
+        in: "query"
+        type: "string"
+      - name: "difficulty"
+        in: "query"
+        type: "string"
+        enum: [ E,M,H ]
+      - name: "weeks"
+        in: "query"
+        type: "string"
+      - name: "predef_routines"
+        in: "query"
+        type: "string"
+      - name: "custom_routines"
+        in: "query"
+        type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+        "400":
+          description: "Programa ja existeix"
+  /programs/{id}:
+    get:
+      tags:
+        - "programs"
+      summary: "Obtenir informació del program"
+      description: ""
+      operationId: "getProgramById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id del programa"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          schema:
+            $ref: "#/definitions/Programs"
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+
 #securityDefinitions:
  # petstore_auth:
  #   type: "oauth2"
@@ -827,7 +884,26 @@ definitions:
       users:
         type: "integer"
 
-
+  Program:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      difficulty:
+        type: "string"
+        enum: [ E,M,H ]
+      weeks:
+        type: "integer"
+        default: 0
+      predef_routines:
+        type: "object"
+      custom_routines:
+        type: "object"
 
   #ApiResponse:
   #  type: "object"

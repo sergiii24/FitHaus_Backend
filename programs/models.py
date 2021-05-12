@@ -4,7 +4,7 @@ from CustomRoutine.models import CustomRoutine
 
 
 class Program(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     POSIBLE_DIFFICULTY = [
         ('E', 'Easy'),
@@ -19,3 +19,5 @@ class Program(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        unique_together = ('name', 'difficulty')
