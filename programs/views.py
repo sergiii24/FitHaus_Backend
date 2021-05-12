@@ -5,7 +5,7 @@ from programs.serializers import ProgramSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
-class RoutineViewSet(viewsets.ModelViewSet):
+class ProgramViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser)
     queryset = Program.objects.all()
     serializer_class = ProgramSerializer
