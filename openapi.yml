@@ -1,120 +1,282 @@
-swagger: "2.0"
+openapi: "3.0.1"
 info:
   description: "Servidor de l'aplicació FitHaus de l'assignatura PES. Aquí podràs trobar operacions per gestionar usuaris del sistema."
   version: "1.0.0"
   title: "SERVIDOR FITHAUS"
   contact:
     email: "fithaus2021@gmail.com"
-host: "127.0.0.1:8000"
-schemes:
-- "https"
-- "http"
+servers:
+  - url: "127.0.0.1:8000"
 paths:
   /users:
     post:
       tags:
       - "user"
-      summary: "Crear usuari"
-      description: "Crear un usuari a la BD, es produeix quan aquest es registra per primer cop"
-      operationId: "createUser"
-      produces:
-      - "application/json"
-      parameters:
-        - name: "username"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "firstName"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "lastName"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "email"
-          in: "query"
-          type: "string"
-          maxLength: 200
-          format: "email"
-        - name: "password"
-          in: "query"
-          type: "string"
-          maxLength: 200
-          format: "password"
-        - name: "gender"
-          in: "query"
-          type: "string"
-          enum: [ M, W, X ]
-        - name: "birthdate"
-          in: "query"
-          type: "string"
-          maxLength: 200
-          format: "date"
-        - name: "activitiesdone"
-          in: "query"
-          type: "integer"
-          default: 0
-        - name: "achievements"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "points"
-          in: "query"
-          type: "integer"
-          default: 0
-        - name: "level"
-          in: "query"
-          type: "integer"
-          default: 0
-        - name: "objective"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "interestcategories"
-          in: "query"
-          type: "string"
-          maxLength: 200
-        - name: "weight"
-          in: "query"
-          type: "integer"
-          default: 0
-        - name: "height"
-          in: "query"
-          type: "integer"
-          default: 0
-        - name: "imc"
-          in: "query"
-          type: "integer"
-          default: 0
-        - name: "igc"
-          in: "query"
-          type: "integer"
-          default: 0
+      summary: Crear usuari, es produeix quan aquest es registra per primer cop
+      operationId: createUser
+      requestBody:
+        description: Provide at least all required fields. The rest of information can be especified by user or it will be automatically computed
+        content:
+          application/json:
+            schema:
+              required: [username, firstName, lastName, email, password, birthdate, weight, height]
+              type: object
+              properties:
+                username:
+                  type: "string"
+                  maxLength: 200
+                  example: "My username"
+                  uniqueItems: true
+                firstName:
+                  type: "string"
+                  maxLength: 200
+                  example: "My firstName"
+                lastName:
+                  type: "string"
+                  maxLength: 200
+                  example: "my lastName"
+                email:
+                  type: "string"
+                  maxLength: 200
+                  format: "email"
+                  example: "mymail@mail.com"
+                  uniqueItems: true
+                password:
+                  type: "string"
+                  maxLength: 200
+                  format: "password"
+                  example: "Mypassword_1_#"
+                gender:
+                  type: "string"
+                  enum: [ M, W, X ]
+                  example: "X"
+                birthdate:
+                  type: "string"
+                  format: "date"
+                  example: "2021-05-12"
+                activitiesdone:
+                  type: "integer"
+                  default: 0
+                achievements:
+                  type: "string"
+                  maxLength: 200
+                  example: "my achievements"
+                points:
+                  type: "integer"
+                  default: 0
+                level:
+                  type: "integer"
+                  default: 0
+                objective:
+                  type: "object"
+                interestcategories:
+                  type: "object"
+                weight:
+                  type: "number"
+                  default: 0.0
+                height:
+                  type: "number"
+                  default: 0.0
+                imc:
+                  type: "number"
+                  default: 0
+                igc:
+                  type: "number"
+                  default: 0
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         "400":
           description: "Usuari ja existeix"
-
+    get:
+      tags:
+      - "user"
+      summary: "Retrieves all the users"
+      operationId: "getAllUsers"
+      responses:
+        "200":
+          description: "Succesful operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /user/{id}:
+      get:
+        tags:
+          - "user"
+        summary: "Obtenir informació de l'usuari"
+        description: "Provide user id"
+        operationId: "getUserById"
+        parameters:
+          - name: "id"
+            in: "path"
+            description: "Id de l'usuari"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          "400":
+            description: "Alguna cosa no ha anat bé..."
+      patch:
+        tags:
+          - "user"
+        summary: "Actualitzar info d'un usuari"
+        description: "Especificar només els camps a actualitzar, sense importar els altres"
+        operationId: "updateUser"
+        requestBody:
+          description: Provide all fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: "string"
+                    maxLength: 200
+                  firstName:
+                    type: "string"
+                    maxLength: 200
+                  lastName:
+                    type: "string"
+                    maxLength: 200
+                  email:
+                    type: "string"
+                    maxLength: 200
+                    format: "email"
+                  password:
+                    type: "string"
+                    maxLength: 200
+                    format: "password"
+                  gender:
+                    type: "string"
+                    enum: [ M, W, X ]
+                  birthdate:
+                    type: "string"
+                    maxLength: 200
+                    format: "date"
+                  activitiesdone:
+                    type: "integer"
+                    default: 0
+                  achievements:
+                    type: "string"
+                    maxLength: 200
+                  points:
+                    type: "integer"
+                    default: 0
+                  level:
+                    type: "integer"
+                    default: 0
+                  objective:
+                    type: "string"
+                    maxLength: 200
+                  interestcategories:
+                    type: "string"
+                    maxLength: 200
+                  weight:
+                    type: "integer"
+                    default: 0
+                  height:
+                    type: "integer"
+                    default: 0
+                  imc:
+                    type: "integer"
+                    default: 0
+                  igc:
+                    type: "integer"
+                    default: 0
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          "400":
+            description: "Usuari no trobat"
+      delete:
+        tags:
+          - "user"
+        summary: "Eliminar usuari"
+        description: "Provide user id"
+        operationId: "deleteUser"
+        parameters:
+          - name: "id"
+            in: "path"
+            description: "Id de l'usuari a eliminar"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+          "404":
+            description: "User not found"
+  /users/login:
+    get:
+      tags:
+        - "user"
+      summary: "Loggejar usuari"
+      operationId: "loginUser"
+      requestBody:
+        description: Provide email and password in order to log in
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: "Email de l'usuari"
+                  required: true
+                  type: "string"
+                password:
+                  description: "Contrasenya de l'usuari"
+                  required: true
+                  type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: "Credencials incorrectes"
   /users/stats:
     get:
       tags:
       - "user"
-      summary: "Estadistiques d'un usuari"
-      description: "Consultar les estadistiques d'un usuari"
-      operationId: "UserStats"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "query"
-        description: "Id de l'usuari"
-        required: true
-        type: "string"
+      summary: Crear usuari, es produeix quan aquest es registra per primer cop
+      operationId: getUserStats
+      requestBody:
+        description: Provide user's id to get his/her stats
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: "integer"
+                  description: Id de l'usuari
+                  required: true
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStats'
         "400":
           description: "Credencials incorrectes"
 
@@ -125,170 +287,17 @@ paths:
       summary: "Ranking usuaris"
       description: "Consultar el ranking dels usuaris"
       operationId: "UserRanking"
-      produces:
-        - "application/json"
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRanking'
         "400":
           description: "Credencials incorrectes"
-
-  /users/login:
-    get:
-      tags:
-      - "user"
-      summary: "Loggejar usuari"
-      description: "Loggeja un usuari <b>existent</b> al sistema"
-      operationId: "loginUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "email"
-        in: "query"
-        description: "Email de l'usuari"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "Contrasenya de l'usuari"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "Operació exitosa"
-        "400":
-          description: "Credencials incorrectes"
-  /user/{id}:
-    get:
-      tags:
-      - "user"
-      summary: "Obtenir informació de l'usuari"
-      description: ""
-      operationId: "getUserById"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "Id de l'usuari"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/User"
-        "400":
-          description: "Alguna cosa no ha anat bé..."
-    patch:
-      tags:
-      - "user"
-      summary: "Actualitzar info d'un usuari"
-      description: "Especificar només els camps a actualitzar, sense importar els altres"
-      operationId: "updateUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "Id de l'usuari"
-        required: true
-        type: "string"
-      - name: "username"
-        in: "query"
-        type: "string"
-        maxLength: 200
-      - name: "firstName"
-        in: "query"
-        type: "string"
-        maxLength: 200
-      - name: "lastName"
-        in: "query"
-        type: "string"
-        maxLength: 200
-      - name: "email"
-        in: "query"
-        type: "string"
-        maxLength: 200
-        format: "email"
-      - name: "password"
-        in: "query"
-        type: "string"
-        maxLength: 200
-        format: "password"
-      - name: "gender"
-        in: "query"
-        type: "string"
-        enum: [ M, W, X ]
-      - name: "birthdate"
-        in: "query"
-        type: "string"
-        maxLength: 200
-        format: "date"
-      - name: "activitiesdone"
-        in: "query"
-        type: "integer"
-        default: 0
-      - name: "achievements"
-        in: "query"
-        type: "string"
-        maxLength: 200
-      - name: "points"
-        in: "query"
-        type: "integer"
-        default: 0
-      - name: "level"
-        in: "query"
-        type: "integer"
-        default: 0
-      - name: "objective"
-        in: "query"
-        type: "string"
-        maxLength: 200
-      - name: "interestcategories"
-        in: "query"
-        type: "string"
-        maxLength: 200
-      - name: "weight"
-        in: "query"
-        type: "integer"
-        default: 0
-      - name: "height"
-        in: "query"
-        type: "integer"
-        default: 0
-      - name: "imc"
-        in: "query"
-        type: "integer"
-        default: 0
-      - name: "igc"
-        in: "query"
-        type: "integer"
-        default: 0
-      responses:
-        "200":
-          description: "Operació exitosa"
-        "400":
-          description: "Usuari no trobat"
-    delete:
-     tags:
-     - "user"
-     summary: "Eliminar usuari"
-     description: ""
-     operationId: "deleteUser"
-     produces:
-     - "application/json"
-     parameters:
-     - name: "id"
-       in: "path"
-       description: "Id de l'usuari a eliminar"
-       required: true
-       type: "string"
-     responses:
-       "200":
-         description: "Operació exitosa"
-       "404":
-         description: "User not found"
 
   /categories:
     post:
@@ -297,16 +306,23 @@ paths:
       summary: "Crear categoria"
       description: "Crear una categoria a la BD"
       operationId: "createCategory"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "category"
-          in: "query"
-          type: "string"
-          enum: [ S,C,Y,E,R,P ]
+      requestBody:
+        description: Provide the field
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: "string"
+                  enum: [ S,C,Y,E,R,P ]
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
         "400":
           description: "Categoria ja existeix"
   /categories/{id}:
@@ -314,21 +330,22 @@ paths:
       tags:
         - "category"
       summary: "Obtenir informació de la categoria"
-      description: ""
+      description: "Provide the category id"
       operationId: "getCatById"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
           description: "Id de la categoria"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/Category"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -339,27 +356,52 @@ paths:
       summary: "Crear classe"
       description: "Crear una classe a la BD"
       operationId: "createClass"
-      consumes:
-        - "multipart/form-data"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "videoclass"
-          in: "formData"
-          type: "file"
-        - name: "activity"
-          in: "query"
-          type: "string"
-        - name: "trainer"
-          in: "query"
-          type: "string"
-        - name: "workarea"
-          in: "query"
-          type: "string"
-          enum: [UB,LB,FB,C]
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [type, name, description, age, difficulty, length, categories, pre, videoclass, trainer, workarea]
+              type: object
+              properties:
+                type:
+                  type: "string"
+                  enum: [E,C]
+                name:
+                  type: "string"
+                  maxLength: 30
+                description:
+                  type: "string"
+                  maxLength: 200
+                age:
+                  type: "string"
+                  enum: [K,T,A,E]
+                difficulty:
+                  type: "string"
+                  enum: [E,M,H]
+                length:
+                  type: "integer"
+                categories:
+                  type: "object"
+                  format: Category
+                pre:
+                  type: "string"
+                  format: "binary"
+                videoclass:
+                  type: "string"
+                  format: "binary"
+                trainer:
+                  type: "string"
+                workarea:
+                  type: "string"
+                  enum: [UB,LB,FB,C]
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
         "400":
           description: "Classe ja existeix"
   /classes/{id}:
@@ -367,21 +409,22 @@ paths:
       tags:
         - "class"
       summary: "Obtenir informació de la classe"
-      description: ""
+      description: "Provide the class id"
       operationId: "getClassById"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
           description: "Id de la classe"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/Class"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -392,30 +435,56 @@ paths:
       summary: "Crear exercici"
       description: "Crear un exercici a la BD"
       operationId: "createExercise"
-      consumes:
-        - "multipart/form-data"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "muscleimage"
-          in: "formData"
-          type: "file"
-        - name: "videotutorial"
-          in: "formData"
-          type: "file"
-        - name: "videoexercise"
-          in: "formData"
-          type: "file"
-        - name: "activity"
-          in: "query"
-          type: "string"
-        - name: "muscle"
-          in: "query"
-          type: "string"
-          enum: [ Bi,Tr,Fa,Ch,Sh,Do,Gl,Fe,Qu,Cm,Co]
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [type, name, description, age, difficulty, length, categories, pre, muscleimage, videotutorial, videoexercise, muscle]
+              type: object
+              properties:
+                type:
+                  type: "string"
+                  enum: [ E,C ]
+                name:
+                  type: "string"
+                  maxLength: 30
+                description:
+                  type: "string"
+                  maxLength: 200
+                age:
+                  type: "string"
+                  enum: [ K,T,A,E ]
+                difficulty:
+                  type: "string"
+                  enum: [ E,M,H ]
+                length:
+                  type: "integer"
+                categories:
+                  type: "object"
+                  format: Category
+                pre:
+                  type: "string"
+                  format: "binary"
+                muscleimage:
+                  type: "string"
+                  format: "binary"
+                videotutorial:
+                  type: "string"
+                  format: "binary"
+                videoexercise:
+                  type: "string"
+                  format: "binary"
+                muscle:
+                  type: "string"
+                  enum: [ Bi,Tr,Fa,Ch,Sh,Do,Gl,Fe,Qu,Cm,Co]
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
         "400":
           description: "Exercici ja existeix"
   /exercises/{id}:
@@ -423,21 +492,22 @@ paths:
       tags:
         - "exercise"
       summary: "Obtenir informació de l'exercici"
-      description: ""
+      description: "Provide the exercise id"
       operationId: "getExerById"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
           description: "Id de l'exercici"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/Exercise"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -448,16 +518,23 @@ paths:
       summary: "Crear objectiu"
       description: "Crear un objectiu a la BD"
       operationId: "createObjective"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "objective"
-          in: "query"
-          type: "string"
-          enum: [ S,Fr,P,Fl,Rs,Rc,A ]
+      requestBody:
+        description: Provide the field
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                objective:
+                  type: "string"
+                  enum: [ S,Fr,P,Fl,Rs,Rc,A ]
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
         "400":
           description: "Objectiu ja existeix"
   /objectives/{id}:
@@ -465,21 +542,22 @@ paths:
       tags:
         - "objective"
       summary: "Obtenir informació de l'objectiu"
-      description: ""
+      description: "Provide the objective id"
       operationId: "getObjById"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
           description: "Id de l'objectiu"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/Objective"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -490,18 +568,40 @@ paths:
       summary: "Crear rutina personalitzada"
       description: "Crear un rutina personalitzada a la BD, hereta del model routines"
       operationId: "createCustomRoutine"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "public"
-          in: "query"
-          type: "boolean"
-        - name: "user"
-          in: "query"
-          type: "string"
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [name, description, time, categories, exercises, classes, public, user]
+              type: object
+              properties:
+                name:
+                  type: "string"
+                  maxLength: 100
+                  uniqueItems: true
+                description:
+                  type: "string"
+                time:
+                  type: "string"
+                  enum: [P,R,F]
+                categories:
+                  type: "object"
+                exercises:
+                  type: "object"
+                classes:
+                  type: "object"
+                public:
+                  type: "boolean"
+                user:
+                  type: "object"
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRoutine'
         "400":
           description: "Rutina personalitzada ja existeix"
   /customroutines/{id}:
@@ -509,21 +609,22 @@ paths:
       tags:
         - "custom routine"
       summary: "Obtenir informació de la rutina personalitzada"
-      description: ""
+      description: "Provide the Routine id"
       operationId: "getCustomRoutineById"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
           description: "Id de la rutina personalitzada"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/CustomRoutine"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRoutine'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -534,37 +635,55 @@ paths:
       summary: "Crear rutina predefinida"
       description: "Crear un rutina predefinida a la BD, hereta del model routines"
       operationId: "createCustomRoutine"
-      produces:
-        - "application/json"
-      parameters:
-      - name: "age"
-        in: "query"
-        type: "string"
-        enum: [ K,T,A,E ]
-      - name: "level"
-        in: "query"
-        type: "string"
-        enum: [ P,I,A ]
-      - name: "equipment"
-        in: "query"
-        type: "string"
-        enum: [ W,HM,K,D,B,RB,RL,FR ]
-      - name: "objective"
-        in: "query"
-        type: "string"
-      - name: "impact"
-        in: "query"
-        type: "string"
-        enum: [ L,M,H ]
-      - name: "image"
-        in: "query"
-        type: "string"
-      - name: "user"
-        in: "query"
-        type: "integer"
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [name, description, time, categories, exercises, classes, age, level, equipment, objective, impact, image, users]
+              type: object
+              properties:
+                name:
+                  type: "string"
+                  maxLength: 100
+                  uniqueItems: true
+                description:
+                  type: "string"
+                time:
+                  type: "string"
+                  enum: [ P,R,F ]
+                categories:
+                  type: "object"
+                exercises:
+                  type: "object"
+                classes:
+                  type: "object"
+                age:
+                  type: "string"
+                  enum: [ K,T,A,E ]
+                level:
+                  type: "string"
+                  enum: [ P,I,A ]
+                equipment:
+                  type: "string"
+                  enum: [ W,HM,K,D,B,RB,RL,FR ]
+                objective:
+                  type: "object"
+                impact:
+                  type: "string"
+                  enum: [ L,M,H ]
+                image:
+                  type: "string"
+                  format: "binary"
+                users:
+                  type: "object"
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredefinedRoutine'
         "400":
           description: "Rutina predefinida ja existeix"
   /predefinedroutines/{id}:
@@ -572,21 +691,22 @@ paths:
       tags:
         - "predefined routine"
       summary: "Obtenir informació de la rutina predefinida"
-      description: ""
+      description: "Provide the routine id"
       operationId: "getPredefinedRoutineById"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
           description: "Id de la rutina predefinida"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
-          schema:
-            $ref: "#/definitions/PredefinedRoutine"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredefinedRoutine'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -597,293 +717,408 @@ paths:
       summary: "Crear entrenament"
       description: "Crear un entrenament a la BD, associat a un usuari"
       operationId: "createTraining"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "user"
-          in: "query"
-          type: "string"
-        - name: "customroutine"
-          in: "query"
-          type: "string"
-        - name: "predefinedroutine"
-          in: "query"
-          type: "string"
-        - name: "date"
-          in: "query"
-          type: "string"
-        - name: "hInici"
-          in: "query"
-          type: "string"
-        - name: "hFi"
-          in: "query"
-          type: "string"
-        - name: "done"
-          in: "query"
-          type: "boolean"
-        - name: "shared"
-          in: "query"
-          type: "boolean"
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [user, customroutine, predefinedroutine, date, hInici, hFi, done, shared]
+              type: object
+              properties:
+                user:
+                  type: "object"
+                customroutine:
+                  type: "object"
+                predefinedroutine:
+                  type: "object"
+                date:
+                  type: "string"
+                  format: "date"
+                hInici:
+                  type: "string"
+                  format: "hour"
+                hFi:
+                  type: "string"
+                  format: "hour"
+                done:
+                  type: "boolean"
+                shared:
+                  type: "boolean"
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Training'
         "400":
           description: "Rutina predefinida ja existeix"
     get:
       tags:
         - "training"
       summary: "Obtenir entrenament d'un usuari"
-      description: ""
       operationId: "getTrainingByUser"
-      produces:
-        - "application/json"
       parameters:
         - name: "username"
           in: "path"
           description: "Nom de l'usuari"
           required: true
-          type: "string"
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Training'
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+  /trainings/{id}:
+    get:
+      tags:
+        - "training"
+      summary: "Obtenir informació de l'entrenament"
+      description: "Provide the training id"
+      operationId: "getTrainingById"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id de l'entrenament"
+          required: true
           schema:
-            $ref: "#/definitions/Training"
+            type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Training'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
 
-#securityDefinitions:
- # petstore_auth:
- #   type: "oauth2"
- #   authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
- #   flow: "implicit"
- #   scopes:
- #     write:pets: "modify pets in your account"
- #    read:pets: "read your pets"
- # api_key:
- #   type: "apiKey"
- #   name: "api_key"
- #   in: "header"
+components:
+  schemas:
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        username:
+          type: "string"
+          maxLength: 200
+        firstName:
+          type: "string"
+          maxLength: 200
+        lastName:
+          type: "string"
+          maxLength: 200
+        email:
+          type: "string"
+          maxLength: 200
+          format: "email"
+        password:
+          type: "string"
+          maxLength: 200
+          format: "password"
+        gender:
+          type: "string"
+          enum: [M, W, X]
+        birthdate:
+          type: "string"
+          maxLength: 200
+          format: "date"
+        activitiesdone:
+          type: "integer"
+          default: 0
+        achievements:
+          type: "string"
+          maxLength: 200
+        points:
+          type: "integer"
+          default: 0
+        level:
+          type: "integer"
+          default: 0
+        objective:
+          type: "object"
+        interestcategories:
+          type: "object"
+        weight:
+          type: "number"
+          default: 0.0
+        height:
+          type: "number"
+          default: 0.0
+        imc:
+          type: "number"
+          default: 0.0
+        igc:
+          type: "number"
+          default: 0.0
 
-definitions:
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-        maxLength: 200
-      firstName:
-        type: "string"
-        maxLength: 200
-      lastName:
-        type: "string"
-        maxLength: 200
-      email:
-        type: "string"
-        maxLength: 200
-        format: "email"
-      password:
-        type: "string"
-        maxLength: 200
-        format: "password"
-      gender:
-        type: "string"
-        enum: [M, W, X]
-      birthdate:
-        type: "string"
-        maxLength: 200
-        format: "date"
-      activitiesdone:
-        type: "integer"
-        default: 0
-      achievements:
-        type: "string"
-        maxLength: 200
-      points:
-        type: "integer"
-        default: 0
-      level:
-        type: "integer"
-        default: 0
-      objective:
-        type: "object"
-      interestcategories:
-        type: "object"
-        maxLength: 200
-      weight:
-        type: "integer"
-        default: 0
-      height:
-        type: "integer"
-        default: 0
-      imc:
-        type: "integer"
-        default: 0
-      igc:
-        type: "integer"
-        default: 0
+    UserRanking:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          maxLength: 200
+        email:
+          type: "string"
+          maxLength: 200
+          format: "email"
+        points:
+          type: "integer"
+          default: 0
 
-  Activity:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      type:
-        type: "string"
-        enum: [E,C]
-      name:
-        type: "string"
-        maxLength: 30
-      description:
-        type: "string"
-        maxLength: 200
-      age:
-        type: "string"
-        enum: [K,T,A,E]
-      difficulty:
-        type: "string"
-        enum: [E,M,H]
-      length:
-        type: "integer"
-      categories:
-        type: "object"
+    UserStats:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          maxLength: 200
+        email:
+          type: "string"
+          maxLength: 200
+          format: "email"
+        activitiesdone:
+          type: "integer"
+          default: 0
+        achievements:
+          type: "string"
+          maxLength: 200
+        points:
+          type: "integer"
+          default: 0
+        level:
+          type: "integer"
+          default: 0
 
-  Category:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      category:
-        type: "string"
-        enum: [ S,C,Y,E,R,P ]
+    Activity:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          maxLength: 30
+          enum: [E,C]
+        name:
+          type: "string"
+          maxLength: 30
+        description:
+          type: "string"
+          maxLength: 200
+        age:
+          type: "string"
+          maxLength: 30
+          enum: [K,T,A,E]
+        difficulty:
+          type: "string"
+          maxLength: 30
+          enum: [E,M,H]
+        length:
+          type: "integer"
+        categories:
+          type: "object"
+        pre:
+          type: "string"
+          format: "binary"
 
-  Class:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      activity:
-        type: "object"
-      trainer:
-        type: "string"
-        maxLength: 30
-      workearea:
-        type: "string"
-        enum: [ UB,LB,FB,C ]
+    Category:
+      type: "object"
+      properties:
+        category:
+          type: "string"
+          enum: [ S,C,Y,E,R,P ]
 
-  Exercise:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      activity:
-        type: "object"
-      muscle:
-        type: "string"
-        enum: [ Bi,Tr,Fa,Ch,Sh,Do,Gl,Fe,Qu,Cm,Co ]
+    Class:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          enum: [ E,C ]
+        name:
+          type: "string"
+          maxLength: 30
+        description:
+          type: "string"
+          maxLength: 200
+        age:
+          type: "string"
+          enum: [ K,T,A,E ]
+        difficulty:
+          type: "string"
+          enum: [ E,M,H ]
+        length:
+          type: "integer"
+        categories:
+          type: "object"
+          format: Category
+        pre:
+          type: "string"
+          format: "binary"
+        videoclass:
+          type: "string"
+          format: "binary"
+        trainer:
+          type: "string"
+        workarea:
+          type: "string"
+          enum: [ UB,LB,FB,C ]
 
-  Objective:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      objective:
-        type: "string"
-        enum: [ S,Fr,P,Fl,Rs,Rc,A ]
+    Exercise:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          enum: [ E,C ]
+        name:
+          type: "string"
+          maxLength: 30
+        description:
+          type: "string"
+          maxLength: 200
+        age:
+          type: "string"
+          enum: [ K,T,A,E ]
+        difficulty:
+          type: "string"
+          enum: [ E,M,H ]
+        length:
+          type: "integer"
+        categories:
+          type: "object"
+          format: Category
+        pre:
+          type: "string"
+          format: "binary"
+        muscleimage:
+          type: "string"
+          format: "binary"
+        videotutorial:
+          type: "string"
+          format: "binary"
+        videoexercise:
+          type: "string"
+          format: "binary"
+        muscle:
+          type: "string"
+          enum: [ Bi,Tr,Fa,Ch,Sh,Do,Gl,Fe,Qu,Cm,Co ]
 
-  Routine:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-      description:
-        type: "string"
-      time:
-        type: "string"
-        enum: [ P,R,F ]
-      categories:
-        type: "object"
-      exercices:
-        type: "object"
-      classes:
-        type: "object"
+    Objective:
+      type: "object"
+      properties:
+        objective:
+          type: "string"
+          enum: [ S,Fr,P,Fl,Rs,Rc,A ]
 
-  CustomRoutine:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      public:
-        type: "boolean"
-      user:
-        type: "integer"
+    Routine:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        time:
+          type: "string"
+          enum: [ P,R,F ]
+        categories:
+          type: "object"
+        exercices:
+          type: "object"
+        classes:
+          type: "object"
 
-  PredefinedRoutine:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      age:
-        type: "string"
-        enum: [ K,T,A,E ]
-      level:
-        type: "string"
-        enum: [ P,I,A ]
-      equipment:
-        type: "string"
-        enum: [ W,HM,K,D,B,RB,RL,FR ]
-      objective:
-        type: "object"
-      impact:
-        type: "string"
-        enum: [ L,M,H ]
-      image:
-        type: "string"
-      users:
-        type: "integer"
+    CustomRoutine:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          maxLength: 100
+          uniqueItems: true
+        description:
+          type: "string"
+        time:
+          type: "string"
+          enum: [ P,R,F ]
+        categories:
+          type: "object"
+        exercises:
+          type: "object"
+        classes:
+          type: "object"
+        public:
+          type: "boolean"
+        user:
+          type: "object"
 
-  Training:
-    type: "object"
-    properties:
-      user:
-        type: "string"
-      customroutine:
-        type: "string"
-      predefinedroutine:
-        type: "string"
-      date:
-        type: "string"
-      hInici:
-        type: "string"
-      hFi:
-        type: "string"
-      done:
-        type: "boolean"
-      shared:
-        type: "boolean"
+    PredefinedRoutine:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          maxLength: 100
+          uniqueItems: true
+        description:
+          type: "string"
+        time:
+          type: "string"
+          enum: [ P,R,F ]
+        categories:
+          type: "object"
+        exercises:
+          type: "object"
+        classes:
+          type: "object"
+        age:
+          type: "string"
+          enum: [ K,T,A,E ]
+        level:
+          type: "string"
+          enum: [ P,I,A ]
+        equipment:
+          type: "string"
+          enum: [ W,HM,K,D,B,RB,RL,FR ]
+        objective:
+          type: "object"
+        impact:
+          type: "string"
+          enum: [ L,M,H ]
+        image:
+          type: "string"
+          format: "binary"
+        users:
+          type: "object"
+
+    Training:
+      type: "object"
+      properties:
+        user:
+          type: "object"
+        customroutine:
+          type: "object"
+        predefinedroutine:
+          type: "object"
+        date:
+          type: "string"
+          format: "date"
+        hInici:
+          type: "string"
+          format: "hour"
+        hFi:
+          type: "string"
+          format: "hour"
+        done:
+          type: "boolean"
+        shared:
+          type: "boolean"
 
 
-  #ApiResponse:
-  #  type: "object"
-  #  properties:
-  #    code:
-  #      type: "integer"
-  #      format: "int32"
-  #    type:
-  #      type: "string"
-  #    message:
-  #      type: "string"
-  
+
