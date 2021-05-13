@@ -17,7 +17,7 @@ class Routine(models.Model):
     ]
     time = models.CharField(max_length=30, choices=POSIBLE_TIME, default='F')
     categories = models.ManyToManyField(Category)
-    exercises = models.ManyToManyField(Exercise)
+    exercises = models.ManyToManyField(Exercise, blank=True)
     classes = models.ManyToManyField(Classes, blank=True)
 
     def __str__(self):
