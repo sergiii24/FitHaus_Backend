@@ -11,7 +11,7 @@ pipeline {
                         configName: "server",
                         verbose: true,
                         transfers: [
-                            sshTransfer(execCommand: "pwd; ls; cd FitHaus_Backend/; git checkout integration; git pull origin integration"),
+                            sshTransfer(execCommand: "cd FitHaus_Backend/; git checkout integration; git pull origin integration"),
                         ]
                     )
                 ]
@@ -27,7 +27,7 @@ pipeline {
                         configName: "server",
                         verbose: true,
                         transfers: [
-                            sshTransfer(execCommand: "cd FitHaus_Backend/; docker-compose up -d"),
+                            sshTransfer(execCommand: "cd FitHaus_Backend/; docker-compose down -v; docker-compose up -d"),
                         ]
                     )
                 ]
