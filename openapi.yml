@@ -15,7 +15,7 @@ paths:
       summary: Crear usuari, es produeix quan aquest es registra per primer cop
       operationId: createUser
       requestBody:
-        description: Provide at least all the required fields. The rest of information can be especified by user or it will be automatically computed
+        description: Provide at least all required fields. The rest of information can be especified by user or it will be automatically computed
         content:
           application/json:
             schema:
