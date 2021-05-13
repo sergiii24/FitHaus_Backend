@@ -1,10 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from programs import views
+from colections import views
 
 
 router = DefaultRouter()
-router.register(r'programs', views.ProgramViewSet)
+router.register(r'collections', views.CollectionViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
