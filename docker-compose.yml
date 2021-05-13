@@ -8,6 +8,7 @@ services:
       - static_data:/code
     environment:
       - ALLOWED_HOSTS=*
+      - DEBUG=1
     networks:
       - fithaus
     depends_on:
