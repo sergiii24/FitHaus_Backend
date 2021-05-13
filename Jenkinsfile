@@ -54,7 +54,7 @@ pipeline {
                 continueOnError: false, failOnError: true,
                 publishers: [
                     sshPublisherDesc(
-                        configName: "kubernetes_master",
+                        configName: "server",
                         verbose: true,
                         transfers: [
                             sshTransfer(execCommand: "cd /FitHaus_Backend; docker compose up"),
@@ -65,7 +65,4 @@ pipeline {
         }
     }
   }
-}
-
- }
 }
