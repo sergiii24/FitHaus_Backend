@@ -3,7 +3,7 @@ version: '3.7'
 services:
   app:
     build:
-      context: ..
+      context: .
     volumes:
       - static_data:/code
     environment:
