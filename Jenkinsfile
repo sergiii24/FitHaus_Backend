@@ -10,7 +10,7 @@ pipeline {
                         configName: "server",
                         verbose: true,
                         transfers: [
-                            sshTransfer(execCommand: "cd /FitHaus_Backend; git git checkout develop; git pull origin develop"),
+                            sshTransfer(execCommand: "cd /FitHaus_Backend; git checkout develop; git pull origin develop"),
                         ]
                     )
                 ]
