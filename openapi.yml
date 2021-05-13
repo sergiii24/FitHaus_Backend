@@ -812,20 +812,18 @@ paths:
         content:
           application/json:
             schema:
-              required: [ name, description, difficulty, weeks, customroutine, predefinedroutine]
+              required: [ name, description, level, weeks, predefinedroutine]
               type: object
               properties:
                 name:
                   type: "string"
                 description:
                   type: "string"
-                difficulty:
+                level:
                   type: "string"
-                  enum: [ E,M,H ]
+                  enum: [ B,I,A ]
                 weeks:
                   type: "integer"
-                customroutine:
-                  type: "object"
                 predefinedroutine:
                   type: "object"
       responses:
@@ -889,15 +887,13 @@ paths:
         content:
           application/json:
             schema:
-              required: [ name, description, customroutine, predefinedroutine]
+              required: [ name, description, predefinedroutine]
               type: object
               properties:
                 name:
                   type: "string"
                 description:
                   type: "string"
-                customroutine:
-                  type: "object"
                 predefinedroutine:
                   type: "object"
       responses:
@@ -1276,13 +1272,11 @@ components:
           type: "string"
         description:
           type: "string"
-        difficulty:
+        level:
           type: "string"
-          enum: [ E,M,H ]
+          enum: [ B,I,A ]
         weeks:
           type: "integer"
-        customroutine:
-          type: "object"
         predefinedroutine:
           type: "object"
 
@@ -1293,7 +1287,5 @@ components:
           type: "string"
         description:
           type: "string"
-        customroutine:
-          type: "object"
         predefinedroutine:
           type: "object"
