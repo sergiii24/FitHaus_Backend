@@ -800,6 +800,155 @@ paths:
         "400":
           description: "Alguna cosa no ha anat bé..."
 
+  /programs:
+    post:
+      tags:
+        - "program"
+      summary: "Crear programa"
+      description: "Crear un programa a la BD"
+      operationId: "createProgram"
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [ name, description, difficulty, weeks, customroutine, predefinedroutine]
+              type: object
+              properties:
+                name:
+                  type: "string"
+                description:
+                  type: "string"
+                difficulty:
+                  type: "string"
+                  enum: [ E,M,H ]
+                weeks:
+                  type: "integer"
+                customroutine:
+                  type: "object"
+                predefinedroutine:
+                  type: "object"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        "400":
+          description: "Programa ja existeix"
+    get:
+      tags:
+        - "program"
+      summary: "Obtenir tots els programes"
+      operationId: "getPrograms"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Program'
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+  /programs/{id}:
+    get:
+      tags:
+        - "program"
+      summary: "Obtenir informació del programa"
+      description: "Provide the program id"
+      operationId: "getProgramById"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id del programa"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+
+  /collection:
+    post:
+      tags:
+        - "collection"
+      summary: "Crear col·lecció"
+      description: "Crear un col·lecció a la BD"
+      operationId: "createCollection"
+      requestBody:
+        description: Provide all required fields
+        content:
+          application/json:
+            schema:
+              required: [ name, description, customroutine, predefinedroutine]
+              type: object
+              properties:
+                name:
+                  type: "string"
+                description:
+                  type: "string"
+                customroutine:
+                  type: "object"
+                predefinedroutine:
+                  type: "object"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+        "400":
+          description: "Col·lecció ja existeix"
+    get:
+      tags:
+        - "collection"
+      summary: "Obtenir totes les col·leccions"
+      operationId: "getCollections"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+        "400":
+          description: "Alguna cosa no ha anat bé..."
+  /collection/{id}:
+      get:
+        tags:
+          - "collection"
+        summary: "Obtenir informació de la col·lecció"
+        description: "Provide the collection id"
+        operationId: "getCollectionById"
+        parameters:
+          - name: "id"
+            in: "path"
+            description: "Id de la col·lecció"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Collection'
+          "400":
+            description: "Alguna cosa no ha anat bé..."
+
 
 components:
   schemas:
@@ -1120,5 +1269,31 @@ components:
         shared:
           type: "boolean"
 
+    Program:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        difficulty:
+          type: "string"
+          enum: [ E,M,H ]
+        weeks:
+          type: "integer"
+        customroutine:
+          type: "object"
+        predefinedroutine:
+          type: "object"
 
-
+    Collection:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        customroutine:
+          type: "object"
+        predefinedroutine:
+          type: "object"
