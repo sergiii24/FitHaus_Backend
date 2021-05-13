@@ -10,4 +10,4 @@ class ProgramViewSet(viewsets.ModelViewSet):
     queryset = Program.objects.all()
     serializer_class = ProgramSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['name', 'difficulty', 'weeks']
+    filterset_fields = ['name', 'level', 'weeks']
