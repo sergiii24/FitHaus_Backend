@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserRankingSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'points')
+        fields = ('username', 'points')
 
 
 class UserStatsSerializer(serializers.ModelSerializer):

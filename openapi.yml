@@ -1013,10 +1013,6 @@ components:
         username:
           type: "string"
           maxLength: 200
-        email:
-          type: "string"
-          maxLength: 200
-          format: "email"
         points:
           type: "integer"
           default: 0
