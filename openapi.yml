@@ -992,8 +992,8 @@ components:
           type: "integer"
           default: 0
         level:
-          type: "integer"
-          default: 0
+          type: "string"
+          enum: [B, I, A]
         objective:
           type: "object"
         interestcategories:

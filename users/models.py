@@ -29,7 +29,12 @@ class User(models.Model):
     activitiesdone = models.IntegerField(default=0)
     achivements = models.CharField(max_length=200)
     points = models.IntegerField(default=0)
-    level = models.IntegerField(default=0)
+    POSIBLE_LEVELS = [
+        ('B', 'Beginner'),
+        ('I', 'Intermediate'),
+        ('A', 'Advanced')
+    ]
+    level = models.IntegerField(max_length=1, choices=POSIBLE_LEVELS)
     objectives = models.ManyToManyField(Objective)
     categories = models.ManyToManyField(Category)
     # DADES FISIQUES
