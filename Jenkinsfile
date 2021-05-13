@@ -11,14 +11,14 @@ pipeline {
                         configName: "server",
                         verbose: true,
                         transfers: [
-                            sshTransfer(execCommand: "pwd; ls; cd FitHaus_Backend/; git checkout develop; git pull origin develop"),
+                            sshTransfer(execCommand: "pwd; ls; cd FitHaus_Backend/; git checkout integration; git pull origin integration"),
                         ]
                     )
                 ]
             )
         }
     }
-    stage('Deploy Helm Scripts'){
+    stage('Deploy FitHaus Backend'){
         steps([$class: 'BapSshPromotionPublisherPlugin']) {
             sshPublisher(
                 continueOnError: true, failOnError: false,
@@ -27,7 +27,7 @@ pipeline {
                         configName: "server",
                         verbose: true,
                         transfers: [
-                            sshTransfer(execCommand: "cd FitHaus_Backend/; docker-compose up"),
+                            sshTransfer(execCommand: "cd FitHaus_Backend/; docker-compose up -d"),
                         ]
                     )
                 ]
