@@ -10,18 +10,18 @@ media
 *.bak
 
 # If you are using PyCharm #
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/gradle.xml
-.idea/**/libraries
+app/.idea/**/workspace.xml
+app/.idea/**/tasks.xml
+app/.idea/dictionaries
+app/.idea/**/dataSources/
+app/.idea/**/dataSources.ids
+app/.idea/**/dataSources.xml
+app/.idea/**/dataSources.local.xml
+app/.idea/**/sqlDataSources.xml
+app/.idea/**/dynamic.xml
+app/.idea/**/uiDesigner.xml
+app/.idea/**/gradle.xml
+app/.idea/**/libraries
 *.iws /out/
 
 # Python #
@@ -79,7 +79,7 @@ celerybeat-schedule.*
 .env
 .venv
 env/
-venv/
+app/venv/
 ENV/
 env.bak/
 venv.bak/
