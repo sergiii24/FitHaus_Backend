@@ -2,6 +2,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from .validators import correct_pwd
 from computed_property import ComputedFloatField
+from computed_property import ComputedIntegerField
 from django.core.validators import MinValueValidator
 from objectives.models import Objective
 from categories.models import Category
@@ -25,6 +26,7 @@ class User(models.Model):
     ]
     gender = models.CharField(max_length=1, choices=POSIBLE_GENDERS)
     birthdate = models.DateField()
+    #age = ComputedIntegerField(compute_from='calc_age')
     # DADES ESPORTIVES
     activitiesdone = models.IntegerField(default=0)
     achivements = models.CharField(max_length=200)
@@ -37,6 +39,12 @@ class User(models.Model):
     level = models.IntegerField(max_length=1, choices=POSIBLE_LEVELS)
     objectives = models.ManyToManyField(Objective)
     categories = models.ManyToManyField(Category)
+    #strengthtrainings = models.IntegerField(default=0)
+    #cardiotrainings = models.IntegerField(default=0)
+    #yogatrainings = models.IntegerField(default=0)
+    #stretchingtrainings = models.IntegerField(default=0)
+    #rehabilitationtrainings = models.IntegerField(default=0)
+    #pilatestrainings = models.IntegerField(default=0)
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
@@ -45,7 +53,11 @@ class User(models.Model):
     # DATA DARRERA MODIFICACIO PERFIL
     updated = models.DateTimeField(auto_now=True)
 
-    # historical????????
+
+    @property
+    def calc_age(self):
+        today = datetime.date.today()
+        return today.year - self.birthdate.year
 
     @property
     def calc_imc(self):
@@ -73,8 +85,8 @@ class User(models.Model):
         ad = self.activitiesdone
         ach = self.achivements
         p = self.points
-        l = self.level
-        stats = [ad, ach, p, l]
+        lvl = self.level
+        stats = [ad, ach, p, lvl]
         return stats
 
     def __str__(self):
