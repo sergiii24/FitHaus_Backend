@@ -3,7 +3,7 @@ pipeline {
  stages {
     stage('Build Environment') {
         steps{
-            sh 'pip install -r requirements-dev.txt'
+            sh 'pip install -r requirements.txt'
         }
     }
     stage('Static code metrics') {
