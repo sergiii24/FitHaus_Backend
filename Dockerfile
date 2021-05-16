@@ -4,7 +4,6 @@ ENV PATH="/scripts:${PATH}"
 
 COPY requirements.txt /requirements.txt
 
-RUN pip uninstall PIL
 # Install build deps, then run `pip install`, then remove unneeded build deps all in a single step.
 # Correct the path to your production requirements file, if needed.
 RUN set -ex \
@@ -13,9 +12,9 @@ RUN set -ex \
     " \
     && apk add --update --no-cache --virtual .tmp $BUILD_DEPS \
     && apk add --no-cache libpq \
-    && pip install --no-cache-dir -r /requirements.txt \
-    \
-    && apk del .tmp
+    && pip install --no-cache-dir -r /requirements.txt
+#   \
+#    && apk del .tmp
 #RUN
 #RUN apk add
 #RUN pip install -r /requirements.txt
