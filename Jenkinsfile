@@ -1,6 +1,11 @@
 pipeline {
  agent { docker { image 'python'} }
- stages {
+ stage('Build Environment') {
+        steps{
+            sh 'pip install -r requirements-dev.txt'
+        }
+    }
+
     stage('Static code metrics') {
         steps {
             echo "Style check"
@@ -25,6 +30,7 @@ pipeline {
             }
         }
     }
+ stages {
     stage('SSH transfer') {
         steps([$class: 'BapSshPromotionPublisherPlugin']) {
             sshPublisher(
