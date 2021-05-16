@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'colections',
     'trainings',
     'django_filters',
-    'django_nose',
     'multiselectfield',
 ]
 
