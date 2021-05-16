@@ -2,7 +2,7 @@
 
 set -e
 
-python manage.py makemigrations users
+python manage.py makemigrations
 
 python manage.py migrate --run-syncdb
 

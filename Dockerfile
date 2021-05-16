@@ -4,6 +4,7 @@ ENV PATH="/scripts:${PATH}"
 
 COPY requirements.txt /requirements.txt
 
+RUN pip uninstall PIL
 # Install build deps, then run `pip install`, then remove unneeded build deps all in a single step.
 # Correct the path to your production requirements file, if needed.
 RUN set -ex \
