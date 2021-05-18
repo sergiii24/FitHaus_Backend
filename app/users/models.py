@@ -36,7 +36,7 @@ class User(models.Model):
         ('I', 'Intermediate'),
         ('A', 'Advanced')
     ]
-    level = models.IntegerField(max_length=1, choices=POSIBLE_LEVELS)
+    level = models.CharField(max_length=1, choices=POSIBLE_LEVELS)
     objectives = models.ManyToManyField(Objective)
     categories = models.ManyToManyField(Category)
     #strengthtrainings = models.IntegerField(default=0)
