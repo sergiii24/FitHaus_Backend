@@ -25,7 +25,8 @@ import os
 SECRET_KEY = os.environ.get('SECRET_KEY', 'u7q86=41#02s*r2r%&*&^&7uq9a)+#3h!6@z$)(gev++36mwno')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+DEBUG = True
+#bool(int(os.environ.get('DEBUG', 0)))
 
 ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'programs',
     'colections',
     'trainings',
+    'healthData',
     'django_filters',
     'multiselectfield',
 ]
@@ -111,7 +113,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'changeme',
-        'HOST': 'postgres',    #localhost or postgres
+        'HOST': 'localhost',    #localhost or postgres
         'PORT': '5432',
     }
 }

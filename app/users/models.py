@@ -48,8 +48,8 @@ class User(models.Model):
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
-    imc = ComputedFloatField(compute_from='calc_imc')
-    igc = ComputedFloatField(compute_from='calc_igc')
+    #imc = ComputedFloatField(compute_from='calc_imc')
+    #igc = ComputedFloatField(compute_from='calc_igc')
     # DATA DARRERA MODIFICACIO PERFIL
     updated = models.DateTimeField(auto_now=True)
 
