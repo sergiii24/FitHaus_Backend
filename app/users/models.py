@@ -6,6 +6,7 @@ from computed_property import ComputedIntegerField
 from django.core.validators import MinValueValidator
 from objectives.models import Objective
 from categories.models import Category
+from achivements.models import Achievement
 import datetime
 
 
@@ -28,8 +29,8 @@ class User(models.Model):
     birthdate = models.DateField()
     #age = ComputedIntegerField(compute_from='calc_age')
     # DADES ESPORTIVES
-    activitiesdone = models.IntegerField(default=0)
-    achivements = models.CharField(max_length=200)
+    activitiesdone = ComputedIntegerField(compute_from='calc_activities', default=0)
+    achivements = models.ManyToManyField(Achievement)
     points = models.IntegerField(default=0)
     POSIBLE_LEVELS = [
         ('B', 'Beginner'),
@@ -39,12 +40,12 @@ class User(models.Model):
     level = models.CharField(max_length=1, choices=POSIBLE_LEVELS)
     objectives = models.ManyToManyField(Objective)
     categories = models.ManyToManyField(Category)
-    #strengthtrainings = models.IntegerField(default=0)
-    #cardiotrainings = models.IntegerField(default=0)
-    #yogatrainings = models.IntegerField(default=0)
-    #stretchingtrainings = models.IntegerField(default=0)
-    #rehabilitationtrainings = models.IntegerField(default=0)
-    #pilatestrainings = models.IntegerField(default=0)
+    strengthtrainings = models.IntegerField(default=0)
+    cardiotrainings = models.IntegerField(default=0)
+    yogatrainings = models.IntegerField(default=0)
+    stretchingtrainings = models.IntegerField(default=0)
+    rehabilitationtrainings = models.IntegerField(default=0)
+    pilatestrainings = models.IntegerField(default=0)
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
@@ -58,6 +59,12 @@ class User(models.Model):
     def calc_age(self):
         today = datetime.date.today()
         return today.year - self.birthdate.year
+
+    @property
+    def calc_activities(self):
+        activities = self.strengthtrainings + self.cardiotrainings + self.yogatrainings + self.stretchingtrainings
+        activities += self.rehabilitationtrainings + self.pilatestrainings
+        return activities
 
     @property
     def calc_imc(self):
