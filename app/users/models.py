@@ -30,7 +30,7 @@ class User(models.Model):
     #age = ComputedIntegerField(compute_from='calc_age')
     # DADES ESPORTIVES
     activitiesdone = ComputedIntegerField(compute_from='calc_activities', default=0)
-    achivements = models.ManyToManyField(Achievement)
+    #achivements = models.ManyToManyField(Achievement)
     points = models.IntegerField(default=0)
     POSIBLE_LEVELS = [
         ('B', 'Beginner'),

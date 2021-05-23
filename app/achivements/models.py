@@ -13,4 +13,10 @@ class Achievement(models.Model):
     ]
     achievement = models.CharField(max_length=10, choices=POSIBLE_ACHIEVEMENTS)
     quantity = models.IntegerField(default=1)
-    Points = models.IntegerField(default=1)
+    points = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.achievement
+
+    class Meta:
+        unique_together = ['achievement', 'quantity']

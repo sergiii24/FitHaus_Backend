@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('colections.urls'), name='collections'),
     path('', include('healthData.urls'), name='healthData'),
     path('', include('achivements.urls'), name='achievements'),
+    path('', include('shareAchievements.urls'), name='shareachievements'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
