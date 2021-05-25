@@ -15,7 +15,7 @@ paths:
       summary: Crear usuari, es produeix quan aquest es registra per primer cop
       operationId: createUser
       requestBody:
-        description: Provide at least all required fields. The rest of information can be especified by user or it will be automatically computed
+        description: S'han de proporcionar els camps requerits. La resta seran automaticament assignats.
         content:
           application/json:
             schema:
@@ -25,27 +25,27 @@ paths:
                 username:
                   type: "string"
                   maxLength: 200
-                  example: "My username"
+                  example: "Elmeuusername"
                   uniqueItems: true
                 firstName:
                   type: "string"
                   maxLength: 200
-                  example: "My firstName"
+                  example: "Elmeunom"
                 lastName:
                   type: "string"
                   maxLength: 200
-                  example: "my lastName"
+                  example: "Elsmeusocgnoms"
                 email:
                   type: "string"
                   maxLength: 200
                   format: "email"
-                  example: "mymail@mail.com"
+                  example: "elmeumail@mail.com"
                   uniqueItems: true
                 password:
                   type: "string"
                   maxLength: 200
                   format: "password"
-                  example: "Mypassword_1_#"
+                  example: "Lamevapassword_1_#"
                 gender:
                   type: "string"
                   enum: [ M, W, X ]
@@ -60,7 +60,7 @@ paths:
                 achievements:
                   type: "string"
                   maxLength: 200
-                  example: "my achievements"
+                  example: "Elsmeusachievements"
                 points:
                   type: "integer"
                   default: 0
@@ -95,24 +95,24 @@ paths:
     get:
       tags:
       - "user"
-      summary: "Retrieves all the users"
+      summary: "Retorna tots els users"
       operationId: "getAllUsers"
       parameters:
         - name: username
           in: query
-          description: Username of the user
+          description: Nom de l'usuari
           required: false
           schema:
             type: string
         - name: email
           in: query
-          description: email of the user
+          description: Email de l'usuari
           required: false
           schema:
             type: string
       responses:
         "200":
-          description: "Succesful operation"
+          description: "Operació exitosa"
           content:
             application/json:
               schema:
@@ -123,8 +123,8 @@ paths:
       get:
         tags:
           - "user"
-        summary: "Obtenir informació de l'usuari"
-        description: "Provide user id"
+        summary: "Obtenir l'usuari amb l'id especificat"
+        description: "Proporcionar l'id de l'usuari"
         operationId: "getUserById"
         parameters:
           - name: "id"
@@ -146,10 +146,10 @@ paths:
         tags:
           - "user"
         summary: "Actualitzar info d'un usuari"
-        description: "Especificar només els camps a actualitzar, sense importar els altres"
+        description: "Especificar només els camps a actualitzar"
         operationId: "updateUser"
         requestBody:
-          description: Provide all fields
+          description: "Proporcionar els camps a actualitzar"
           content:
             application/json:
               schema:
@@ -222,7 +222,7 @@ paths:
         tags:
           - "user"
         summary: "Eliminar usuari"
-        description: "Provide user id"
+        description: "Proporcionar l'id de l'usuari"
         operationId: "deleteUser"
         parameters:
           - name: "id"
@@ -235,15 +235,15 @@ paths:
           "200":
             description: "Operació exitosa"
           "404":
-            description: "User not found"
+            description: "Usuari no trobat"
   /users/login:
-    get:
+    post:
       tags:
         - "user"
       summary: "Loggejar usuari"
       operationId: "loginUser"
       requestBody:
-        description: Provide email and password in order to log in
+        description: Proporcionar el mail i la password de l'usuari a loggejar
         content:
           application/json:
             schema:
@@ -273,7 +273,7 @@ paths:
       summary: Crear usuari, es produeix quan aquest es registra per primer cop
       operationId: getUserStats
       requestBody:
-        description: Provide user's id to get his/her stats
+        description: Proporcionar l'id de l'usuari
         content:
           application/json:
             schema:
@@ -291,7 +291,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserStats'
         "400":
-          description: "Credencials incorrectes"
+          description: "Alguna cosa no ha anat bé..."
 
   /ranking:
     get:
@@ -310,7 +310,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserRanking'
         "400":
-          description: "Credencials incorrectes"
+          description: "Alguna cosa no ha anat bé..."
 
   /categories:
     post:
@@ -320,7 +320,7 @@ paths:
       description: "Crear una categoria a la BD"
       operationId: "createCategory"
       requestBody:
-        description: Provide the field
+        description: Proporcionar l'enumeració corresponent
         content:
           application/json:
             schema:
@@ -337,13 +337,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Category'
         "400":
-          description: "Categoria ja existeix"
+          description: "Categoria ja existent"
   /categories/{Name}:
     get:
       tags:
         - "category"
-      summary: "Obtenir informació de la categoria"
-      description: "Provide the category id"
+      summary: "Obtenir categoria amb el nom proporcionat"
+      description: "Proporcionar el nom de la categoria en format enumeració"
       operationId: "getCatByName"
       parameters:
         - name: "Name"
@@ -370,7 +370,7 @@ paths:
       description: "Crear una classe a la BD"
       operationId: "createClass"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar tots els camps
         content:
           application/json:
             schema:
@@ -420,42 +420,42 @@ paths:
     get:
       tags:
         - "class"
-      summary: "Retrieves all the classes"
+      summary: "Retorna totes les classes"
       operationId: "getAllClasses"
       parameters:
         - name: name
           in: query
-          description: Name of the class
+          description: Nom de la classe
           required: false
           schema:
             type: string
         - name: age
           in: query
-          description: age for the class
+          description: Edat de la classe
           required: false
           schema:
             type: string
         - name: difficulty
           in: query
-          description: difficulty of the class
+          description: Dificultat de la classe
           required: false
           schema:
             type: string
         - name: workarea
           in: query
-          description: work area of the class
+          description: Area de treball de la classe
           required: false
           schema:
             type: string
         - name: categories
           in: query
-          description: categories of the class
+          description: Categories de la classe
           required: false
           schema:
             type: string
       responses:
         "200":
-          description: "Succesful operation"
+          description: "Operació exitosa"
           content:
             application/json:
               schema:
@@ -467,8 +467,8 @@ paths:
     get:
       tags:
         - "class"
-      summary: "Obtenir informació de la classe"
-      description: "Provide the class id"
+      summary: "Obtenir classe amb l'id especificat"
+      description: "Proporcionar l'id de la classe"
       operationId: "getClassById"
       parameters:
         - name: "id"
@@ -495,7 +495,7 @@ paths:
       description: "Crear un exercici a la BD"
       operationId: "createExercise"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar tots els camps requerits
         content:
           application/json:
             schema:
@@ -545,46 +545,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/Exercise'
         "400":
-          description: "Exercici ja existeix"
+          description: "Exercici ja existent"
     get:
       tags:
         - "exercise"
-      summary: "Retrieves all the exercises"
+      summary: "Retorna tots els exercicis"
       operationId: "getAllExercises"
       parameters:
         - name: name
           in: query
-          description: Name of the exercise
+          description: Nom de l'exercici
           required: false
           schema:
             type: string
         - name: age
           in: query
-          description: age for the exercise
+          description: Edat de l'exercici
           required: false
           schema:
             type: string
         - name: difficulty
           in: query
-          description: difficulty of the exercise
+          description: Dificultat de l'exercici
           required: false
           schema:
             type: string
         - name: muscle
           in: query
-          description: muscle of the exercise
+          description: Múscul treballat en l'exercici
           required: false
           schema:
             type: string
         - name: categories
           in: query
-          description: categories of the exercise
+          description: Categories de l'exercici
           required: false
           schema:
             type: string
       responses:
         "200":
-          description: "Succesful operation"
+          description: "Operació exitosa"
           content:
             application/json:
               schema:
@@ -596,8 +596,8 @@ paths:
     get:
       tags:
         - "exercise"
-      summary: "Obtenir informació de l'exercici"
-      description: "Provide the exercise id"
+      summary: "Obtenir l'exercici amb l'id especificat"
+      description: "Proporcionar l'id de l'exercici"
       operationId: "getExerById"
       parameters:
         - name: "id"
@@ -624,7 +624,7 @@ paths:
       description: "Crear un objectiu a la BD"
       operationId: "createObjective"
       requestBody:
-        description: Provide the field
+        description: Proporcionar el camp requerit en forma d'enumeració
         content:
           application/json:
             schema:
@@ -641,18 +641,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Objective'
         "400":
-          description: "Objectiu ja existeix"
+          description: "Objectiu ja existent"
   /objectives/{Name}:
     get:
       tags:
         - "objective"
-      summary: "Obtenir informació de l'objectiu"
-      description: "Provide the objective name"
+      summary: "Obtenir l'objectiu amb el nom especificat"
+      description: "Proporcionar el nom de l'objectiu en forma d'enumeració"
       operationId: "getObjByName"
       parameters:
         - name: "Name"
           in: "path"
-          description: "Name de l'objectiu"
+          description: "Nom de l'objectiu"
           required: true
           schema:
             type: "string"
@@ -674,7 +674,7 @@ paths:
       description: "Crear un rutina personalitzada a la BD, hereta del model routines"
       operationId: "createCustomRoutine"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar tots els camps requerits
         content:
           application/json:
             schema:
@@ -708,34 +708,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomRoutine'
         "400":
-          description: "Rutina personalitzada ja existeix"
+          description: "Rutina personalitzada ja existent"
     get:
       tags:
         - "custom routine"
-      summary: "Retrieves all the custom routines"
+      summary: "Retorna totes les rutines personalitzades"
       operationId: "getAllCustomRoutines"
       parameters:
         - name: name
           in: query
-          description: Name of the custom routine
+          description: Nom de la rutina
           required: false
           schema:
             type: string
         - name: time
           in: query
-          description: time of the custom routine
+          description: Temps de la rutina
           required: false
           schema:
             type: string
         - name: categories
           in: query
-          description: categories of the custom routine
+          description: Categories de la rutina
           required: false
           schema:
             type: string
       responses:
         "200":
-          description: "Succesful operation"
+          description: "Operació exitosa"
           content:
             application/json:
               schema:
@@ -746,8 +746,8 @@ paths:
     get:
       tags:
         - "custom routine"
-      summary: "Obtenir informació de la rutina personalitzada"
-      description: "Provide the Routine id"
+      summary: "Obtenir rutina personalitzada amb id especificat"
+      description: "Proporcionar l'id de la rutina"
       operationId: "getCustomRoutineById"
       parameters:
         - name: "id"
@@ -774,7 +774,7 @@ paths:
       description: "Crear un rutina predefinida a la BD, hereta del model routines"
       operationId: "createCustomRoutine"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar tots els camps requerits
         content:
           application/json:
             schema:
@@ -823,64 +823,64 @@ paths:
               schema:
                 $ref: '#/components/schemas/PredefinedRoutine'
         "400":
-          description: "Rutina predefinida ja existeix"
+          description: "Rutina predefinida ja existent"
     get:
       tags:
         - "predefined routine"
-      summary: "Retrieves all the predefined routines"
+      summary: "Retorna totes les rutines predefinides"
       operationId: "getAllPredefinedRoutines"
       parameters:
         - name: name
           in: query
-          description: Name of the predefined routine
+          description: Nom de la rutina
           required: false
           schema:
             type: string
         - name: time
           in: query
-          description: time of the predefined routine
+          description: Temps de la rutina
           required: false
           schema:
             type: string
         - name: categories
           in: query
-          description: categories of the predefined routine
+          description: Categories de la rutina
           required: false
           schema:
             type: string
         - name: age
           in: query
-          description: age of the predefined routine
+          description: Edat de la rutina
           required: false
           schema:
             type: string
         - name: level
           in: query
-          description: level of the predefined routine
+          description: Nivell de la rutina
           required: false
           schema:
             type: string
         - name: equipment
           in: query
-          description: equipment for the predefined routine
+          description: Equipament per la rutina
           required: false
           schema:
             type: string
         - name: objective
           in: query
-          description: objective of the predefined routine
+          description: Objectiu de la rutina
           required: false
           schema:
             type: string
         - name: impact
           in: query
-          description: impact of the predefined routine
+          description: Impacte de la rutina
           required: false
           schema:
             type: string
       responses:
         "200":
-          description: "Succesful operation"
+          description: "Operació exitosa"
           content:
             application/json:
               schema:
@@ -891,8 +891,8 @@ paths:
     get:
       tags:
         - "predefined routine"
-      summary: "Obtenir informació de la rutina predefinida"
-      description: "Provide the routine id"
+      summary: "Obtenir rutina predefinida amb id especificat"
+      description: "Proporcionar l'id de la rutina"
       operationId: "getPredefinedRoutineById"
       parameters:
         - name: "id"
@@ -919,7 +919,7 @@ paths:
       description: "Crear un entrenament a la BD, associat a un usuari"
       operationId: "createTraining"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar tots els camps requerits
         content:
           application/json:
             schema:
@@ -953,12 +953,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Training'
         "400":
-          description: "Rutina predefinida ja existeix"
+          description: "Rutina predefinida ja existent"
     get:
       tags:
         - "training"
-      summary: "Obtenir entrenament d'un usuari"
-      operationId: "getTrainingByUser"
+      summary: "Retorna tots els usuaris"
+      operationId: "getTrainings"
       parameters:
         - name: "username"
           in: "path"
@@ -981,8 +981,8 @@ paths:
     get:
       tags:
         - "training"
-      summary: "Obtenir informació de l'entrenament"
-      description: "Provide the training id"
+      summary: "Obtenir l'entrenament amb id especificat"
+      description: "Proporcionar l'id de l'entrenament"
       operationId: "getTrainingById"
       parameters:
         - name: "id"
@@ -1009,7 +1009,7 @@ paths:
       description: "Crear un programa a la BD"
       operationId: "createProgram"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar els camps requerits
         content:
           application/json:
             schema:
@@ -1050,7 +1050,7 @@ paths:
             type: "string"
         - name: "level"
           in: "path"
-          description: "Level del programa"
+          description: "Nivell del programa"
           required: true
           schema:
             type: "string"
@@ -1075,8 +1075,8 @@ paths:
     get:
       tags:
         - "program"
-      summary: "Obtenir informació del programa"
-      description: "Provide the program id"
+      summary: "Obtenir el programa amb id especificat"
+      description: "Proporcionar l'id del programa"
       operationId: "getProgramById"
       parameters:
         - name: "id"
@@ -1103,7 +1103,7 @@ paths:
       description: "Crear un col·lecció a la BD"
       operationId: "createCollection"
       requestBody:
-        description: Provide all required fields
+        description: Proporcionar els camps requerits
         content:
           application/json:
             schema:
@@ -1124,13 +1124,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Collection'
         "400":
-          description: "Col·lecció ja existeix"
+          description: "Col·lecció ja existent"
     get:
       tags:
         - "collection"
       summary: "Obtenir totes les col·leccions"
       operationId: "getCollections"
-
       responses:
         "200":
           description: "Operació exitosa"
@@ -1146,8 +1145,8 @@ paths:
       get:
         tags:
           - "collection"
-        summary: "Obtenir informació de la col·lecció"
-        description: "Provide the collection id"
+        summary: "Obtenir la col·lecció amb id especificat"
+        description: "Proporcionar l'id de la col·lecció"
         operationId: "getCollectionById"
         parameters:
           - name: "id"
