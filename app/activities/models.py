@@ -10,7 +10,7 @@ class Activity(models.Model):
         ('C', 'Class')
     ]
     type = models.CharField(max_length=30, choices=POSIBLE_TYPE, default='E')
-    name = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length=30, primary_key=True, default='')
     description = models.CharField(max_length=200, null=True)
     POSIBLE_AGE = [
         ('K', 'Kid'),
