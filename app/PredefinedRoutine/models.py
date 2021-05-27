@@ -44,25 +44,25 @@ class PredefinedRoutine(Routine):
     users = models.ManyToManyField(User)
 
     def clean(self, *args, **kwargs):
-        for e in PredefinedRoutine.objects.all():
-            exers = e.exercises
-            routinecats = e.categories
-            edat = e.age
-            for exercise in exers:
-                if exercise.age != edat:
-                    raise Exception("Model not valid: edats no coincideixen")
-                exercats = exercise.categories
-                for cateogry in routinecats:
-                    if cateogry not in exercats:
-                        raise Exception("Model not valid: categories no coincideixen")
-            cls = e.classes
-            for clase in cls:
-                if clase.age != edat:
-                    raise Exception("Model not valid: edats no coincideixen")
-                clasecat = clase.categories
-                for cateogry in routinecats:
-                    if cateogry not in clasecat:
-                        raise Exception("Model not valid: categories no coincideixen")
+        e = self
+        exers = e.exercises.all
+        routinecats = e.categories.all
+        edat = e.age
+        for exercise in exers:
+            if exercise.age != edat:
+                raise Exception("Model not valid: edats no coincideixen")
+            exercats = exercise.categories.all
+            for cateogry in routinecats:
+                if cateogry not in exercats:
+                    raise Exception("Model not valid: categories no coincideixen")
+        cls = e.classes.all
+        for clase in cls:
+            if clase.age != edat:
+                raise Exception("Model not valid: edats no coincideixen")
+            clasecat = clase.categories.all
+            for cateogry in routinecats:
+                if cateogry not in clasecat:
+                    raise Exception("Model not valid: categories no coincideixen")
         super(PredefinedRoutine, self).clean()
 
     def save(self, *args, **kwargs):

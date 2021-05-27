@@ -1,3 +1,4 @@
+import json
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
@@ -6,7 +7,10 @@ from users.models import User
 from users.serializers import UserSerializer
 from users.serializers import UserStatsSerializer
 from users.serializers import UserRankingSerializer
+from trainings.models import Training
+from trainings.serializers import TrainingSerializer
 import smtplib
+import datetime
 
 global server
 
@@ -18,17 +22,21 @@ class UserViewSet(viewsets.ModelViewSet):
     filterset_fields = ['username', 'email']
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def login(request):
-    m = request.GET['email']
-    pwd = request.GET['password']
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    m = body['email']
+    pwd = body['password']
     try:
         user = User.objects.get(email=m)
         if user.password == pwd:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+            serializer = UserSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
     except User.DoesNotExist:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def postea(m):

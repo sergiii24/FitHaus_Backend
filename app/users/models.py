@@ -2,7 +2,6 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from .validators import correct_pwd
 from computed_property import ComputedFloatField
-from computed_property import ComputedIntegerField
 from django.core.validators import MinValueValidator
 from objectives.models import Objective
 from categories.models import Category
@@ -29,7 +28,6 @@ class User(models.Model):
     #age = ComputedIntegerField(compute_from='calc_age')
     # DADES ESPORTIVES
     activitiesdone = models.IntegerField(default=0)
-    achivements = models.CharField(max_length=200)
     points = models.IntegerField(default=0)
     POSIBLE_LEVELS = [
         ('B', 'Beginner'),
@@ -37,14 +35,8 @@ class User(models.Model):
         ('A', 'Advanced')
     ]
     level = models.CharField(max_length=1, choices=POSIBLE_LEVELS)
-    objectives = models.ManyToManyField(Objective)
-    categories = models.ManyToManyField(Category)
-    #strengthtrainings = models.IntegerField(default=0)
-    #cardiotrainings = models.IntegerField(default=0)
-    #yogatrainings = models.IntegerField(default=0)
-    #stretchingtrainings = models.IntegerField(default=0)
-    #rehabilitationtrainings = models.IntegerField(default=0)
-    #pilatestrainings = models.IntegerField(default=0)
+    objectives = models.ManyToManyField(Objective, blank=True)
+    categories = models.ManyToManyField(Category, blank=True)
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
