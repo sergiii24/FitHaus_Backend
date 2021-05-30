@@ -1,5 +1,5 @@
 """
-ASGI config for FitHaus project.
+ASGI config for fithaus project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
