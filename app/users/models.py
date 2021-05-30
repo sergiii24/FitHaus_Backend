@@ -25,7 +25,6 @@ class User(models.Model):
     ]
     gender = models.CharField(max_length=1, choices=POSIBLE_GENDERS)
     birthdate = models.DateField()
-    #age = ComputedIntegerField(compute_from='calc_age')
     # DADES ESPORTIVES
     activitiesdone = models.IntegerField(default=0)
     points = models.IntegerField(default=0)
@@ -34,43 +33,18 @@ class User(models.Model):
         ('I', 'Intermediate'),
         ('A', 'Advanced')
     ]
-    level = models.CharField(max_length=1, choices=POSIBLE_LEVELS)
+    level = models.CharField(max_length=1, choices=POSIBLE_LEVELS, blank=True)
     objectives = models.ManyToManyField(Objective, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
-    imc = ComputedFloatField(compute_from='calc_imc')
-    igc = ComputedFloatField(compute_from='calc_igc')
-    # DATA DARRERA MODIFICACIO PERFIL
-    updated = models.DateTimeField(auto_now=True)
 
 
     @property
     def calc_age(self):
         today = datetime.date.today()
         return today.year - self.birthdate.year
-
-    @property
-    def calc_imc(self):
-        imc = self.weight / ((self.height / 100) * (self.height / 100))
-        return imc
-
-    @property
-    def calc_igc(self):
-        edat = datetime.date.today().year - self.birthdate.year
-        sexe = ('M' == self.gender)
-        if edat < 16:
-            if sexe:
-                igc = 1.51 * self.imc - 0.7 * edat - 3.6 + 1.4
-            else:
-                igc = 1.51 * self.imc - 0.7 * edat + 1.4
-        else:
-            if sexe:
-                igc = 1.39 * self.imc + 0.16 * edat - 10.34 - 9
-            else:
-                igc = 1.39 * self.imc + 0.16 * edat - 9
-        return igc
 
     @property
     def estadisticas(self):
@@ -83,3 +57,8 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+
+
+#class UserCreation(models.Model):
+    # DADES PERSONALS
+

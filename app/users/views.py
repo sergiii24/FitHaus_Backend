@@ -1,25 +1,83 @@
 import json
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
 from users.serializers import UserStatsSerializer
 from users.serializers import UserRankingSerializer
-from trainings.models import Training
-from trainings.serializers import TrainingSerializer
+from users.serializers import UserCreationSerializer
 import smtplib
 import datetime
 
 global server
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['username', 'email']
+class UserList(viewsets.ViewSet):
+
+    def list(self, request):
+        queryset = User.objects.all()
+        username = request.query_params.get('username')
+        email = request.query_params.get('email')
+        if username is not None:
+            queryset = queryset.filter(username=username)
+        elif email is not None:
+            queryset = queryset.filter(email=email)
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request):
+        try:
+            data = JSONParser().parse(request)
+            serializer = UserCreationSerializer(data=data)
+            if serializer.is_valid():
+                u = User()
+                u.username = serializer.validated_data.get('username')
+                u.firstname = serializer.validated_data.get('firstname')
+                u.lastname = serializer.validated_data.get('lastname')
+                u.email = serializer.validated_data.get('email')
+                u.password = serializer.data.get('password')
+                u.gender = serializer.data.get('gender')
+                u.birthdate = serializer.data.get('birthdate')
+                u.save()
+                serialized = UserSerializer(u)
+                return Response(serialized.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk):
+        try:
+            user = User.objects.get(id=pk)
+            serializer = UserSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # def update(self, request, pk=None):
+    #   pass
+
+    def partial_update(self, request, pk):
+        try:
+            user = User.objects.get(id=pk)
+            data = JSONParser().parse(request)
+            serializer = UserSerializer(user, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        try:
+            user = User.objects.get(id=pk)
+            user.delete()
+            return Response(status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
