@@ -1,6 +1,5 @@
 from django.db import models
 from PredefinedRoutine.models import PredefinedRoutine
-from CustomRoutine.models import CustomRoutine
 
 
 class Program(models.Model):
