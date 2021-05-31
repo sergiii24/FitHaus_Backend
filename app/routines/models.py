@@ -7,7 +7,7 @@ from classes.models import Classes
 # Create your models here.
 
 class Routine(models.Model):
-    id = models.IntegerField
+    #id = models.IntegerField
     name = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
     POSIBLE_TIME = [

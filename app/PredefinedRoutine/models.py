@@ -41,7 +41,7 @@ class PredefinedRoutine(Routine):
     ]
     impact = models.CharField(max_length=30, choices=POSIBLE_IMPACT, default='M')
     image = models.ImageField(upload_to='predef_routines_images', default=None)
-    users = models.ManyToManyField(User)
+    #users = models.ManyToManyField(User)
 
     def clean(self, *args, **kwargs):
         for e in PredefinedRoutine.objects.all():
