@@ -56,6 +56,13 @@ class UserCreationSerializer(serializers.Serializer):
 
 class NormalUserCreationSerializer(serializers.Serializer):
     password = serializers.CharField(validators=[MinLengthValidator(8), correct_pwd], max_length=200)
+    POSIBLE_GENDERS = [
+        ('M', 'Male'),
+        ('W', 'Women'),
+        ('X', 'Undefined')
+    ]
+    gender = serializers.ChoiceField(choices=POSIBLE_GENDERS)
+    birthdate = serializers.DateField()
 
 
 class ExternUserCreationSerializer(serializers.Serializer):

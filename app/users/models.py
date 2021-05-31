@@ -51,6 +51,11 @@ class User(models.Model):
         stats = [ad, ach, p, lvl]
         return stats
 
+    def get_normal_user(self):
+        if hasattr(self, 'normal_user'):
+            return self.normal_user
+        return None
+
     def __str__(self):
         return self.username
 
@@ -63,7 +68,6 @@ class ExternUser(models.Model):
     uid = models.CharField(max_length=200)
     provider = models.CharField(max_length=200)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="extern_user", primary_key=True)
-
 
 class NormalUserDTO(models.Model):
     id = models.IntegerField
