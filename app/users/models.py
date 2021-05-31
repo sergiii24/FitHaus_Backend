@@ -28,7 +28,7 @@ class User(models.Model):
     birthdate = models.DateField()
     #age = ComputedIntegerField(compute_from='calc_age')
     # DADES ESPORTIVES
-    activitiesdone = models.IntegerField(default=0)
+    activitiesdone = ComputedIntegerField(compute_from='calc_routines')
     points = models.IntegerField(default=0)
     POSIBLE_LEVELS = [
         ('B', 'Beginner'),
@@ -47,8 +47,8 @@ class User(models.Model):
     # DADES FISIQUES
     weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
     height = models.FloatField(default=0, validators=[MinValueValidator(1)])
-    imc = ComputedFloatField(compute_from='calc_imc')
-    igc = ComputedFloatField(compute_from='calc_igc')
+    #imc = ComputedFloatField(compute_from='calc_imc')
+    #igc = ComputedFloatField(compute_from='calc_igc')
 
 
     @property
@@ -57,7 +57,7 @@ class User(models.Model):
         return today.year - self.birthdate.year
 
     @property
-    def calc_activities(self):
+    def calc_routines(self):
         activities = self.strengthtrainings + self.cardiotrainings + self.yogatrainings + self.stretchingtrainings \
                      + self.rehabilitationtrainings + self.pilatestrainings
         return activities
@@ -86,7 +86,7 @@ class User(models.Model):
     @property
     def estadisticas(self):
         ad = self.activitiesdone
-        ach = self.achivements
+        #ach = self.achivements
         p = self.points
         lvl = self.level
         stats = [ad, ach, p, lvl]
@@ -94,27 +94,41 @@ class User(models.Model):
 
     def achievement(self):
         from shareAchievements.models import ShareAchievement
-        if self.activitiesdone % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='TT', quantity=self.activitiesdone)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
-        if self.strengthtrainings % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='ST', quantity=self.strengthtrainings)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
-        if self.cardiotrainings % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='CT', quantity=self.cardiotrainings)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
-        if self.yogatrainings % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='YT', quantity=self.yogatrainings)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
-        if self.stretchingtrainings % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='StchT', quantity=self.stretchingtrainings)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
-        if self.rehabilitationtrainings % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='RT', quantity=self.rehabilitationtrainings)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
-        if self.pilatestrainings % 10 == 0:
-            achievement = Achievement.objects.filter(achivement='PT', quantity=self.pilatestrainings)
-            ShareAchievement.objects.create(user=self, achievement=achievement, share=False)
+        act = self.activitiesdone % 10
+        if act == 0:
+            achi = Achievement.objects.get(achievement='TT', quantity=self.activitiesdone)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
+        act = self.strengthtrainings % 10
+        if act == 0:
+            achi = Achievement.objects.get(achievement='ST', quantity=self.strengthtrainings)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
+        act = self.cardiotrainings % 10
+        if act == 0:
+            achi = Achievement.objects.get(achievement='CT', quantity=self.cardiotrainings)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
+        act = self.yogatrainings % 10
+        if act % 10 == 0:
+            achi = Achievement.objects.get(achievement='YT', quantity=self.yogatrainings)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
+        act = self.stretchingtrainings % 10
+        if act % 10 == 0:
+            achi = Achievement.objects.get(achievement='StchT', quantity=self.stretchingtrainings)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
+        act = self.rehabilitationtrainings % 10
+        if act % 10 == 0:
+            achi = Achievement.objects.get(achievement='RT', quantity=self.rehabilitationtrainings)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
+        act = self.pilatestrainings % 10
+        if act % 10 == 0:
+            achi = Achievement.objects.get(achievement='PT', quantity=self.pilatestrainings)
+            if not ShareAchievement.objects.filter(user=self, achievement=achi):
+                ShareAchievement.objects.create(user=self, achievement=achi, share=False)
         return
 
     def __str__(self):
