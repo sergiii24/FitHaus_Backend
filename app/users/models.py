@@ -63,6 +63,27 @@ class User(models.Model):
         return activities
 
     @property
+    def calc_imc(self):
+        imc = self.weight / ((self.height / 100) * (self.height / 100))
+        return imc
+
+    @property
+    def calc_igc(self):
+        edat = datetime.date.today().year - self.birthdate.year
+        sexe = ('M' == self.gender)
+        if edat < 16:
+            if sexe:
+                igc = 1.51 * self.imc - 0.7 * edat - 3.6 + 1.4
+            else:
+                igc = 1.51 * self.imc - 0.7 * edat + 1.4
+        else:
+            if sexe:
+                igc = 1.39 * self.imc + 0.16 * edat - 10.34 - 9
+            else:
+                igc = 1.39 * self.imc + 0.16 * edat - 9
+        return igc
+
+    @property
     def estadisticas(self):
         ad = self.activitiesdone
         ach = self.achivements
