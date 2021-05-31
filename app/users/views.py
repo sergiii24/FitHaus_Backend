@@ -74,8 +74,9 @@ class UserList(viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             user = User.objects.get(id=pk)
+            serializer = UserSerializer(user)
             user.delete()
-            return Response(status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 

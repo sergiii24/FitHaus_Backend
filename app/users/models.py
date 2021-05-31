@@ -37,8 +37,8 @@ class User(models.Model):
     objectives = models.ManyToManyField(Objective, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     # DADES FISIQUES
-    weight = models.FloatField(default=0, validators=[MinValueValidator(1)])
-    height = models.FloatField(default=0, validators=[MinValueValidator(1)])
+    weight = models.FloatField(default=1, validators=[MinValueValidator(1)])
+    height = models.FloatField(default=1, validators=[MinValueValidator(1)])
 
 
     @property
