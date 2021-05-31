@@ -11,6 +11,8 @@ class TrainingViewSet(viewsets.ModelViewSet):
     #queryset = Training.objects.all()
     today = datetime.date.today()
     today_day = today.day
+    if today_day == 31:
+        today_day = 30
     today_month = today.month
     today_year = today.year
 

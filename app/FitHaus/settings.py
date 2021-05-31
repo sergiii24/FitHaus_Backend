@@ -81,7 +81,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'FitHaus.urls'
+ROOT_URLCONF = 'fithaus.urls'
 
 TEMPLATES = [
     {
@@ -100,7 +100,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'FitHaus.wsgi.application'
+WSGI_APPLICATION = 'fithaus.wsgi.application'
 
 
 # Database
