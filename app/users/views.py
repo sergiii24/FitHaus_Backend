@@ -30,8 +30,11 @@ class UserList(viewsets.ViewSet):
             queryset = queryset.filter(username=username)
         elif email is not None:
             queryset = queryset.filter(email=email)
-        serializer = GetUserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            serializer = GetUserSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -116,10 +119,10 @@ class UserList(viewsets.ViewSet):
                                     activitiesdone=user.activitiesdone,
                                     points=user.points,
                                     level=user.level,
-                                    objectives=objectives,
-                                    categories=categories,
                                     weight=user.weight,
                                     height=user.height)
+                dto.objectives = objectives
+                dto.categories = categories
                 serialized = NormalUserDTOSerializer(dto)
             else:
                 # portar-te details
@@ -133,12 +136,12 @@ class UserList(viewsets.ViewSet):
                                       activitiesdone=user.activitiesdone,
                                       points=user.points,
                                       level=user.level,
-                                      objectives=objectives,
-                                      categories=categories,
                                       weight=user.weight,
                                       height=user.height,
                                       uid=externaluser.uid,
                                       provider=externaluser.provider)
+                dto.objectives = objectives
+                dto.categories = categories
                 serialized = ExternalUserDTOSerializer(dto)
             return Response(serialized.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
@@ -171,10 +174,11 @@ class UserList(viewsets.ViewSet):
 
 @api_view(['POST'])
 def login(request):
-    email = request.query_params.get('email')
-    password = request.query_params.get('password')
-    uid = request.query_params.get('uid')
-    if uid is None: #CASO USER EXTERNO
+    data = JSONParser().parse(request)
+    email = data.get('email')
+    password = data.get('password')
+    uid = data.get('uid')
+    if uid is None and email is not None and password is not None:  # CASO USER NORMAL
         try:
             user = User.objects.get(email=email)
             objectives = []
@@ -209,7 +213,7 @@ def login(request):
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-    else:
+    elif uid is not None and email is None and password is None:  # CASO USER EXTERNO
         try:
             eu = ExternUser.objects.get(uid=uid)
             if eu is not None:
@@ -241,9 +245,8 @@ def login(request):
                 return Response(serialized.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def postea(m):
