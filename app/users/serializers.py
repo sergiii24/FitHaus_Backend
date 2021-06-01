@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from users.models import User
-from users.models import ExternUser
-from users.models import NormalUser
 from users.models import NormalUserDTO
 from users.models import ExternalUserDTO
 from django.core.validators import MinLengthValidator
@@ -11,7 +9,8 @@ from .validators import correct_pwd
 class GetUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        exclude = ['strengthtrainings','cardiotrainings','yogatrainings','stretchingtrainings',
+                   'rehabilitationtrainings','pilatestrainings']
 
 
 class NormalUserInfoSerializer(serializers.Serializer):
@@ -83,11 +82,16 @@ class UserStatsSerializer(serializers.ModelSerializer):
 
 
 class NormalUserDTOSerializer(serializers.ModelSerializer):
+    objectives = serializers.ListField(child=serializers.CharField())
+    categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = NormalUserDTO
         fields = '__all__'
 
+
 class ExternalUserDTOSerializer(serializers.ModelSerializer):
+    objectives = serializers.ListField(child=serializers.CharField())
+    categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = ExternalUserDTO
         fields = '__all__'
