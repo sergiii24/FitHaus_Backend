@@ -1,5 +1,4 @@
 import json
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
@@ -9,8 +8,6 @@ from users.models import ExternUser
 from users.models import NormalUser
 from users.models import ExternalUserDTO
 from users.models import NormalUserDTO
-from users.serializers import NormalUserInfoSerializer
-from users.serializers import ExternUserInfoSerializer
 from users.serializers import GetUserSerializer
 from users.serializers import UserStatsSerializer
 from users.serializers import UserRankingSerializer
@@ -98,6 +95,12 @@ class UserList(viewsets.ViewSet):
             user = User.objects.get(id=pk)
             objectives = []
             categories = []
+            obj = user.objectives.all()
+            cat = user.categories.all()
+            for o in obj:
+                objectives.append(o.objective)
+            for c in cat:
+                categories.append(c.category)
             if user.get_normal_user() is not None:
                 # portar-te details
                 normaluser = user.normal_user
@@ -113,8 +116,8 @@ class UserList(viewsets.ViewSet):
                                     activitiesdone=user.activitiesdone,
                                     points=user.points,
                                     level=user.level,
-                                    #objectives=objectives,
-                                    #categories=categories,
+                                    objectives=objectives,
+                                    categories=categories,
                                     weight=user.weight,
                                     height=user.height)
                 serialized = NormalUserDTOSerializer(dto)
@@ -130,8 +133,8 @@ class UserList(viewsets.ViewSet):
                                       activitiesdone=user.activitiesdone,
                                       points=user.points,
                                       level=user.level,
-                                      # objectives=user.objectives,
-                                      # categories=user.categories,
+                                      objectives=objectives,
+                                      categories=categories,
                                       weight=user.weight,
                                       height=user.height,
                                       uid=externaluser.uid,
@@ -168,19 +171,79 @@ class UserList(viewsets.ViewSet):
 
 @api_view(['POST'])
 def login(request):
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    m = body['email']
-    pwd = body['password']
-    try:
-        user = User.objects.get(email=m)
-        if user.password == pwd:
-            serializer = NormalUserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    email = request.query_params.get('email')
+    password = request.query_params.get('password')
+    uid = request.query_params.get('uid')
+    if uid is None: #CASO USER EXTERNO
+        try:
+            user = User.objects.get(email=email)
+            objectives = []
+            categories = []
+            obj = user.objectives.all()
+            cat = user.categories.all()
+            for o in obj:
+                objectives.append(o.objective)
+            for c in cat:
+                categories.append(c.category)
+            if user.get_normal_user() is not None and user.get_normal_user().password == password:
+                normaluser = user.normal_user
+                # portar-te altres
+                dto = NormalUserDTO(id=user.id,
+                                    username=user.username,
+                                    firstname=user.firstname,
+                                    lastname=user.lastname,
+                                    email=user.email,
+                                    password=normaluser.password,
+                                    gender=user.gender,
+                                    birthdate=user.birthdate,
+                                    activitiesdone=user.activitiesdone,
+                                    points=user.points,
+                                    level=user.level,
+                                    objectives=objectives,
+                                    categories=categories,
+                                    weight=user.weight,
+                                    height=user.height)
+                serialized = NormalUserDTOSerializer(dto)
+                return Response(serialized.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        try:
+            eu = ExternUser.objects.get(uid=uid)
+            if eu is not None:
+                user = eu.user
+                objectives = []
+                categories = []
+                obj = user.objectives.all()
+                cat = user.categories.all()
+                for o in obj:
+                    objectives.append(o.objective)
+                for c in cat:
+                    categories.append(c.category)
+                # portar-te altres
+                dto = ExternalUserDTO(id=user.id,
+                                      username=user.username,
+                                      firstname=user.firstname,
+                                      lastname=user.lastname,
+                                      email=user.email,
+                                      activitiesdone=user.activitiesdone,
+                                      points=user.points,
+                                      level=user.level,
+                                      objectives=objectives,
+                                      categories=categories,
+                                      weight=user.weight,
+                                      height=user.height,
+                                      uid=eu.uid,
+                                      provider=eu.provider)
+                serialized = ExternalUserDTOSerializer(dto)
+                return Response(serialized.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
 
 
 def postea(m):
