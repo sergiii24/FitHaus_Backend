@@ -155,8 +155,8 @@ class NormalUserDTO(models.Model):
     activitiesdone = models.IntegerField()
     points = models.IntegerField()
     level = models.CharField(max_length=1, blank=True)
-    objectives = models.CharField(max_length=200, blank=True)
-    categories = models.CharField(max_length=200, blank=True)
+    objectives = []
+    categories = []
     weight = models.FloatField(default=1, validators=[MinValueValidator(1)])
     height = models.FloatField(default=1, validators=[MinValueValidator(1)])
 
@@ -172,8 +172,8 @@ class ExternalUserDTO(models.Model):
     activitiesdone = models.IntegerField()
     points = models.IntegerField()
     level = models.CharField(max_length=1, blank=True)
-    objectives = models.CharField(max_length=200, blank=True)
-    categories = models.CharField(max_length=200, blank=True)
+    objectives = []
+    categories = []
     weight = models.FloatField(default=1)
     height = models.FloatField(default=1)
     uid = models.CharField(max_length=200)
