@@ -7,3 +7,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
         model = Exercise
         fields = '__all__'
 
+class ExerciseNoImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        exclude = ('pre', 'muscleimage', 'videotutorial', 'videoexercise')
+
+class ExerciseImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = ('pre', 'muscleimage', 'videotutorial', 'videoexercise')
