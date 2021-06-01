@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from exercises.models import Exercise
+from categories.models import Category
 from exercises.serializers import ExerciseSerializer, ExerciseNoImageSerializer, ExerciseImageSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
@@ -35,10 +36,10 @@ class ExercisesViewSet(viewsets.ViewSet):
 
     def create(self, request):
         try:
-            data = json.loads(request.data['data'])
+            data = JSONParser().parse(request)
             ex_serializer = ExerciseNoImageSerializer(data=data)
-            data = request.FILES
-            ex_image_serializer = ExerciseNoImageSerializer(data=data)
+            #data = request.FILES['pre']
+            #ex_image_serializer = ExerciseNoImageSerializer(data=data)
             if ex_serializer.is_valid():
                 ex = Exercise()
                 ex.type = ex_serializer.validated_data.get('type')
@@ -47,11 +48,10 @@ class ExercisesViewSet(viewsets.ViewSet):
                 ex.age = ex_serializer.validated_data.get('age')
                 ex.difficulty = ex_serializer.validated_data.get('difficulty')
                 ex.length = ex_serializer.validated_data.get('length')
-                ex.categories = ex_serializer.validated_data.get('categories')
-                ex.pre = ex_image_serializer.validated_data.get('pre')
-                ex.muscleimage = ex_image_serializer.validated_data.get('muscleimage')
-                ex.videotutorial = ex_image_serializer.validated_data.get('videotutorial')
-                ex.videoexercise = ex_image_serializer.validated_data.get('videoexercise')
+                #ex.pre = ex_image_serializer.validated_data.get('pre')
+                #ex.muscleimage = ex_image_serializer.validated_data.get('muscleimage')
+                #ex.videotutorial = ex_image_serializer.validated_data.get('videotutorial')
+                #ex.videoexercise = ex_image_serializer.validated_data.get('videoexercise')
                 ex.muscle = ex_serializer.validated_data.get('muscle')
                 ex.save()
                 return Response(ex_serializer.data, status=status.HTTP_201_CREATED)
