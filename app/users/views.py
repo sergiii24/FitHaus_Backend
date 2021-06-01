@@ -199,10 +199,10 @@ def login(request):
                                     activitiesdone=user.activitiesdone,
                                     points=user.points,
                                     level=user.level,
-                                    objectives=objectives,
-                                    categories=categories,
                                     weight=user.weight,
                                     height=user.height)
+                dto.objectives = objectives
+                dto.categories = categories
                 serialized = NormalUserDTOSerializer(dto)
                 return Response(serialized.data, status=status.HTTP_200_OK)
             else:
@@ -231,12 +231,12 @@ def login(request):
                                       activitiesdone=user.activitiesdone,
                                       points=user.points,
                                       level=user.level,
-                                      objectives=objectives,
-                                      categories=categories,
                                       weight=user.weight,
                                       height=user.height,
                                       uid=eu.uid,
                                       provider=eu.provider)
+                dto.objectives = objectives
+                dto.categories = categories
                 serialized = ExternalUserDTOSerializer(dto)
                 return Response(serialized.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
