@@ -82,12 +82,16 @@ class UserStatsSerializer(serializers.ModelSerializer):
 
 
 class NormalUserDTOSerializer(serializers.ModelSerializer):
+    objectives = serializers.ListField(child=serializers.CharField())
+    categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = NormalUserDTO
         fields = '__all__'
 
 
 class ExternalUserDTOSerializer(serializers.ModelSerializer):
+    objectives = serializers.ListField(child=serializers.CharField())
+    categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = ExternalUserDTO
         fields = '__all__'
