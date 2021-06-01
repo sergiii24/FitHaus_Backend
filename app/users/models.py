@@ -1,7 +1,6 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
 from .validators import correct_pwd
-from computed_property import ComputedFloatField
 from computed_property import ComputedIntegerField
 from django.core.validators import MinValueValidator
 from objectives.models import Objective
@@ -156,8 +155,8 @@ class NormalUserDTO(models.Model):
     activitiesdone = models.IntegerField()
     points = models.IntegerField()
     level = models.CharField(max_length=1, blank=True)
-    objectives = models.ManyToManyField(Objective, blank=True)
-    categories = models.ManyToManyField(Category, blank=True)
+    objectives = models.CharField(max_length=200, blank=True)
+    categories = models.CharField(max_length=200, blank=True)
     weight = models.FloatField(default=1, validators=[MinValueValidator(1)])
     height = models.FloatField(default=1, validators=[MinValueValidator(1)])
 

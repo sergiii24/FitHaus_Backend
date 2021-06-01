@@ -1,5 +1,4 @@
 import json
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
@@ -9,8 +8,6 @@ from users.models import ExternUser
 from users.models import NormalUser
 from users.models import ExternalUserDTO
 from users.models import NormalUserDTO
-from users.serializers import NormalUserInfoSerializer
-from users.serializers import ExternUserInfoSerializer
 from users.serializers import GetUserSerializer
 from users.serializers import UserStatsSerializer
 from users.serializers import UserRankingSerializer
@@ -98,6 +95,12 @@ class UserList(viewsets.ViewSet):
             user = User.objects.get(id=pk)
             objectives = []
             categories = []
+            obj = user.objectives.all()
+            cat = user.categories.all()
+            for o in obj:
+                objectives.append(o.objective)
+            for c in cat:
+                categories.append(c.category)
             if user.get_normal_user() is not None:
                 # portar-te details
                 normaluser = user.normal_user
@@ -113,8 +116,8 @@ class UserList(viewsets.ViewSet):
                                     activitiesdone=user.activitiesdone,
                                     points=user.points,
                                     level=user.level,
-                                    #objectives=objectives,
-                                    #categories=categories,
+                                    objectives=objectives,
+                                    categories=categories,
                                     weight=user.weight,
                                     height=user.height)
                 serialized = NormalUserDTOSerializer(dto)
