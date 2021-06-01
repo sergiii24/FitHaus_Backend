@@ -6,11 +6,12 @@ import datetime
 
 
 class HealthData(models.Model):
+    id = models.IntegerField
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
-    weight = ComputedIntegerField(compute_from='calc_weight', default=1)
-    height = ComputedIntegerField(compute_from='calc_height', default=1)
-    imc = ComputedFloatField(compute_from='calc_imc')
-    igc = ComputedFloatField(compute_from='calc_igc')
+    weight = ComputedFloatField(compute_from='calc_weight', default=1)
+    height = ComputedFloatField(compute_from='calc_height', default=1)
+    imc = ComputedFloatField(compute_from='calc_imc', default=1)
+    igc = ComputedFloatField(compute_from='calc_igc', default=1)
     date = models.DateTimeField(auto_now=True)
 
     @property
@@ -44,6 +45,12 @@ class HealthData(models.Model):
                 igc = 1.39 * self.imc + 0.16 * edat - 9
         return igc
 
-    class Meta:
-        unique_together = ('user', 'date')
-        ordering = ['id']
+
+class HealthDataDTO(models.Model):
+    id = models.IntegerField
+    username = models.CharField(max_length=200)
+    weight = models.FloatField(default=1)
+    height = models.FloatField(default=1)
+    imc = models.FloatField(default=1)
+    igc = models.FloatField(default=1)
+    date = models.DateField()
