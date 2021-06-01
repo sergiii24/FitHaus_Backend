@@ -28,10 +28,11 @@ COPY scripts /scripts
 RUN chmod +x /scripts/*
 
 RUN mkdir -p /code/media
+RUN mkdir -p /code/media/activities_images
 RUN mkdir -p /code/static
 RUN adduser -D user
 RUN chown -R user:user /code
-RUN chmod -R 755 /code
+RUN chmod -R 777 /code
 
 USER user
 
