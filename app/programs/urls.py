@@ -4,7 +4,7 @@ from programs import views
 
 
 router = DefaultRouter()
-router.register(r'programs', views.ProgramViewSet)
+router.register(r'programs', views.ProgramsViewSet, basename='programs')
 
 urlpatterns = [
     path('', include(router.urls))

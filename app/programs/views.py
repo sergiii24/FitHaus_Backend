@@ -1,13 +1,13 @@
 from rest_framework import viewsets, status
-from colections.models import Program
-from colections.models import ProgramDTO
-from colections.serializers import ProgramSerializer
-from colections.serializers import ProgramDTOSerializer
+from programs.models import Program
+from programs.models import ProgramDTO
+from programs.serializers import ProgramSerializer
+from programs.serializers import ProgramDTOSerializer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 
-class CollectionsViewSet(viewsets.ViewSet):
+class ProgramsViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = Program.objects.all()
