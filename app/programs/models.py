@@ -19,3 +19,11 @@ class Program(models.Model):
 
     class Meta:
         unique_together = ('name', 'level')
+
+
+class ProgramDTO(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    level = models.CharField(max_length=1, default='B')
+    weeks = models.IntegerField(default=0)
+    predef_routines = []
