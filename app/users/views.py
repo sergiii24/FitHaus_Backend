@@ -41,7 +41,7 @@ class UserList(viewsets.ViewSet):
             user_serializer = UserCreationSerializer(data=data)
             if 'uid' not in data:
                 serializer = NormalUserCreationSerializer(data=data)
-                tipo = "normal"
+                tipo= "normal"
             else:
                 serializer = ExternUserCreationSerializer(data=data)
                 tipo = "externo"

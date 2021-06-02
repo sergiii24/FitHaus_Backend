@@ -49,11 +49,6 @@ class User(models.Model):
     igc = ComputedFloatField(compute_from='calc_igc', default=1)
 
     @property
-    def calc_age(self):
-        today = datetime.date.today()
-        return today.year - self.birthdate.year
-
-    @property
     def calc_routines(self):
         activities = self.strengthtrainings + self.cardiotrainings + self.yogatrainings + self.stretchingtrainings \
                      + self.rehabilitationtrainings + self.pilatestrainings
@@ -61,11 +56,15 @@ class User(models.Model):
 
     @property
     def calc_imc(self):
+        if self.birthdate is None:
+            return 1
         imc = self.weight / ((self.height / 100) * (self.height / 100))
         return imc
 
     @property
     def calc_igc(self):
+        if self.birthdate is None:
+            return 1
         edat = datetime.date.today().year - self.birthdate.year
         sexe = ('M' == self.gender)
         if edat < 16:
