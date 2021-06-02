@@ -1,17 +1,16 @@
 from django.db import models
 from users.models import User
 from computed_property import ComputedFloatField
-from computed_property import ComputedIntegerField
 import datetime
 
 
 class HealthData(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
-    weight = ComputedIntegerField(compute_from='calc_weight', default=1)
-    height = ComputedIntegerField(compute_from='calc_height', default=1)
-    imc = ComputedFloatField(compute_from='calc_imc')
-    igc = ComputedFloatField(compute_from='calc_igc')
-    date = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    weight = ComputedFloatField(compute_from='calc_weight', default=1)
+    height = ComputedFloatField(compute_from='calc_height', default=1)
+    imc = ComputedFloatField(compute_from='calc_imc', default=1)
+    igc = ComputedFloatField(compute_from='calc_igc', default=1)
+    date = models.DateField(auto_now=True)
 
     @property
     def calc_weight(self):
@@ -44,6 +43,11 @@ class HealthData(models.Model):
                 igc = 1.39 * self.imc + 0.16 * edat - 9
         return igc
 
-    class Meta:
-        unique_together = ('user', 'date')
-        ordering = ['id']
+
+class HealthDataDTO(models.Model):
+    user_id = models.IntegerField(default=None)
+    weight = models.FloatField(default=1)
+    height = models.FloatField(default=1)
+    imc = models.FloatField(default=1)
+    igc = models.FloatField(default=1)
+    date = models.DateField()

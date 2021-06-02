@@ -30,7 +30,7 @@ urlpatterns = [
     path('', include('CustomRoutine.urls'), name='customroutines'),
     path('', include('programs.urls'), name='programs'),
     path('', include('colections.urls'), name='collections'),
-    path('', include('healthData.urls'), name='healthData'),
+    path('', include('healthdata.urls'), name='healthdata'),
     path('', include('achivements.urls'), name='achievements'),
     path('', include('shareAchievements.urls'), name='shareachievements'),
 ]
