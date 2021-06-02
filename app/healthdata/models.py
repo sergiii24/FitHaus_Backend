@@ -1,7 +1,8 @@
+import datetime
+
+from computed_property import ComputedFloatField
 from django.db import models
 from users.models import User
-from computed_property import ComputedFloatField
-import datetime
 
 
 class HealthData(models.Model):

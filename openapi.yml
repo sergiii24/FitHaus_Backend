@@ -706,7 +706,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomRoutine'
+                $ref: '#/components/schemas/customroutines'
         "400":
           description: "Rutina personalitzada ja existent"
     get:
@@ -741,7 +741,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CustomRoutine'
+                  $ref: '#/components/schemas/customroutines'
   /customroutines/{id}:
     get:
       tags:
@@ -762,7 +762,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomRoutine'
+                $ref: '#/components/schemas/customroutines'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -821,7 +821,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/predefinedroutine'
+                $ref: '#/components/schemas/predefinedroutines'
         "400":
           description: "Rutina predefinida ja existent"
     get:
@@ -886,7 +886,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CustomRoutine'
+                  $ref: '#/components/schemas/customroutines'
   /predefinedroutines/{id}:
     get:
       tags:
@@ -907,7 +907,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/predefinedroutine'
+                $ref: '#/components/schemas/predefinedroutines'
         "400":
           description: "Alguna cosa no ha anat bé..."
 
@@ -923,7 +923,7 @@ paths:
         content:
           application/json:
             schema:
-              required: [user, customroutine, predefinedroutine, date, hInici, hFi, done, shared]
+              required: [ user, customroutines, predefinedroutines, date, hInici, hFi, done, shared ]
               type: object
               properties:
                 user:
@@ -1013,7 +1013,7 @@ paths:
         content:
           application/json:
             schema:
-              required: [ name, description, level, weeks, predefinedroutine]
+              required: [ name, description, level, weeks, predefinedroutines ]
               type: object
               properties:
                 name:
@@ -1107,7 +1107,7 @@ paths:
         content:
           application/json:
             schema:
-              required: [ name, description, predefinedroutine]
+              required: [ name, description, predefinedroutines ]
               type: object
               properties:
                 name:

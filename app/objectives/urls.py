@@ -1,7 +1,6 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 from objectives import views
-
+from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'objectives', views.ObjectiveViewSet)

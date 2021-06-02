@@ -1,10 +1,8 @@
-
 from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase
-
 # TESTOS DE CREACIO/REGISTRE
 from exercises.models import Exercise
+from rest_framework import status
+from rest_framework.test import APITestCase
 
 
 class ExerciseRegistrationAPIViewTestCase(APITestCase):

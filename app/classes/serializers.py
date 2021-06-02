@@ -1,26 +1,29 @@
+from classes.models import Class
+from classes.models import ClassDTO
 from rest_framework import serializers
-from classes.models import Classes
-from classes.models import ClassesDTO
 
 
-class ClassesSerializer(serializers.ModelSerializer):
+class ClassSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Classes
+        model = Class
         fields = '__all__'
 
-class ClassesNoImageSerializer(serializers.ModelSerializer):
+
+class ClassNoImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Classes
+        model = Class
         exclude = ('pre', 'videoclass')
 
 
-class ClassesImageSerializer(serializers.ModelSerializer):
+class ClassImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Classes
+        model = Class
         fields = ('pre', 'videoclass')
 
-class ClassesDTOSerializer(serializers.ModelSerializer):
+
+class ClassDTOSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ClassesDTO
+        model = ClassDTO
         exclude = ('id',)
+
     categories = serializers.ListField(child=serializers.CharField())

@@ -1,13 +1,15 @@
-from django.core.validators import MinLengthValidator
-from django.db import models
-from .validators import correct_pwd
-from computed_property import ComputedIntegerField
-from computed_property import ComputedFloatField
-from django.core.validators import MinValueValidator
-from objectives.models import Objective
-from categories.models import Category
-from achivements.models import Achievement
 import datetime
+
+from achievements.models import Achievement
+from categories.models import Category
+from computed_property import ComputedFloatField
+from computed_property import ComputedIntegerField
+from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator
+from django.db import models
+from objectives.models import Objective
+
+from .validators import correct_pwd
 
 
 # Create your models here.
@@ -82,7 +84,7 @@ class User(models.Model):
     @property
     def estadisticas(self):
         ad = self.activitiesdone
-        #ach = self.achivements
+        # ach = self.achievements
         p = self.points
         lvl = self.level
         stats = [ad, ach, p, lvl]
@@ -94,7 +96,7 @@ class User(models.Model):
         return None
 
     def achievement(self):
-        from shareAchievements.models import ShareAchievement
+        from shareachievements.models import ShareAchievement
         act = self.activitiesdone % 10
         if act == 0:
             achi = Achievement.objects.get(achievement='TT', quantity=self.activitiesdone)
@@ -135,6 +137,7 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
+
 class NormalUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="normal_user")
     password = models.CharField(validators=[MinLengthValidator(8), correct_pwd], max_length=200, blank=True)
@@ -144,6 +147,7 @@ class ExternUser(models.Model):
     uid = models.CharField(max_length=200)
     provider = models.CharField(max_length=200)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="extern_user", primary_key=True)
+
 
 class NormalUserDTO(models.Model):
     id = models.IntegerField
@@ -163,7 +167,6 @@ class NormalUserDTO(models.Model):
     height = models.FloatField(default=1, validators=[MinValueValidator(1)])
     imc = models.FloatField(default=1)
     igc = models.FloatField(default=1)
-
 
 
 class ExternalUserDTO(models.Model):

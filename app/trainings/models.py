@@ -1,7 +1,7 @@
-from CustomRoutine.models import CustomRoutine
 from computed_property import ComputedIntegerField
+from customroutines.models import CustomRoutine
 from django.db import models
-from predefinedroutine.models import PredefinedRoutine
+from predefinedroutines.models import PredefinedRoutine
 from users.models import User
 
 
@@ -21,4 +21,3 @@ class Training(models.Model):
         horaIni = self.hInici.hour
         horaFi = self.hFi.hour
         return horaIni - horaFi
-

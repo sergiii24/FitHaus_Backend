@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from healthdata.models import HealthData, HealthDataDTO
+from rest_framework import serializers
 
 
 class HealthDataSerializer(serializers.ModelSerializer):

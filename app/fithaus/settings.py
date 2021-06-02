@@ -55,14 +55,14 @@ INSTALLED_APPS = [
     'classes',
     'objectives',
     'routines',
-    'predefinedroutine',
-    'CustomRoutine',
+    'predefinedroutines',
+    'customroutines',
     'programs',
     'colections',
     'trainings',
-    'achivements',
+    'achievements',
     'healthdata',
-    'shareAchievements',
+    'shareachievements',
     'django_filters',
     'multiselectfield',
 ]
@@ -114,7 +114,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'changeme',
-        'HOST': 'postgres',  # localhost or postgres
+        'HOST': 'localhost',  # localhost or postgres
         'PORT': '5432',
     }
 }

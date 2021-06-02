@@ -1,7 +1,6 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 from programs import views
-
+from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'programs', views.ProgramsViewSet, basename='programs')

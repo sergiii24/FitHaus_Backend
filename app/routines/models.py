@@ -1,7 +1,7 @@
-from django.db import models
 from categories.models import Category
+from classes.models import Class
+from django.db import models
 from exercises.models import Exercise
-from classes.models import Classes
 
 
 # Create your models here.
@@ -17,11 +17,10 @@ class Routine(models.Model):
     time = models.CharField(max_length=30, choices=POSIBLE_TIME, default='F')
     categories = models.ManyToManyField(Category, default=None)
     exercises = models.ManyToManyField(Exercise, blank=True, default=None)
-    classes = models.ManyToManyField(Classes, blank=True, default=None)
+    classes = models.ManyToManyField(Class, blank=True, default=None)
 
     def __str__(self):
         return self.name
 
     class Meta:
         abstract = True
-

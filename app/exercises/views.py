@@ -1,12 +1,11 @@
-from rest_framework import viewsets, status
 from exercises.models import Exercise
 from exercises.models import ExerciseDTO
 from exercises.serializers import ExerciseDTOSerializer
 from exercises.serializers import ExerciseNoImageSerializer
-from exercises.serializers import ExerciseSerializer, ExerciseImageSerializer
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from exercises.serializers import ExerciseSerializer
+from rest_framework import viewsets, status
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.utils import json
 
 
 class ExercisesViewSet(viewsets.ViewSet):
@@ -54,10 +53,10 @@ class ExercisesViewSet(viewsets.ViewSet):
                 for c in cat:
                     categories.append(c.category)
                 ex.categories.set(categories)
-                # ex.pre = ex_image_serializer.validated_data.get('pre')
-                # ex.muscleimage = ex_image_serializer.validated_data.get('muscleimage')
-                # ex.videotutorial = ex_image_serializer.validated_data.get('videotutorial')
-                # ex.videoexercise = ex_image_serializer.validated_data.get('videoexercise')
+                ex.pre = ex_image_serializer.validated_data.get('pre')
+                ex.muscleimage = ex_image_serializer.validated_data.get('muscleimage')
+                ex.videotutorial = ex_image_serializer.validated_data.get('videotutorial')
+                ex.videoexercise = ex_image_serializer.validated_data.get('videoexercise')
                 ex.muscle = ex_serializer.validated_data.get('muscle')
                 ex.save()
                 return Response(ex_serializer.data, status=status.HTTP_201_CREATED)

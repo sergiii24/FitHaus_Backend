@@ -1,11 +1,8 @@
-import json
-
+# TESTOS DE CREACIO/REGISTRE
+from categories.models import Category
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
-# TESTOS DE CREACIO/REGISTRE
-from categories.models import Category
 
 
 class CategoryRegistrationAPIViewTestCase(APITestCase):

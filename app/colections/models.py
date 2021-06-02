@@ -1,5 +1,5 @@
 from django.db import models
-from predefinedroutine.models import PredefinedRoutine
+from predefinedroutines.models import PredefinedRoutine
 
 
 class Collection(models.Model):
@@ -15,4 +15,3 @@ class CollectionDTO(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     predef_routines = []
-

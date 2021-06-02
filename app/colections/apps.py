@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ColectionsConfig(AppConfig):
+class CollectionConfig(AppConfig):
     name = 'colections'

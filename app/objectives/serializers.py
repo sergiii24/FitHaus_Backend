@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from objectives.models import Objective
+from rest_framework import serializers
 
 
 class ObjectiveSerializer(serializers.ModelSerializer):

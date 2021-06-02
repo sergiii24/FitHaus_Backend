@@ -1,8 +1,8 @@
-from django.db import models
 from activities.models import Activity
+from django.db import models
 
 
-class Classes(Activity):
+class Class(Activity):
     videoclass = models.FileField(upload_to='class_videos', default=None)
     trainer = models.CharField(max_length=30)
     POSIBLE_WORKAREA = [
@@ -14,7 +14,7 @@ class Classes(Activity):
     workarea = models.CharField(choices=POSIBLE_WORKAREA, max_length=200, default='FB')
 
 
-class ClassesDTO(models.Model):
+class ClassDTO(models.Model):
     type = models.CharField(max_length=30, default='E')
     name = models.CharField(max_length=30, default='')
     description = models.CharField(max_length=1, null=True)

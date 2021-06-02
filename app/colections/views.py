@@ -1,26 +1,25 @@
-from rest_framework import viewsets, status
 from colections.models import Collection
 from colections.models import CollectionDTO
-from colections.serializers import CollectionSerializer
 from colections.serializers import CollectionDTOSerializer
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from colections.serializers import colectionserializer
+from rest_framework import viewsets, status
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.utils import json
 
 
-class CollectionsViewSet(viewsets.ViewSet):
+class colectionsViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = Collection.objects.all()
         if queryset.count() > 0:
-            serializer = CollectionSerializer(queryset, many=True)
+            serializer = colectionserializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
             data = JSONParser().parse(request)
-            serializer = CollectionSerializer(data=data)
+            serializer = colectionserializer(data=data)
             if serializer.is_valid():
                 col = Collection()
                 col.name = serializer.validated_data.get('name')
@@ -55,7 +54,7 @@ class CollectionsViewSet(viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             col = Collection.objects.get(name=pk)
-            serializer = CollectionSerializer(col)
+            serializer = colectionserializer(col)
             col.delete()
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
