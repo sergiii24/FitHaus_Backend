@@ -4,6 +4,12 @@ stage('Build Environment') {
         }
     }
 
+                sh 'pip install pylint'
+            sh ''' cd app; pwd; pylint -d C0301 -d C0114 -d C0115 -d W0223 */** '''
+            echo "Code Coverage"
+            sh ''' coverage run -m unittest discover '''
+            sh ''' python -m coverage xml -o reports/coverage.xml '''
+
     stage('Static code metrics') {
         steps {
             echo "Style check"

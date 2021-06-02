@@ -23,12 +23,7 @@ pipeline {
         }
         steps {
             echo "Style check"
-            sh 'pip install pylint'
-            sh ''' cd app '''
-  //        sh ''' pylint -d C0301 -d C0114 -d C0115 -d W0223 */** '''
-            echo "Code Coverage"
-  //          sh ''' coverage run -m unittest discover '''
-  //          sh ''' python -m coverage xml -o reports/coverage.xml '''
+
         }
         post{
             always{
