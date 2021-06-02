@@ -4,7 +4,7 @@ from CustomRoutine import views
 
 
 router = DefaultRouter()
-router.register(r'customroutines', views.CustomRoutinesViewSet)
+router.register(r'customroutines', views.CustomRoutinesViewSet, basename='customroutines')
 
 urlpatterns = [
     path('', include(router.urls))
