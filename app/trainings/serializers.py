@@ -8,30 +8,25 @@ class TrainingSerializer(serializers.ModelSerializer):
         model = Training
         fields = '__all__'
 
-    def update(self, instance, validated_data):
-        instance.done = validated_data.get('done', instance.done)
+    def update(self, user, predefinedroutine):
+        for c in predefinedroutine.categories.all():
+            if c.category == 'S':
+                s = user.strengthtrainings + 1
+                User.objects.filter(id=user.id).update(strengthtrainings=s)
+            if c.category == 'C':
+                c = user.cardiotrainings + 1
+                User.objects.filter(id=user.id).update(cardiotrainings=c)
+            if c.category == 'Y':
+                y = user.yogatrainings + 1
+                User.objects.filter(id=user.id).update(yogatrainings=y)
+            if c.category == 'E':
+                e = user.stretchingtrainings + 1
+                User.objects.filter(id=user.id).update(stretchingtrainings=e)
+            if c.category == 'R':
+                r = user.rehabilitationtrainings + 1
+                User.objects.filter(id=user.id).update(rehabilitationtrainings=r)
+            if c.category == 'P':
+                p = user.pilatestrainings + 1
+                User.objects.filter(id=user.id).update(pilatestrainings=p)
 
-        if instance.done:
-            for c in instance.predefinedroutine.categories.all():
-                if c.category == 'S':
-                    s = instance.user.strengthtrainings + 1
-                    User.objects.filter(id=instance.user.id).update(strengthtrainings=s)
-                if c.category == 'C':
-                    c = instance.user.cardiotrainings + 1
-                    User.objects.filter(id=instance.user.id).update(cardiotrainings=c)
-                if c.category == 'Y':
-                    y = instance.user.yogatrainings + 1
-                    User.objects.filter(id=instance.user.id).update(yogatrainings=y)
-                if c.category == 'E':
-                    e = instance.user.stretchingtrainings + 1
-                    User.objects.filter(id=instance.user.id).update(stretchingtrainings=e)
-                if c.category == 'R':
-                    r = instance.user.rehabilitationtrainings + 1
-                    User.objects.filter(id=instance.user.id).update(rehabilitationtrainings=r)
-                if c.category == 'P':
-                    p = instance.user.pilatestrainings + 1
-                    User.objects.filter(id=instance.user.id).update(pilatestrainings=p)
-
-        User.achievement(instance.user)
-
-        return instance
+        return self

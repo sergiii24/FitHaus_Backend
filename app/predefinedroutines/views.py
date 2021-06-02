@@ -10,11 +10,6 @@ from rest_framework.response import Response
 
 
 class PredefinedRoutineViewSet(viewsets.ViewSet):
-    PredefinedRoutineQuery = PredefinedRoutine.objects.all()
-    queryset = PredefinedRoutineQuery
-    serializer_class = PredfinedRoutineSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['name', 'time', 'categories', 'age', 'level', 'equipment', 'objective', 'impact']
 
     def list(self, request):
         queryset = PredefinedRoutine.objects.all()
@@ -50,7 +45,6 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
             data = JSONParser().parse(request)
             serialized = PredfinedRoutineSerializer(data=data)
             if serialized.is_valid():
-                # name = serialized.validated_data.get('name')
                 pr = PredefinedRoutine()
                 pr.name = serialized.validated_data.get('name')
                 pr.description = serialized.validated_data.get('description')
@@ -73,7 +67,7 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
                 ex = serialized.validated_data.get('exercises')
                 for e in ex:
                     exercises.append(e.name)
-                pr.classes.set(exercises)
+                pr.exercises.set(exercises)
 
                 classes = []
                 cla = serialized.validated_data.get('classes')
@@ -82,6 +76,14 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
                 pr.classes.set(classes)
                 pr.save()
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
+            return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+        except PredefinedRoutine.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk):
+        try:
+            pr = PredefinedRoutine.objects.get(id=pk)
+            serialized = PredfinedRoutineSerializer(pr)
+            return Response(serialized.data, status=status.HTTP_200_OK)
         except PredefinedRoutine.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)

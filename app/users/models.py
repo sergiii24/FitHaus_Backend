@@ -97,42 +97,42 @@ class User(models.Model):
 
     def achievement(self):
         from shareachievements.models import ShareAchievement
-        act = self.activitiesdone % 10
-        if act == 0:
+        if (((self.activitiesdone + 1) % 10) == 0) and (self.activitiesdone > 0):
             achi = Achievement.objects.get(achievement='TT', quantity=self.activitiesdone)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        act = self.strengthtrainings % 10
-        if act == 0:
+
+        if (((self.strengthtrainings + 1) % 10) == 0) and (self.strengthtrainings > 0):
             achi = Achievement.objects.get(achievement='ST', quantity=self.strengthtrainings)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        act = self.cardiotrainings % 10
-        if act == 0:
+
+        if (((self.cardiotrainings + 1) % 10) == 0) and (self.cardiotrainings > 0):
             achi = Achievement.objects.get(achievement='CT', quantity=self.cardiotrainings)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        act = self.yogatrainings % 10
-        if act % 10 == 0:
+
+        if (((self.yogatrainings + 1) % 10) == 0) and (self.yogatrainings > 0):
             achi = Achievement.objects.get(achievement='YT', quantity=self.yogatrainings)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        act = self.stretchingtrainings % 10
-        if act % 10 == 0:
+
+        if (((self.stretchingtrainings + 1) % 10) == 0) and (self.stretchingtrainings > 0):
             achi = Achievement.objects.get(achievement='StchT', quantity=self.stretchingtrainings)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        act = self.rehabilitationtrainings % 10
-        if act % 10 == 0:
+
+        if (((self.rehabilitationtrainings + 1) % 10) == 0) and (self.rehabilitationtrainings > 0):
             achi = Achievement.objects.get(achievement='RT', quantity=self.rehabilitationtrainings)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        act = self.pilatestrainings % 10
-        if act % 10 == 0:
+
+        if (((self.pilatestrainings + 1) % 10) == 0) and (self.pilatestrainings > 0):
             achi = Achievement.objects.get(achievement='PT', quantity=self.pilatestrainings)
             if not ShareAchievement.objects.filter(user=self, achievement=achi):
                 ShareAchievement.objects.create(user=self, achievement=achi, share=False)
-        return
+
+        return self
 
     def __str__(self):
         return self.username
