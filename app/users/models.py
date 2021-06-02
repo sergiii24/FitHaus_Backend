@@ -96,7 +96,7 @@ class User(models.Model):
         return None
 
     def achievement(self):
-        from shareAchievements.models import ShareAchievement
+        from shareachievements.models import ShareAchievement
         act = self.activitiesdone % 10
         if act == 0:
             achi = Achievement.objects.get(achievement='TT', quantity=self.activitiesdone)

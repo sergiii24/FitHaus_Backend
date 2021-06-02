@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'predefinedroutines',
     'customroutines',
     'programs',
-    'collections',
+    'colections',
     'trainings',
     'achievements',
     'healthdata',

@@ -88,7 +88,7 @@ class NormalUserDTOSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NormalUserDTO
-        exclude = ('id',)
+        fields = '__all__'
 
 
 class ExternalUserDTOSerializer(serializers.ModelSerializer):
@@ -97,4 +97,4 @@ class ExternalUserDTOSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExternalUserDTO
-        exclude = ('id',)
+        fields = '__all__'

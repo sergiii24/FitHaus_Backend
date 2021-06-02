@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from shareAchievements import views
+from shareachievements import views
 
 router = DefaultRouter()
-router.register(r'shareachievement', views.ShareAchievementViewSet, basename='shareachievement')
+router.register(r'shareachievement', views.ShareAchievementViewSet, basename='shareachievements')
 
 urlpatterns = [
     path('', include(router.urls))

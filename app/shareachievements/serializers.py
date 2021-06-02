@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from shareAchievements.models import ShareAchievement
+from shareachievements.models import ShareAchievement
 
 
-class ShareAchievementSerializer(serializers.ModelSerializer):
+class shareachievementserializer(serializers.ModelSerializer):
     class Meta:
         model = ShareAchievement
         fields = '__all__'

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ShareachievementsConfig(AppConfig):
+class shareachievementsConfig(AppConfig):
     name = 'shareachievements'

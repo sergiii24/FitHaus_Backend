@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from shareAchievements.models import ShareAchievement
-from shareAchievements.serializers import ShareAchievementSerializer
+from shareachievements.models import ShareAchievement
+from shareachievements.serializers import shareachievementserializer
 
 
 class ShareAchievementViewSet(viewsets.ViewSet):
@@ -16,7 +16,7 @@ class ShareAchievementViewSet(viewsets.ViewSet):
                 queryset = queryset.filter(quantity=quantity)
         elif quantity is not None:
             queryset = queryset.filter(quantity=quantity)
-        serializer = ShareAchievementSerializer(queryset, many=True)
+        serializer = shareachievementserializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, user, achievement, share):
@@ -26,7 +26,7 @@ class ShareAchievementViewSet(viewsets.ViewSet):
             shareachievement.achievement = achievement
             shareachievement.share = share
             shareachievement.save()
-            serialized = ShareAchievementSerializer(user=user,
+            serialized = shareachievementserializer(user=user,
                                                     ahcievement=achievement,
                                                     share=share)
             return Response(serialized.data, status=status.HTTP_201_CREATED)

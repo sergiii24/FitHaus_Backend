@@ -1,9 +1,9 @@
-from collections import views
+from colections import views
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'collections', views.CollectionsViewSet, basename='collections')
+router.register(r'colections', views.colectionsViewSet, basename='colections')
 
 urlpatterns = [
     path('', include(router.urls))

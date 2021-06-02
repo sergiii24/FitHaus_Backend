@@ -377,7 +377,7 @@ def login(request):
                 dto.categories = categories
                 serialized = ExternalUserDTOSerializer(dto)
                 return Response(serialized.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist:
+        except ExternUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
