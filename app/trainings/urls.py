@@ -4,10 +4,9 @@ from trainings import views
 
 
 router = DefaultRouter()
-router.register(r'trainings', views.TrainingViewSet)
+router.register(r'trainings', views.TrainingViewSet, basename='trainings')
 
 urlpatterns = [
-    #path('/trainings/(?P<userid>\w{1,50})', views.UserTrainingsViewSet.as_view({'get':'list'})),
     path('', include(router.urls))
 ]
 # The API URLs are now determined automatically by the router.
