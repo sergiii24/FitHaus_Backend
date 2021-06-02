@@ -4,7 +4,7 @@ from shareAchievements import views
 
 
 router = DefaultRouter()
-router.register(r'shareachievement', views.ShareAchievementViewSet)
+router.register(r'shareachievement', views.ShareAchievementViewSet, basename='shareachievement')
 
 urlpatterns = [
     path('', include(router.urls))

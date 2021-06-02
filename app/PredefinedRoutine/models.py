@@ -33,7 +33,7 @@ class PredefinedRoutine(Routine):
         ('FR', 'FoamRoller')
     ]
     equipment = models.CharField(max_length=30, choices=POSIBLE_EQUIPMENT, default='W')
-    objective = models.ForeignKey(Objective, on_delete=models.CASCADE)
+    objective = models.ForeignKey(Objective, on_delete=models.CASCADE, default=None)
     POSIBLE_IMPACT = [
         ('L', 'Low'),
         ('M', 'Medium'),
@@ -43,28 +43,3 @@ class PredefinedRoutine(Routine):
     image = models.ImageField(upload_to='predef_routines_images', default=None)
     #users = models.ManyToManyField(User)
 
-    def clean(self, *args, **kwargs):
-        e = self
-        exers = e.exercises.all
-        routinecats = e.categories.all
-        edat = e.age
-        for exercise in exers:
-            if exercise.age != edat:
-                raise Exception("Model not valid: edats no coincideixen")
-            exercats = exercise.categories.all
-            for cateogry in routinecats:
-                if cateogry not in exercats:
-                    raise Exception("Model not valid: categories no coincideixen")
-        cls = e.classes.all
-        for clase in cls:
-            if clase.age != edat:
-                raise Exception("Model not valid: edats no coincideixen")
-            clasecat = clase.categories.all
-            for cateogry in routinecats:
-                if cateogry not in clasecat:
-                    raise Exception("Model not valid: categories no coincideixen")
-        super(PredefinedRoutine, self).clean()
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super(PredefinedRoutine, self).save(*args, **kwargs)

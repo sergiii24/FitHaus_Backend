@@ -5,5 +5,5 @@ from PredefinedRoutine.models import PredefinedRoutine
 class PredfinedRoutineSerializer(serializers.ModelSerializer):
     class Meta:
         model = PredefinedRoutine
-        fields = '__all__'
+        exclude = ['image']
 
