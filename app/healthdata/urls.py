@@ -4,7 +4,7 @@ from healthdata import views
 
 
 router = DefaultRouter()
-router.register(r'healthdata', views.HealthDataViewSet, basename="healthData")
+router.register(r'healthdata', views.HealthDataViewSet, basename="healthdata")
 
 urlpatterns = [
     path('', include(router.urls))

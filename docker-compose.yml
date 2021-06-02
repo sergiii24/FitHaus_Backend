@@ -19,7 +19,7 @@ services:
     build:
       context: proxy
     volumes:
-      - static_data:/code/static
+      - static_data:/proxy
     ports:
       - "80:8080"
     networks:

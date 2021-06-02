@@ -159,8 +159,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/media/'
-STATIC_ROOT = '/code/'
+MEDIA_ROOT = '/code/media'
+STATIC_ROOT = '/code/static'
 
 #Mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

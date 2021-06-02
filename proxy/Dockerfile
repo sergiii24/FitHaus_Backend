@@ -5,7 +5,7 @@ COPY uwsgi_params /etc/nginx/uwsgi_params
 
 USER root
 
-RUN mkdir -p /code
-RUN chmod 755 /code
+RUN mkdir -p /proxy
+RUN chmod 755 /proxy
 
 USER nginx
