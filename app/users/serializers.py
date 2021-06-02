@@ -87,7 +87,7 @@ class NormalUserDTOSerializer(serializers.ModelSerializer):
     categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = NormalUserDTO
-        fields = '__all__'
+        exclude = ('id',)
 
 
 class ExternalUserDTOSerializer(serializers.ModelSerializer):
@@ -95,4 +95,4 @@ class ExternalUserDTOSerializer(serializers.ModelSerializer):
     categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = ExternalUserDTO
-        fields = '__all__'
+        exclude = ('id',)
