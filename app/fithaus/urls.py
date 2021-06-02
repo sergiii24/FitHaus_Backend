@@ -26,13 +26,13 @@ urlpatterns = [
     path('', include('classes.urls'), name='classes'),
     path('', include('objectives.urls'), name='objectives'),
     path('', include('trainings.urls'), name='trainings'),
-    path('', include('predefinedroutine.urls'), name='predefinedroutines'),
-    path('', include('CustomRoutine.urls'), name='customroutines'),
+    path('', include('predefinedroutines.urls'), name='predefinedroutines'),
+    path('', include('customroutines.urls'), name='customroutines'),
     path('', include('programs.urls'), name='programs'),
-    path('', include('colections.urls'), name='collections'),
+    path('', include('collections.urls'), name='collections'),
     path('', include('healthdata.urls'), name='healthdata'),
-    path('', include('achivements.urls'), name='achievements'),
-    path('', include('shareAchievements.urls'), name='shareachievements'),
+    path('', include('achievements.urls'), name='achievements'),
+    path('', include('shareachievements.urls'), name='shareachievements'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

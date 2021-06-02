@@ -1,16 +1,17 @@
-from rest_framework import serializers
-from users.models import User
-from users.models import NormalUserDTO
-from users.models import ExternalUserDTO
 from django.core.validators import MinLengthValidator
+from rest_framework import serializers
+from users.models import ExternalUserDTO
+from users.models import NormalUserDTO
+from users.models import User
+
 from .validators import correct_pwd
 
 
 class GetUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['strengthtrainings','cardiotrainings','yogatrainings','stretchingtrainings',
-                   'rehabilitationtrainings','pilatestrainings']
+        exclude = ['strengthtrainings', 'cardiotrainings', 'yogatrainings', 'stretchingtrainings',
+                   'rehabilitationtrainings', 'pilatestrainings']
 
 
 class NormalUserInfoSerializer(serializers.Serializer):
@@ -53,7 +54,6 @@ class UserCreationSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=200)
 
 
-
 class NormalUserCreationSerializer(serializers.Serializer):
     password = serializers.CharField(validators=[MinLengthValidator(8), correct_pwd], max_length=200)
     POSIBLE_GENDERS = [
@@ -79,12 +79,13 @@ class UserRankingSerializer(serializers.ModelSerializer):
 class UserStatsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'activitiesdone', 'achivements', 'points', 'level')
+        fields = ('username', 'email', 'activitiesdone', 'achievements', 'points', 'level')
 
 
 class NormalUserDTOSerializer(serializers.ModelSerializer):
     objectives = serializers.ListField(child=serializers.CharField())
     categories = serializers.ListField(child=serializers.CharField())
+
     class Meta:
         model = NormalUserDTO
         exclude = ('id',)
@@ -93,6 +94,7 @@ class NormalUserDTOSerializer(serializers.ModelSerializer):
 class ExternalUserDTOSerializer(serializers.ModelSerializer):
     objectives = serializers.ListField(child=serializers.CharField())
     categories = serializers.ListField(child=serializers.CharField())
+
     class Meta:
         model = ExternalUserDTO
         exclude = ('id',)

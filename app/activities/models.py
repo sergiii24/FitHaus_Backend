@@ -1,6 +1,7 @@
-from django.db import models
-from django.core.validators import MinValueValidator
 from categories.models import Category
+from django.core.validators import MinValueValidator
+from django.db import models
+
 
 # Create your models here.
 
@@ -34,6 +35,3 @@ class Activity(models.Model):
 
     class Meta:
         abstract = True
-
-
-

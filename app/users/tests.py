@@ -2,11 +2,11 @@
 
 import json
 
-#from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APITestCase
 from users.models import User
-from rest_framework import status
 
 
 # TESTOS DE CREACIO/REGISTRE
@@ -25,7 +25,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
                      "gender": "K",  # DATA NO VALIDA (HAURIA DE SER M,F O X)
                      "birthdate": "03-23-1990",  # DATA NO VALIDA (FORMAT CORRECTE: yyyy-mm-dd)
                      "activitiesdone": "1",
-                     "achivements": "1",
+                     "achievements": "1",
                      "points": "1",
                      "level": "1",
                      "objective": "1",
@@ -51,7 +51,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -78,7 +78,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -106,7 +106,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -128,7 +128,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -155,7 +155,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -177,7 +177,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -208,7 +208,7 @@ class UserModificationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "1",
             "level": "1",
             "objective": "1",
@@ -230,7 +230,7 @@ class UserModificationAPIViewTestCase(APITestCase):
             "gender": "M",
             "birthdate": "1990-03-23",
             "activitiesdone": "1",
-            "achivements": "1",
+            "achievements": "1",
             "points": "4",
             "level": "1",
             "objective": "4",

@@ -1,10 +1,8 @@
-
 from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase
-
 # TESTOS DE CREACIO/REGISTRE
 from objectives.models import Objective
+from rest_framework import status
+from rest_framework.test import APITestCase
 
 
 class ObjectiveRegistrationAPIViewTestCase(APITestCase):
@@ -41,4 +39,3 @@ class ObjectiveRegistrationAPIViewTestCase(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Objective.objects.count(), 2)
-

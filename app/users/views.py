@@ -1,22 +1,23 @@
-import json
+import smtplib
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from users.models import User
 from users.models import ExternUser
-from users.models import NormalUser
 from users.models import ExternalUserDTO
+from users.models import NormalUser
 from users.models import NormalUserDTO
-from users.serializers import GetUserSerializer
-from users.serializers import UserStatsSerializer
-from users.serializers import UserRankingSerializer
-from users.serializers import UserCreationSerializer
-from users.serializers import NormalUserCreationSerializer
+from users.models import User
 from users.serializers import ExternUserCreationSerializer
 from users.serializers import ExternalUserDTOSerializer
+from users.serializers import GetUserSerializer
+from users.serializers import NormalUserCreationSerializer
 from users.serializers import NormalUserDTOSerializer
-import smtplib
+from users.serializers import UserCreationSerializer
+from users.serializers import UserRankingSerializer
+from users.serializers import UserStatsSerializer
+
 global server
 
 
@@ -41,7 +42,7 @@ class UserList(viewsets.ViewSet):
             user_serializer = UserCreationSerializer(data=data)
             if 'uid' not in data:
                 serializer = NormalUserCreationSerializer(data=data)
-                tipo= "normal"
+                tipo = "normal"
             else:
                 serializer = ExternUserCreationSerializer(data=data)
                 tipo = "externo"
@@ -201,7 +202,7 @@ class UserList(viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             user = User.objects.get(id=pk)
-            #INFO USER
+            # INFO USER
             objectives = []
             categories = []
             obj = user.objectives.all()
@@ -230,7 +231,7 @@ class UserList(viewsets.ViewSet):
                 dto.objectives = objectives
                 dto.categories = categories
                 serialized = NormalUserDTOSerializer(dto)
-                #ACABEM ESBORRANT EL NORMALUSER
+                # ACABEM ESBORRANT EL NORMALUSER
                 normaluser.delete()
             else:
                 externaluser = user.extern_user
@@ -251,7 +252,7 @@ class UserList(viewsets.ViewSet):
                 dto.objectives = objectives
                 dto.categories = categories
                 serialized = ExternalUserDTOSerializer(dto)
-                #ACABEM ESBORRANT EL EXTERNUSER
+                # ACABEM ESBORRANT EL EXTERNUSER
                 externaluser.delete()
             user.delete()
             return Response(serialized.data, status=status.HTTP_200_OK)
@@ -259,8 +260,8 @@ class UserList(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-#@api_view(['POST'])
-#def updatepassword(request):
+# @api_view(['POST'])
+# def updatepassword(request):
 #    data = JSONParser().parse(request)
 #    pk = data.get('id')
 #    try:
@@ -307,7 +308,7 @@ def login(request):
     email = data.get('email')
     password = data.get('password')
     uid = data.get('uid')
-    if uid is None and email is not None and password is not None: #CASO USER NORMAL
+    if uid is None and email is not None and password is not None:  # CASO USER NORMAL
         try:
             user = User.objects.get(email=email)
             objectives = []
@@ -344,7 +345,7 @@ def login(request):
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-    elif uid is not None and email is None and password is None: #CASO USER EXTERNO
+    elif uid is not None and email is None and password is None:  # CASO USER EXTERNO
         try:
             eu = ExternUser.objects.get(uid=uid)
             if eu is not None:
@@ -380,6 +381,7 @@ def login(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 def postea(m):
     gmail_user = 'fithaus2021@gmail.com'

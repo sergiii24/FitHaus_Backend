@@ -1,6 +1,5 @@
+# Register your models here.
+from classes.models import Class
 from django.contrib import admin
 
-# Register your models here.
-from classes.models import Classes
-
-admin.site.register(Classes)
+admin.site.register(Class)

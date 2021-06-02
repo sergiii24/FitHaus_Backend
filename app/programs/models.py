@@ -1,5 +1,5 @@
 from django.db import models
-from predefinedroutine.models import PredefinedRoutine
+from predefinedroutines.models import PredefinedRoutine
 
 
 class Program(models.Model):

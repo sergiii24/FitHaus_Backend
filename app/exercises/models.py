@@ -1,6 +1,5 @@
-from django.db import models
-
 from activities.models import Activity
+from django.db import models
 
 
 # Create your models here.
@@ -39,7 +38,3 @@ class ExerciseDTO(models.Model):
     videotutorial = models.FileField(upload_to='exercise_videos', default=None)
     videoexercise = models.FileField(upload_to='exercise_videos', default=None)
     muscle = models.CharField(max_length=1, default='Bi')
-
-
-
-

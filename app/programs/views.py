@@ -1,8 +1,8 @@
-from rest_framework import viewsets, status
 from programs.models import Program
 from programs.models import ProgramDTO
-from programs.serializers import ProgramSerializer
 from programs.serializers import ProgramDTOSerializer
+from programs.serializers import ProgramSerializer
+from rest_framework import viewsets, status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 

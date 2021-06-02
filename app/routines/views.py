@@ -1,7 +1,7 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from routines.models import Routine
 from routines.serializers import RoutineSerializer
-from django_filters.rest_framework import DjangoFilterBackend
 
 
 class RoutineViewSet(viewsets.ModelViewSet):
