@@ -1,8 +1,8 @@
-from rest_framework import viewsets, status
 from achivements.models import Achievement
 from achivements.serializers import AchievementSerializer
-from rest_framework.response import Response
+from rest_framework import viewsets, status
 from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
 
 
 class AchievementsViewSet(viewsets.ViewSet):
