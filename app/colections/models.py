@@ -1,5 +1,5 @@
 from django.db import models
-from PredefinedRoutine.models import PredefinedRoutine
+from predefinedroutine.models import PredefinedRoutine
 
 
 class Collection(models.Model):

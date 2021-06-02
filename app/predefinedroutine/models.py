@@ -2,13 +2,13 @@ from django.db import models
 
 from objectives.models import Objective
 from routines.models import Routine
-from users.models import User
 
 
 # Create your models here.
 
 
 class PredefinedRoutine(Routine):
+    """Class to represent a predefined routine."""
     POSIBLE_AGE = [
         ('K', 'Kid'),
         ('T', 'Teenager'),
@@ -41,5 +41,4 @@ class PredefinedRoutine(Routine):
     ]
     impact = models.CharField(max_length=30, choices=POSIBLE_IMPACT, default='M')
     image = models.ImageField(upload_to='predef_routines_images', default=None)
-    #users = models.ManyToManyField(User)
-
+    # users = models.ManyToManyField(User)

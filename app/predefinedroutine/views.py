@@ -1,10 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from PredefinedRoutine.serializers import PredfinedRoutineSerializer
+from predefinedroutine.models import PredefinedRoutine
+from predefinedroutine.serializers import PredfinedRoutineSerializer
 from rest_framework import viewsets, status
-from PredefinedRoutine.models import PredefinedRoutine
-from categories.models import Category
-from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+
+
 # Create your views here.
 
 
@@ -49,7 +50,7 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
             data = JSONParser().parse(request)
             serialized = PredfinedRoutineSerializer(data=data)
             if serialized.is_valid():
-                #name = serialized.validated_data.get('name')
+                # name = serialized.validated_data.get('name')
                 pr = PredefinedRoutine()
                 pr.name = serialized.validated_data.get('name')
                 pr.description = serialized.validated_data.get('description')
@@ -59,7 +60,7 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
                 pr.equipment = serialized.validated_data.get('equipment')
                 pr.objective = serialized.validated_data.get('objective')
                 pr.impact = serialized.validated_data.get('impact')
-                #pr.image = serialized.validated_data.get('image')
+                # pr.image = serialized.validated_data.get('image')
                 pr.save()
 
                 categories = []

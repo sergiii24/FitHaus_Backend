@@ -1,8 +1,7 @@
-from django.db import models
-from computed_property import ComputedIntegerField
 from CustomRoutine.models import CustomRoutine
-from PredefinedRoutine.models import PredefinedRoutine
-from routines.models import Routine
+from computed_property import ComputedIntegerField
+from django.db import models
+from predefinedroutine.models import PredefinedRoutine
 from users.models import User
 
 

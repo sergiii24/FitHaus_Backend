@@ -821,7 +821,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PredefinedRoutine'
+                $ref: '#/components/schemas/predefinedroutine'
         "400":
           description: "Rutina predefinida ja existent"
     get:
@@ -907,7 +907,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PredefinedRoutine'
+                $ref: '#/components/schemas/predefinedroutine'
         "400":
           description: "Alguna cosa no ha anat bé..."
 

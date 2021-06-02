@@ -2,7 +2,7 @@
 
 set -e
 
-python manage.py makemigrations users trainings routines programs PredefinedRoutine objectives exercises CustomRoutine colections classes categories activities achivements shareAchievements healthdata
+python manage.py makemigrations users trainings routines programs predefinedroutine objectives exercises CustomRoutine colections classes categories activities achivements shareAchievements healthdata
 
 python manage.py migrate --run-syncdb
 
