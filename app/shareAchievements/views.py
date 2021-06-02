@@ -27,9 +27,7 @@ class ShareAchievementViewSet(viewsets.ViewSet):
             shareachievement.achievement = achievement
             shareachievement.share = share
             shareachievement.save()
-            serialized = ShareAchievementSerializer(user=user,
-                                                    ahcievement=achievement,
-                                                    share=share)
+            serialized = ShareAchievementSerializer(shareachievement)
             return Response(serialized.data, status=status.HTTP_201_CREATED)
         except ShareAchievement.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)

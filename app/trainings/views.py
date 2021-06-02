@@ -2,10 +2,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from trainings.models import Training
 from trainings.serializers import TrainingSerializer
-import datetime
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-
+from users.models import User
 
 # Create your views here.
 
@@ -65,6 +64,7 @@ class TrainingViewSet(viewsets.ViewSet):
                 if data.get('done'):
                     tr.done = serializer.validated_data.get('done')
                     serializer.update(tr.user, tr.predefinedroutine)
+                    tr.user.achievement()
                 if data.get('shared'):
                     tr.shared = serializer.validated_data.get('shared')
                 tr.save()

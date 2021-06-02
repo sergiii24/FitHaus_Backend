@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from trainings.models import Training
 from users.models import User
-from categories.models import Category
 
 
 class TrainingSerializer(serializers.ModelSerializer):
