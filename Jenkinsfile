@@ -1,6 +1,50 @@
 pipeline {
  agent any
  stages {
+     stage ('Build') {
+          agent {
+            docker {
+              image 'python'
+              reuseNode true
+            }
+          }
+            steps{
+                echo "Build environment"
+                sh 'pip install -r requirements.txt'
+            }
+    }
+
+    stage('Static code metrics') {
+        agent {
+            docker {
+                image 'python'
+                reuseNode true
+            }
+        }
+        steps {
+            echo "Style check"
+            sh ''' pylint **/* '''
+            echo "Code Coverage"
+            sh ''' coverage run -m unittest discover '''
+            sh ''' python -m coverage xml -o reports/coverage.xml '''
+        }
+        post{
+            always{
+                step([$class: 'CoberturaPublisher',
+                        autoUpdateHealth: false,
+                        autoUpdateStability: false,
+                        coberturaReportFile: 'reports/coverage.xml',
+                        failNoReports: false,
+                        failUnhealthy: false,
+                        failUnstable: false,
+                        maxNumberOfBuilds: 10,
+                        onlyStable: false,
+                        sourceEncoding: 'ASCII',
+                        zoomCoverageChart: false])
+            }
+        }
+    }
+
     stage('Sonarqube') {
         environment {
             scannerHome = tool 'SonarQubeScanner'
