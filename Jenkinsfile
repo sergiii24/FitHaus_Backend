@@ -23,6 +23,8 @@ pipeline {
         }
         steps {
             echo "Style check"
+            sh 'pip install pylint'
+            sh ''' cd app '''
             sh ''' pylint **/* '''
             echo "Code Coverage"
             sh ''' coverage run -m unittest discover '''
@@ -39,7 +41,7 @@ pipeline {
                         failUnstable: false,
                         maxNumberOfBuilds: 10,
                         onlyStable: false,
-                        sourceEncoding: 'ASCII',
+                        sourceEncoding: 'UTF-8',
                         zoomCoverageChart: false])
             }
         }
