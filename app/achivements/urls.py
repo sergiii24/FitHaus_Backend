@@ -4,7 +4,7 @@ from achivements import views
 
 
 router = DefaultRouter()
-router.register(r'achievements', views.AchievementsViewSet)
+router.register(r'achievements', views.AchievementsViewSet, basename='achievements')
 
 urlpatterns = [
     path('', include(router.urls))
