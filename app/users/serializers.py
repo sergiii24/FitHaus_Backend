@@ -53,6 +53,7 @@ class UserCreationSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=200)
 
 
+
 class NormalUserCreationSerializer(serializers.Serializer):
     password = serializers.CharField(validators=[MinLengthValidator(8), correct_pwd], max_length=200)
     POSIBLE_GENDERS = [

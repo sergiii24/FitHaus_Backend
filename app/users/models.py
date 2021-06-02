@@ -2,6 +2,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from .validators import correct_pwd
 from computed_property import ComputedIntegerField
+from computed_property import ComputedFloatField
 from django.core.validators import MinValueValidator
 from objectives.models import Objective
 from categories.models import Category
@@ -44,6 +45,8 @@ class User(models.Model):
     # DADES FISIQUES
     weight = models.FloatField(default=1, validators=[MinValueValidator(1)])
     height = models.FloatField(default=1, validators=[MinValueValidator(1)])
+    imc = ComputedFloatField(compute_from='calc_imc', default=1)
+    igc = ComputedFloatField(compute_from='calc_igc', default=1)
 
     @property
     def calc_age(self):
@@ -159,6 +162,9 @@ class NormalUserDTO(models.Model):
     categories = []
     weight = models.FloatField(default=1, validators=[MinValueValidator(1)])
     height = models.FloatField(default=1, validators=[MinValueValidator(1)])
+    imc = models.FloatField(default=1)
+    igc = models.FloatField(default=1)
+
 
 
 class ExternalUserDTO(models.Model):
@@ -176,5 +182,7 @@ class ExternalUserDTO(models.Model):
     categories = []
     weight = models.FloatField(default=1)
     height = models.FloatField(default=1)
+    imc = models.FloatField(default=1)
+    igc = models.FloatField(default=1)
     uid = models.CharField(max_length=200)
     provider = models.CharField(max_length=200)
