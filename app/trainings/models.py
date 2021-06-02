@@ -3,7 +3,6 @@ from customroutines.models import CustomRoutine
 from django.db import models
 from predefinedroutines.models import PredefinedRoutine
 from users.models import User
-import datetime
 
 
 class Training(models.Model):

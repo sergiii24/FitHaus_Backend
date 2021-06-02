@@ -1,12 +1,11 @@
 import datetime
 
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
-from trainings.models import Training
-from trainings.serializers import TrainingSerializer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from users.models import User
+from trainings.models import Training
+from trainings.serializers import TrainingSerializer
+
 
 # Create your views here.
 
@@ -14,16 +13,16 @@ from users.models import User
 class TrainingViewSet(viewsets.ViewSet):
 
     def list(self, request):
-        #today = datetime.date.today()
-        #today_day = today.day
-        #if today_day == 31:
-        #    today_day = 30
-        #today_month = today.month
-        #today_year = today.year
+        today = datetime.date.today()
+        today_day = today.day
+        if today_day == 31:
+            today_day = 30
+        today_month = today.month
+        today_year = today.year
 
-        #queryset = Training.objects.filter(date__range=[today, str(today_year) + "-" + str(today_month + 1) + "-" + str(
-                                                            #today_day)])
-        queryset = Training.objects.all()
+        queryset = Training.objects.filter(
+            date__range=[today, str(today_year) + "-" + str(today_month + 1) + "-" + str(today_day)])
+
         user = request.query_params.get('user')
         if user is not None:
             queryset = queryset.filter(user=user)
