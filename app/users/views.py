@@ -17,7 +17,6 @@ from users.serializers import ExternUserCreationSerializer
 from users.serializers import ExternalUserDTOSerializer
 from users.serializers import NormalUserDTOSerializer
 import smtplib
-
 global server
 
 
@@ -30,11 +29,8 @@ class UserList(viewsets.ViewSet):
             queryset = queryset.filter(username=username)
         elif email is not None:
             queryset = queryset.filter(email=email)
-        if queryset.count() > 0:
-            serializer = GetUserSerializer(queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = GetUserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         try:
@@ -178,7 +174,7 @@ def login(request):
     email = data.get('email')
     password = data.get('password')
     uid = data.get('uid')
-    if uid is None and email is not None and password is not None:  # CASO USER NORMAL
+    if uid is None and email is not None and password is not None: #CASO USER NORMAL
         try:
             user = User.objects.get(email=email)
             objectives = []
@@ -203,17 +199,17 @@ def login(request):
                                     activitiesdone=user.activitiesdone,
                                     points=user.points,
                                     level=user.level,
-                                    objectives=objectives,
-                                    categories=categories,
                                     weight=user.weight,
                                     height=user.height)
+                dto.objectives = objectives
+                dto.categories = categories
                 serialized = NormalUserDTOSerializer(dto)
                 return Response(serialized.data, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-    elif uid is not None and email is None and password is None:  # CASO USER EXTERNO
+    elif uid is not None and email is None and password is None: #CASO USER EXTERNO
         try:
             eu = ExternUser.objects.get(uid=uid)
             if eu is not None:
@@ -235,18 +231,21 @@ def login(request):
                                       activitiesdone=user.activitiesdone,
                                       points=user.points,
                                       level=user.level,
-                                      objectives=objectives,
-                                      categories=categories,
                                       weight=user.weight,
                                       height=user.height,
                                       uid=eu.uid,
                                       provider=eu.provider)
+                dto.objectives = objectives
+                dto.categories = categories
                 serialized = ExternalUserDTOSerializer(dto)
                 return Response(serialized.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 def postea(m):
