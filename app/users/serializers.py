@@ -53,6 +53,7 @@ class UserCreationSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=200)
 
 
+
 class NormalUserCreationSerializer(serializers.Serializer):
     password = serializers.CharField(validators=[MinLengthValidator(8), correct_pwd], max_length=200)
     POSIBLE_GENDERS = [
@@ -86,7 +87,7 @@ class NormalUserDTOSerializer(serializers.ModelSerializer):
     categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = NormalUserDTO
-        fields = '__all__'
+        exclude = ('id',)
 
 
 class ExternalUserDTOSerializer(serializers.ModelSerializer):
@@ -94,4 +95,4 @@ class ExternalUserDTOSerializer(serializers.ModelSerializer):
     categories = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = ExternalUserDTO
-        fields = '__all__'
+        exclude = ('id',)

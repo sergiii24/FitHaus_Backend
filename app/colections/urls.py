@@ -4,7 +4,7 @@ from colections import views
 
 
 router = DefaultRouter()
-router.register(r'collections', views.CollectionViewSet)
+router.register(r'collections', views.CollectionsViewSet, basename='collections')
 
 urlpatterns = [
     path('', include(router.urls))

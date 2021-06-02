@@ -30,7 +30,10 @@ class UserList(viewsets.ViewSet):
         elif email is not None:
             queryset = queryset.filter(email=email)
         serializer = GetUserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -38,7 +41,7 @@ class UserList(viewsets.ViewSet):
             user_serializer = UserCreationSerializer(data=data)
             if 'uid' not in data:
                 serializer = NormalUserCreationSerializer(data=data)
-                tipo = "normal"
+                tipo= "normal"
             else:
                 serializer = ExternUserCreationSerializer(data=data)
                 tipo = "externo"
@@ -116,7 +119,9 @@ class UserList(viewsets.ViewSet):
                                     points=user.points,
                                     level=user.level,
                                     weight=user.weight,
-                                    height=user.height)
+                                    height=user.height,
+                                    igc=user.igc,
+                                    imc=user.imc)
                 dto.objectives = objectives
                 dto.categories = categories
                 serialized = NormalUserDTOSerializer(dto)
@@ -134,6 +139,8 @@ class UserList(viewsets.ViewSet):
                                       level=user.level,
                                       weight=user.weight,
                                       height=user.height,
+                                      igc=user.igc,
+                                      imc=user.imc,
                                       uid=externaluser.uid,
                                       provider=externaluser.provider)
                 dto.objectives = objectives
@@ -150,23 +157,149 @@ class UserList(viewsets.ViewSet):
         try:
             user = User.objects.get(id=pk)
             data = JSONParser().parse(request)
+            password = data.get('password')
             serializer = GetUserSerializer(user, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save()
+                if password is not None:
+                    normaluser = user.get_normal_user()
+                    normaluser.password = password
+                    normaluser.save()
+                    objectives = []
+                    categories = []
+                    obj = user.objectives.all()
+                    cat = user.categories.all()
+                    for o in obj:
+                        objectives.append(o.objective)
+                    for c in cat:
+                        categories.append(c.category)
+                    normaluser = user.normal_user
+                    dto = NormalUserDTO(id=user.id,
+                                        username=user.username,
+                                        firstname=user.firstname,
+                                        lastname=user.lastname,
+                                        email=user.email,
+                                        password=normaluser.password,
+                                        gender=user.gender,
+                                        birthdate=user.birthdate,
+                                        activitiesdone=user.activitiesdone,
+                                        points=user.points,
+                                        level=user.level,
+                                        weight=user.weight,
+                                        height=user.height,
+                                        igc=user.igc,
+                                        imc=user.imc)
+                    dto.objectives = objectives
+                    dto.categories = categories
+                    serializer = NormalUserDTOSerializer(dto)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk):
         try:
             user = User.objects.get(id=pk)
+            #INFO USER
+            objectives = []
+            categories = []
+            obj = user.objectives.all()
+            cat = user.categories.all()
+            for o in obj:
+                objectives.append(o.objective)
+            for c in cat:
+                categories.append(c.category)
+            if user.get_normal_user() is not None:
+                normaluser = user.get_normal_user()
+                dto = NormalUserDTO(id=user.id,
+                                    username=user.username,
+                                    firstname=user.firstname,
+                                    lastname=user.lastname,
+                                    email=user.email,
+                                    password=normaluser.password,
+                                    gender=user.gender,
+                                    birthdate=user.birthdate,
+                                    activitiesdone=user.activitiesdone,
+                                    points=user.points,
+                                    level=user.level,
+                                    weight=user.weight,
+                                    height=user.height,
+                                    igc=user.igc,
+                                    imc=user.imc)
+                dto.objectives = objectives
+                dto.categories = categories
+                serialized = NormalUserDTOSerializer(dto)
+                #ACABEM ESBORRANT EL NORMALUSER
+                normaluser.delete()
+            else:
+                externaluser = user.extern_user
+                dto = ExternalUserDTO(id=user.id,
+                                      username=user.username,
+                                      firstname=user.firstname,
+                                      lastname=user.lastname,
+                                      email=user.email,
+                                      activitiesdone=user.activitiesdone,
+                                      points=user.points,
+                                      level=user.level,
+                                      weight=user.weight,
+                                      height=user.height,
+                                      igc=user.igc,
+                                      imc=user.imc,
+                                      uid=externaluser.uid,
+                                      provider=externaluser.provider)
+                dto.objectives = objectives
+                dto.categories = categories
+                serialized = ExternalUserDTOSerializer(dto)
+                #ACABEM ESBORRANT EL EXTERNUSER
+                externaluser.delete()
             user.delete()
-            serializer = GetUserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serialized.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+#@api_view(['POST'])
+#def updatepassword(request):
+#    data = JSONParser().parse(request)
+#    pk = data.get('id')
+#    try:
+#        user = User.objects.get(id=pk)
+#        if user.get_normal_user() is not None:
+#            password = data.get('password')
+#            normaluser = user.get_normal_user()
+#            normaluser.password = password
+#            normaluser.save()
+#            objectives = []
+#            categories = []
+#            obj = user.objectives.all()
+#            cat = user.categories.all()
+#            for o in obj:
+#                objectives.append(o.objective)
+#            for c in cat:
+#                categories.append(c.category)
+#            normaluser = user.normal_user
+#            dto = NormalUserDTO(id=user.id,
+#                                username=user.username,
+#                                firstname=user.firstname,
+#                                lastname=user.lastname,
+#                                email=user.email,
+#                                password=normaluser.password,
+#                                gender=user.gender,
+#                                birthdate=user.birthdate,
+#                                activitiesdone=user.activitiesdone,
+#                                points=user.points,
+#                                level=user.level,
+#                                weight=user.weight,
+#                                height=user.height)
+#            dto.objectives = objectives
+#            dto.categories = categories
+#            serialized = NormalUserDTOSerializer(dto)
+#            return Response(serialized.data, status=status.HTTP_202_ACCEPTED)
+#       else:
+#            return Response(status=status.HTTP_400_BAD_REQUEST)
+#    except User.DoesNotExist:
+#        return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
 def login(request):
@@ -200,7 +333,9 @@ def login(request):
                                     points=user.points,
                                     level=user.level,
                                     weight=user.weight,
-                                    height=user.height)
+                                    height=user.height,
+                                    igc=user.igc,
+                                    imc=user.imc)
                 dto.objectives = objectives
                 dto.categories = categories
                 serialized = NormalUserDTOSerializer(dto)
@@ -233,6 +368,8 @@ def login(request):
                                       level=user.level,
                                       weight=user.weight,
                                       height=user.height,
+                                      igc=user.igc,
+                                      imc=user.imc,
                                       uid=eu.uid,
                                       provider=eu.provider)
                 dto.objectives = objectives
@@ -243,10 +380,6 @@ def login(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
 
 def postea(m):
     gmail_user = 'fithaus2021@gmail.com'
