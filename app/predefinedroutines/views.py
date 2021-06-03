@@ -80,7 +80,7 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
             return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
         except PredefinedRoutine.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:

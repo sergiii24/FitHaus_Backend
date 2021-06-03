@@ -57,7 +57,7 @@ class TrainingViewSet(viewsets.ViewSet):
             serialized = TrainingSerializer(tr)
             return Response(serialized.data, status=status.HTTP_200_OK)
         except Training.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, pk):
         try:

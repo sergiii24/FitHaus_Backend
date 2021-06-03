@@ -19,7 +19,7 @@ paths:
         content:
           application/json:
             schema:
-              required: [username, firstName, lastName, email, password, birthdate, weight, height]
+              required: [username, firstName, lastName, email]
               type: object
               properties:
                 username:
@@ -54,48 +54,26 @@ paths:
                   type: "string"
                   format: "date"
                   example: "2021-05-12"
-                activitiesdone:
-                  type: "integer"
-                  default: 0
-                achievements:
+                uid:
+                  type: "string"
+                  example: "uid_proveidor"
+                provider:
                   type: "string"
                   maxLength: 200
-                  example: "Elsmeusachievements"
-                points:
-                  type: "integer"
-                  default: 0
-                level:
-                  type: "integer"
-                  default: 0
-                objective:
-                  type: "object"
-                interestcategories:
-                  type: "object"
-                weight:
-                  type: "number"
-                  default: 0.0
-                height:
-                  type: "number"
-                  default: 0.0
-                imc:
-                  type: "number"
-                  default: 0
-                igc:
-                  type: "number"
-                  default: 0
+                  example: "elmeuproveidor"
       responses:
-        "200":
-          description: "Operació exitosa"
+        "201":
+          description: "Usuari creat"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
         "400":
-          description: "Usuari ja existeix"
+          description: "Usuari ja existeix o dades no valides"
     get:
       tags:
       - "user"
-      summary: "Retorna tots els users"
+      summary: "Retorna tots els users (o els que compleixin les condicions de la query)"
       operationId: "getAllUsers"
       parameters:
         - name: username
@@ -119,6 +97,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+        "404":
+          description: "Cap usuari trobat"
   /user/{id}:
       get:
         tags:
@@ -140,8 +120,8 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/User'
-          "400":
-            description: "Alguna cosa no ha anat bé..."
+          "404":
+            description: "Usuari no trobat"
       patch:
         tags:
           - "user"
@@ -217,6 +197,8 @@ paths:
                 schema:
                   $ref: '#/components/schemas/User'
           "400":
+            description: "Dades no vàlides"
+          "404":
             description: "Usuari no trobat"
       delete:
         tags:
@@ -234,6 +216,10 @@ paths:
         responses:
           "200":
             description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
           "404":
             description: "Usuari no trobat"
   /users/login:
@@ -243,7 +229,8 @@ paths:
       summary: "Loggejar usuari"
       operationId: "loginUser"
       requestBody:
-        description: Proporcionar el mail i la password de l'usuari a loggejar
+        description: "Proporcionar el mail i la password de l'usuari a loggejar en cas que sigui un usuari
+                      intern, proporcionar l'uid en cas que sigui un usuari d'un proveidor extern"
         content:
           application/json:
             schema:
@@ -251,11 +238,15 @@ paths:
               properties:
                 email:
                   description: "Email de l'usuari"
-                  required: true
+                  required: false
                   type: "string"
                 password:
                   description: "Contrasenya de l'usuari"
-                  required: true
+                  required: false
+                  type: "string"
+                uid:
+                  description: "Uid del usuari extern, proporcionat pel proveidor"
+                  required: false
                   type: "string"
       responses:
         "200":
@@ -265,15 +256,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         "400":
+          description: "Dades en format incorrecte"
+        "401":
           description: "Credencials incorrectes"
+        "404":
+          description: "Usuari no existent"
   /users/stats:
     get:
       tags:
       - "user"
-      summary: Crear usuari, es produeix quan aquest es registra per primer cop
-      operationId: getUserStats
+      summary: "Obtenir le estadístiques d'un usuari"
+      operationId: "getUserStats"
       requestBody:
-        description: Proporcionar l'id de l'usuari
+        description: "Proporcionar l'id de l'usuari"
         content:
           application/json:
             schema:
@@ -281,7 +276,7 @@ paths:
               properties:
                 id:
                   type: "integer"
-                  description: Id de l'usuari
+                  description: "Id de l'usuari"
                   required: true
       responses:
         "200":
@@ -290,9 +285,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserStats'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
-
+        "401":
+          description: "Accés no autoritzat"
   /ranking:
     get:
       tags:
@@ -306,7 +300,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: "array"
                 items:
                   $ref: '#/components/schemas/UserRanking'
         "400":
@@ -320,11 +314,11 @@ paths:
       description: "Crear una categoria a la BD"
       operationId: "createCategory"
       requestBody:
-        description: Proporcionar l'enumeració corresponent
+        description: "Proporcionar l'enumeració corresponent"
         content:
           application/json:
             schema:
-              type: object
+              type: "object"
               properties:
                 category:
                   type: "string"
@@ -359,8 +353,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Category'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Categoria no existent"
 
   /classes:
     post:
@@ -370,12 +364,12 @@ paths:
       description: "Crear una classe a la BD"
       operationId: "createClass"
       requestBody:
-        description: Proporcionar tots els camps
+        description: "Proporcionar tots els camps requerits"
         content:
           application/json:
             schema:
-              required: [type, name, description, age, difficulty, length, categories, pre, videoclass, trainer, workarea]
-              type: object
+              required: [type, name, description, age, difficulty, length, categories, trainer, workarea]
+              type: "object"
               properties:
                 type:
                   type: "string"
@@ -385,7 +379,7 @@ paths:
                   maxLength: 30
                 description:
                   type: "string"
-                  maxLength: 200
+                  maxLength: 500
                 age:
                   type: "string"
                   enum: [K,T,A,E]
@@ -397,12 +391,6 @@ paths:
                 categories:
                   type: "object"
                   format: Category
-                pre:
-                  type: "string"
-                  format: "binary"
-                videoclass:
-                  type: "string"
-                  format: "binary"
                 trainer:
                   type: "string"
                 workarea:
@@ -416,43 +404,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/Class'
         "400":
-          description: "Classe ja existeix"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "class"
-      summary: "Retorna totes les classes"
+      summary: "Retorna totes les classes (o les que compleixin les condiciones de la query)"
       operationId: "getAllClasses"
       parameters:
-        - name: name
+        - name: "name"
           in: query
-          description: Nom de la classe
+          description: "Nom de la classe"
           required: false
           schema:
-            type: string
-        - name: age
+            type: "string"
+        - name: "type"
           in: query
-          description: Edat de la classe
+          description: "Tipus de la classe"
           required: false
           schema:
-            type: string
-        - name: difficulty
+            type: "string"
+        - name: "age"
           in: query
-          description: Dificultat de la classe
+          description: "Edat de la classe"
           required: false
           schema:
-            type: string
-        - name: workarea
+            type: "string"
+        - name: "difficulty"
           in: query
-          description: Area de treball de la classe
+          description: "Dificultat de la classe"
           required: false
           schema:
-            type: string
-        - name: categories
+            type: "string"
+        - name: "workarea"
           in: query
-          description: Categories de la classe
+          description: "Area de treball de la classe"
           required: false
           schema:
-            type: string
+            type: "string"
+        - name: "categories"
+          in: query
+          description: "Categories de la classe"
+          required: false
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
@@ -462,7 +456,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Class'
-
+        "404":
+          description: "Cap classe trobada"
   /classes/{id}:
     get:
       tags:
@@ -484,8 +479,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Class'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Classe no trobada"
 
   /exercises:
     post:
@@ -495,11 +490,11 @@ paths:
       description: "Crear un exercici a la BD"
       operationId: "createExercise"
       requestBody:
-        description: Proporcionar tots els camps requerits
+        description: "Proporcionar tots els camps requerits"
         content:
           application/json:
             schema:
-              required: [type, name, description, age, difficulty, length, categories, pre, muscleimage, videotutorial, videoexercise, muscle]
+              required: [type, name, description, age, difficulty, length, categories, muscle]
               type: object
               properties:
                 type:
@@ -522,18 +517,6 @@ paths:
                 categories:
                   type: "object"
                   format: Category
-                pre:
-                  type: "string"
-                  format: "binary"
-                muscleimage:
-                  type: "string"
-                  format: "binary"
-                videotutorial:
-                  type: "string"
-                  format: "binary"
-                videoexercise:
-                  type: "string"
-                  format: "binary"
                 muscle:
                   type: "string"
                   enum: [ Bi,Tr,Fa,Ch,Sh,Do,Gl,Fe,Qu,Cm,Co]
@@ -545,43 +528,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/Exercise'
         "400":
-          description: "Exercici ja existent"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "exercise"
-      summary: "Retorna tots els exercicis"
+      summary: "Retorna tots els exercicis (o els que compleixen les condicions de la query)"
       operationId: "getAllExercises"
       parameters:
-        - name: name
-          in: query
-          description: Nom de l'exercici
+        - name: "name"
+          in: "query"
+          description: "Nom de l'exercici"
           required: false
           schema:
-            type: string
-        - name: age
+            type: "string"
+        - name: "type"
           in: query
-          description: Edat de l'exercici
+          description: "Tipus de l'exercici"
           required: false
           schema:
-            type: string
-        - name: difficulty
+            type: "string"
+        - name: "age"
           in: query
-          description: Dificultat de l'exercici
+          description: "Edat de l'exercici"
           required: false
           schema:
-            type: string
-        - name: muscle
+            type: "string"
+        - name: "difficulty"
           in: query
-          description: Múscul treballat en l'exercici
+          description: "Dificultat de l'exercici"
           required: false
           schema:
-            type: string
-        - name: categories
+            type: "string"
+        - name: "muscle"
           in: query
-          description: Categories de l'exercici
+          description: "Múscul treballat en l'exercici"
           required: false
           schema:
-            type: string
+            type: "string"
+        - name: "categories"
+          in: query
+          description: "Categories de l'exercici"
+          required: false
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
@@ -591,7 +580,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Class'
-
+        "404":
+          description: "Cap exercici trobat"
   /exercises/{id}:
     get:
       tags:
@@ -613,8 +603,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Exercise'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Exercici no trobat"
 
   /objectives:
     post:
@@ -624,7 +614,7 @@ paths:
       description: "Crear un objectiu a la BD"
       operationId: "createObjective"
       requestBody:
-        description: Proporcionar el camp requerit en forma d'enumeració
+        description: "Proporcionar el camp requerit en forma d'enumeració"
         content:
           application/json:
             schema:
@@ -641,7 +631,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Objective'
         "400":
-          description: "Objectiu ja existent"
+          description: "Dades incorrectes"
   /objectives/{Name}:
     get:
       tags:
@@ -663,8 +653,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Objective'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Objectiu no existent"
 
   /customroutines:
     post:
@@ -674,7 +664,7 @@ paths:
       description: "Crear un rutina personalitzada a la BD, hereta del model routines"
       operationId: "createCustomRoutine"
       requestBody:
-        description: Proporcionar tots els camps requerits
+        description: "Proporcionar tots els camps requerits"
         content:
           application/json:
             schema:
@@ -708,31 +698,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/customroutines'
         "400":
-          description: "Rutina personalitzada ja existent"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "custom routine"
-      summary: "Retorna totes les rutines personalitzades"
+      summary: "Retorna totes les rutines personalitzades (o les que compleixen les condicions de la query)"
       operationId: "getAllCustomRoutines"
       parameters:
-        - name: name
+        - name: "name"
           in: query
-          description: Nom de la rutina
+          description: "Nom de la rutina"
           required: false
           schema:
-            type: string
-        - name: time
+            type: "string"
+        - name: "time"
           in: query
-          description: Temps de la rutina
+          description: "Temps de la rutina"
           required: false
           schema:
-            type: string
-        - name: categories
+            type: "string"
+        - name: "categories"
           in: query
-          description: Categories de la rutina
+          description: "Categories de la rutina"
           required: false
           schema:
-            type: string
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
@@ -742,6 +732,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/customroutines'
+        "404":
+          description: "Cap rutina trobada"
   /customroutines/{id}:
     get:
       tags:
@@ -763,8 +755,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/customroutines'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Rutina no trobada"
 
   /predefinedroutines:
     post:
@@ -774,7 +766,7 @@ paths:
       description: "Crear un rutina predefinida a la BD, hereta del model routines"
       operationId: "createCustomRoutine"
       requestBody:
-        description: Proporcionar tots els camps requerits
+        description: "Proporcionar tots els camps requerits"
         content:
           application/json:
             schema:
@@ -823,61 +815,61 @@ paths:
               schema:
                 $ref: '#/components/schemas/predefinedroutines'
         "400":
-          description: "Rutina predefinida ja existent"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "predefined routine"
-      summary: "Retorna totes les rutines predefinides"
+      summary: "Retorna totes les rutines predefinides (o les que compleixen les condicions de la query)"
       operationId: "getAllPredefinedRoutines"
       parameters:
-        - name: name
+        - name: "name"
           in: query
-          description: Nom de la rutina
+          description: "Nom de la rutina"
           required: false
           schema:
-            type: string
-        - name: time
+            type: "string"
+        - name: "time"
           in: query
-          description: Temps de la rutina
+          description: "Temps de la rutina"
           required: false
           schema:
-            type: string
-        - name: categories
+            type: "string"
+        - name: "categories"
           in: query
-          description: Categories de la rutina
+          description: "Categories de la rutina"
           required: false
           schema:
-            type: string
-        - name: age
+            type: "string"
+        - name: "age"
           in: query
-          description: Edat de la rutina
+          description: "Edat de la rutina"
           required: false
           schema:
-            type: string
-        - name: level
+            type: "string"
+        - name: "level"
           in: query
-          description: Nivell de la rutina
+          description: "Nivell de la rutina"
           required: false
           schema:
-            type: string
-        - name: equipment
+            type: "string"
+        - name: "equipment"
           in: query
-          description: Equipament per la rutina
+          description: "Equipament per la rutina"
           required: false
           schema:
-            type: string
-        - name: objective
+            type: "string"
+        - name: "objective"
           in: query
-          description: Objectiu de la rutina
+          description: "Objectiu de la rutina"
           required: false
           schema:
-            type: string
-        - name: impact
+            type: "string"
+        - name: "impact"
           in: query
-          description: Impacte de la rutina
+          description: "Impacte de la rutina"
           required: false
           schema:
-            type: string
+            type: "string"
       responses:
         "200":
           description: "Operació exitosa"
@@ -887,6 +879,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/customroutines'
+        "404":
+          description: "Cap rutina trobada"
   /predefinedroutines/{id}:
     get:
       tags:
@@ -908,8 +902,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/predefinedroutines'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Rutina no existent"
 
   /trainings:
     post:
@@ -919,7 +913,7 @@ paths:
       description: "Crear un entrenament a la BD, associat a un usuari"
       operationId: "createTraining"
       requestBody:
-        description: Proporcionar tots els camps requerits
+        description: "Proporcionar tots els camps requerits"
         content:
           application/json:
             schema:
@@ -953,17 +947,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Training'
         "400":
-          description: "Rutina predefinida ja existent"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "training"
-      summary: "Retorna tots els usuaris"
+      summary: "Retorna tots els trainings (o els que compleixen les condicions de la query)"
       operationId: "getTrainings"
       parameters:
         - name: "username"
           in: "path"
           description: "Nom de l'usuari"
-          required: true
+          required: false
           schema:
             type: "string"
       responses:
@@ -975,8 +969,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Training'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Cap training trobat"
   /trainings/{id}:
     get:
       tags:
@@ -998,8 +992,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Training'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Training no existent"
 
   /programs:
     post:
@@ -1009,7 +1003,7 @@ paths:
       description: "Crear un programa a la BD"
       operationId: "createProgram"
       requestBody:
-        description: Proporcionar els camps requerits
+        description: "Proporcionar els camps requerits"
         content:
           application/json:
             schema:
@@ -1035,11 +1029,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Program'
         "400":
-          description: "Programa ja existeix"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "program"
-      summary: "Obtenir tots els programes"
+      summary: "Obtenir tots els programes (o els que compleixen les condicions de la query)"
       operationId: "getPrograms"
       parameters:
         - name: "name"
@@ -1069,8 +1063,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Program'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Cap programa trobat"
   /programs/{id}:
     get:
       tags:
@@ -1092,8 +1086,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Program'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Programa no existent"
 
   /collection:
     post:
@@ -1103,7 +1097,7 @@ paths:
       description: "Crear un col·lecció a la BD"
       operationId: "createCollection"
       requestBody:
-        description: Proporcionar els camps requerits
+        description: "Proporcionar els camps requerits"
         content:
           application/json:
             schema:
@@ -1124,7 +1118,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Collection'
         "400":
-          description: "Col·lecció ja existent"
+          description: "Dades amb format incorrecte"
     get:
       tags:
         - "collection"
@@ -1139,8 +1133,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Collection'
-        "400":
-          description: "Alguna cosa no ha anat bé..."
+        "404":
+          description: "Cap col·lecció trobada"
   /collection/{id}:
       get:
         tags:
@@ -1162,8 +1156,8 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Collection'
-          "400":
-            description: "Alguna cosa no ha anat bé..."
+          "404":
+            description: "Col·lecció inexistent"
 
 
 components:
@@ -1212,8 +1206,26 @@ components:
           enum: [B, I, A]
         objective:
           type: "object"
-        interestcategories:
+        categories:
           type: "object"
+        strengthtrainings:
+          type: "integer"
+          default: 0
+        cardiotrainings:
+          type: "integer"
+          default: 0
+        yogatrainings:
+          type: "integer"
+          default: 0
+        stretchingtrainings:
+          type: "integer"
+          default: 0
+        rehabilitationtrainings:
+          type: "integer"
+          default: 0
+        pilatestrainings:
+          type: "integer"
+          default: 0
         weight:
           type: "number"
           default: 0.0
