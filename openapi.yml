@@ -696,7 +696,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/customroutines'
+                $ref: '#/components/schemas/CustomRoutine'
         "400":
           description: "Dades amb format incorrecte"
     get:
@@ -731,7 +731,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/customroutines'
+                  $ref: '#/components/schemas/CustomRoutine'
         "404":
           description: "Cap rutina trobada"
   /customroutines/{id}:
@@ -754,7 +754,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/customroutines'
+                $ref: '#/components/schemas/CustomRoutines'
         "404":
           description: "Rutina no trobada"
 
@@ -813,7 +813,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/predefinedroutines'
+                $ref: '#/components/schemas/PredefinedRoutine'
         "400":
           description: "Dades amb format incorrecte"
     get:
@@ -878,7 +878,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/customroutines'
+                  $ref: '#/components/schemas/PredefinedRoutine'
         "404":
           description: "Cap rutina trobada"
   /predefinedroutines/{id}:
@@ -901,7 +901,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/predefinedroutines'
+                $ref: '#/components/schemas/PredefinedRoutine'
         "404":
           description: "Rutina no existent"
 
@@ -1159,6 +1159,218 @@ paths:
           "404":
             description: "Col·lecció inexistent"
 
+  /achievement:
+      post:
+        tags:
+          - "achievement"
+        summary: "Crear achievement"
+        description: "Crear un achievement a la BD"
+        operationId: "createAchievement"
+        requestBody:
+          description: "Proporcionar els camps requerits"
+          content:
+            application/json:
+              schema:
+                required: [ achievement, quantity, points ]
+                type: object
+                properties:
+                  achievement:
+                    type: "string"
+                  quantity:
+                    type: "integer"
+                  points:
+                    type: "integer"
+        responses:
+          "201":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Achievement'
+          "400":
+            description: "Dades amb format incorrecte"
+      get:
+        tags:
+          - "achievement"
+        summary: "Obtenir tots els achievements (o els que compleixen les condicions de la query)"
+        operationId: "getAchievement"
+        parameters:
+          - name: "achievement"
+            in: "path"
+            description: "Nom del achievement"
+            required: false
+            schema:
+              type: "string"
+          - name: "quantity"
+            in: "path"
+            description: "Quantity del achievement"
+            required: false
+            schema:
+              type: "integer"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Achievement'
+          "404":
+            description: "Cap achievement trobat"
+
+  /achievement/{id}:
+      get:
+        tags:
+          - "achievement"
+        summary: "Obtenir el achievement amb id especificat"
+        description: "Proporcionar l'id del achievement"
+        operationId: "getAchievementById"
+        parameters:
+          - name: "id"
+            in: "path"
+            description: "Id del achievement"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Achievement'
+          "404":
+            description: "Achievement inexistent"
+
+  /shareachievement:
+      get:
+        tags:
+          - "shareachievement"
+        summary: "Obtenir tots els shareachievement (o els que compleixen les condicions de la query)"
+        operationId: "getShareAchievement"
+        parameters:
+          - name: "achievement"
+            in: "path"
+            description: "Id del achievement"
+            required: false
+            schema:
+              type: "string"
+          - name: "user"
+            in: "path"
+            description: "User"
+            required: false
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ShareAchievement'
+          "404":
+            description: "Cap shareachievement trobat"
+
+  /shareachievement/{id}:
+      get:
+        tags:
+          - "shareachievement"
+        summary: "Obtenir el shareachievement amb id especificat"
+        description: "Proporcionar l'id del shareachievement"
+        operationId: "getShareAchievementById"
+        parameters:
+          - name: "id"
+            in: "path"
+            description: "Id del shareachievement"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ShareAchievement'
+          "404":
+            description: "ShareAchievement inexistent"
+
+  /healthdata:
+    post:
+      tags:
+        - "healthdata"
+      summary: "Crear healthdata"
+      description: "Crear un healthdata a la BD"
+      operationId: "createHealthData"
+      requestBody:
+        description: "Proporcionar els camps requerits"
+        content:
+          application/json:
+            schema:
+              required: [ userid ]
+              type: object
+              properties:
+                userid:
+                  type: "string"
+      responses:
+        "201":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthData'
+        "400":
+          description: "Dades amb format incorrecte"
+    get:
+      tags:
+        - "healthdata"
+      summary: "Obtenir tots els healthdata (o els que compleixen les condicions de la query)"
+      operationId: "getHealthData"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id del user"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Operació exitosa"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HealthData'
+        "404":
+          description: "Cap healthdata trobat"
+
+  /healthdata/{id}:
+      get:
+        tags:
+          - "healthdata"
+        summary: "Obtenir el healthdata amb id especificat"
+        description: "Proporcionar l'id del healthdata"
+        operationId: "getHealthDataById"
+        parameters:
+          - name: "id"
+            in: "path"
+            description: "Id del healthdata"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          "200":
+            description: "Operació exitosa"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/HealthData'
+          "404":
+            description: "HealthData inexistent"
 
 components:
   schemas:
@@ -1517,3 +1729,41 @@ components:
           type: "string"
         predefinedroutine:
           type: "object"
+
+    Achievement:
+      type: "object"
+      properties:
+        achievement:
+          type: "string"
+          enum: [ TT,ST,CT,YT,StchT,RT,PT ]
+        quentity:
+          type: "integer"
+        points:
+          type: "integer"
+
+    ShareAchievement:
+      type: "object"
+      properties:
+        user:
+          type: "object"
+        achievement:
+          type: "object"
+        share:
+          type: "boolean"
+
+    HealthData:
+      type: "object"
+      properties:
+        user:
+          type: "object"
+        weigth:
+          type: "integer"
+        heigth:
+          type: "integer"
+        igm:
+          type: "integer"
+        imc:
+          type: "integer"
+        date:
+          type: "string"
+          format: "date"
