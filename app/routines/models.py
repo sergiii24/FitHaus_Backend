@@ -8,7 +8,7 @@ from exercises.models import Exercise
 
 class Routine(models.Model):
     name = models.CharField(max_length=100, default=None)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=500)
     POSIBLE_TIME = [
         ('P', 'Personalitzable'),
         ('R', 'Ronda circuits'),

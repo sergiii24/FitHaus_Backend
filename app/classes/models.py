@@ -17,7 +17,7 @@ class Class(Activity):
 class ClassDTO(models.Model):
     type = models.CharField(max_length=30, default='E')
     name = models.CharField(max_length=30, default='')
-    description = models.CharField(max_length=1, null=True)
+    description = models.CharField(max_length=500, null=True)
     age = models.CharField(max_length=30, default='A')
     difficulty = models.CharField(max_length=30, default='M')
     length = models.IntegerField(null=True)

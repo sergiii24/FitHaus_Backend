@@ -27,8 +27,8 @@ class Exercise(Activity):
 
 class ExerciseDTO(models.Model):
     type = models.CharField(max_length=30, default='E')
-    name = models.CharField(max_length=30, default='')
-    description = models.CharField(max_length=1, null=True)
+    name = models.CharField(max_length=50, default='')
+    description = models.CharField(max_length=500, null=True)
     age = models.CharField(max_length=30, default='A')
     difficulty = models.CharField(max_length=30, default='M')
     length = models.IntegerField(null=True)
