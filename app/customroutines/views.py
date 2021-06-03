@@ -20,8 +20,11 @@ class CustomRoutinesViewSet(viewsets.ViewSet):
             queryset = queryset.filter(time=time)
         elif categories is not None:
             queryset = queryset.filter(categories=categories)
-        serializer = CustomRoutineSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            serializer = CustomRoutineSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -34,7 +37,6 @@ class CustomRoutinesViewSet(viewsets.ViewSet):
                 cr.time = serialized.validated_data.get('time')
                 cr.public = serialized.validated_data.get('public')
                 cr.user = serialized.validated_data.get('user')
-                # pr.image = serialized.validated_data.get('image')
                 cr.save()
 
                 categories = []
@@ -58,7 +60,7 @@ class CustomRoutinesViewSet(viewsets.ViewSet):
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
             return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
         except CustomRoutine.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, pk):
         try:
@@ -66,4 +68,4 @@ class CustomRoutinesViewSet(viewsets.ViewSet):
             serialized = CustomRoutineSerializer(cr)
             return Response(serialized.data, status=status.HTTP_200_OK)
         except CustomRoutine.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)

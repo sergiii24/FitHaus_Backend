@@ -30,8 +30,8 @@ class UserList(viewsets.ViewSet):
             queryset = queryset.filter(username=username)
         elif email is not None:
             queryset = queryset.filter(email=email)
-        serializer = GetUserSerializer(queryset, many=True)
         if queryset.count() > 0:
+            serializer = GetUserSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)

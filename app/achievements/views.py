@@ -17,8 +17,11 @@ class AchievementsViewSet(viewsets.ViewSet):
                 queryset = queryset.filter(quantity=quantity)
         elif quantity is not None:
             queryset = queryset.filter(quantity=quantity)
-        serializer = AchievementSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            serializer = AchievementSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -32,4 +35,12 @@ class AchievementsViewSet(viewsets.ViewSet):
                 achievement.save()
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
         except Achievement.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def retrieve(self, request, pk):
+        try:
+            ac = Achievement.objects.get(id=pk)
+            serialized = AchievementSerializer(ac)
+            return Response(serialized.data, status=status.HTTP_200_OK)
+        except Achievement.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

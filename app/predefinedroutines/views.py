@@ -37,8 +37,11 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
             queryset = queryset.filter(objective=objective)
         elif impact is not None:
             queryset = queryset.filter(impact=impact)
-        serializer = PredfinedRoutineSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            serializer = PredfinedRoutineSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -54,7 +57,6 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
                 pr.equipment = serialized.validated_data.get('equipment')
                 pr.objective = serialized.validated_data.get('objective')
                 pr.impact = serialized.validated_data.get('impact')
-                # pr.image = serialized.validated_data.get('image')
                 pr.save()
 
                 categories = []
@@ -78,7 +80,7 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
             return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
         except PredefinedRoutine.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, pk):
         try:
@@ -86,4 +88,4 @@ class PredefinedRoutineViewSet(viewsets.ViewSet):
             serialized = PredfinedRoutineSerializer(pr)
             return Response(serialized.data, status=status.HTTP_200_OK)
         except PredefinedRoutine.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)

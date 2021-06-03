@@ -26,8 +26,11 @@ class TrainingViewSet(viewsets.ViewSet):
         user = request.query_params.get('user')
         if user is not None:
             queryset = queryset.filter(user=user)
-        serializer = TrainingSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            serializer = TrainingSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -46,7 +49,7 @@ class TrainingViewSet(viewsets.ViewSet):
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
             return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
         except Training.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, pk):
         try:
@@ -54,7 +57,7 @@ class TrainingViewSet(viewsets.ViewSet):
             serialized = TrainingSerializer(tr)
             return Response(serialized.data, status=status.HTTP_200_OK)
         except Training.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def partial_update(self, request, pk):
         try:

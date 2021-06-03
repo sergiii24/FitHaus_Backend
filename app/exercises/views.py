@@ -30,39 +30,11 @@ class ExercisesViewSet(viewsets.ViewSet):
             queryset = queryset.filter(muscle=muscle)
         elif categories is not None:
             queryset = queryset.filter(categories=categories)
-        serializer = ExerciseSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def create(self, request):
-        try:
-            data = JSONParser().parse(request)
-            ex_serializer = ExerciseNoImageSerializer(data=data)
-            # data = request.FILES['pre']
-            # ex_image_serializer = ExerciseNoImageSerializer(data=data)
-            if ex_serializer.is_valid():
-                ex = Exercise()
-                ex.type = ex_serializer.validated_data.get('type')
-                ex.name = ex_serializer.validated_data.get('name')
-                ex.description = ex_serializer.validated_data.get('description')
-                ex.age = ex_serializer.validated_data.get('age')
-                ex.difficulty = ex_serializer.validated_data.get('difficulty')
-                ex.length = ex_serializer.validated_data.get('length')
-                ex.save()
-                categories = []
-                cat = ex_serializer.validated_data.get('categories')
-                for c in cat:
-                    categories.append(c.category)
-                ex.categories.set(categories)
-                ex.pre = ex_image_serializer.validated_data.get('pre')
-                ex.muscleimage = ex_image_serializer.validated_data.get('muscleimage')
-                ex.videotutorial = ex_image_serializer.validated_data.get('videotutorial')
-                ex.videoexercise = ex_image_serializer.validated_data.get('videoexercise')
-                ex.muscle = ex_serializer.validated_data.get('muscle')
-                ex.save()
-                return Response(ex_serializer.data, status=status.HTTP_201_CREATED)
-            return Response(ex_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exercise.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if queryset.count() > 0:
+            serializer = ExerciseSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, pk):
         try:
