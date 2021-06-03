@@ -14,8 +14,11 @@ class HealthDataViewSet(viewsets.ViewSet):
         if id is not None:
             user = User.objects.get(id=id)
             queryset = queryset.filter(user=user)
-        serializer = HealthDataSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if queryset.count() > 0:
+            serializer = HealthDataSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -36,7 +39,7 @@ class HealthDataViewSet(viewsets.ViewSet):
                 return Response(serialized.data, status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, pk):
         try:
