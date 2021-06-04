@@ -1,12 +1,12 @@
 openapi: "3.0.1"
 info:
-  description: "Servidor de l'aplicació fithaus de l'assignatura PES. Aquí podràs trobar operacions per gestionar usuaris del sistema."
+  description: "Servidor de l'aplicació fithaus de l'assignatura PES. Cal connectar-se a la VPN de la FIB."
   version: "1.0.0"
   title: "SERVIDOR FITHAUS"
   contact:
     email: "fithaus2021@gmail.com"
 servers:
-  - url: "127.0.0.1:8000"
+  - url: "10.4.41.149"
 paths:
   /users:
     post:
